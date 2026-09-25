@@ -65,7 +65,7 @@ Parla signs a GDPR data processing agreement with each shop and lists its subpro
 
 ## Reporting a security issue
 
-Email **security@askparla.com** rather than opening a public issue, and allow a few days for a first
+Email **contact@askparla.com** rather than opening a public issue, and allow a few days for a first
 reply.
 
 ## Licence
