@@ -32,7 +32,7 @@ function parla_live_config(array $s): array
     $body = json_decode((string) wp_remote_retrieve_body($res), true);
     if ($code !== 200 || !is_array($body)) {
         /* translators: %d: the HTTP status code the server returned */
-        return ['ok' => false, 'data' => [], 'error' => sprintf(__('the server answered %d', 'parla-for-woocommerce'), $code)];
+        return ['ok' => false, 'data' => [], 'error' => sprintf(__('the server answered %d', 'askparla-ai-shopping-assistant'), $code)];
     }
     return ['ok' => true, 'data' => $body, 'error' => ''];
 }
@@ -179,9 +179,9 @@ function parla_ui_copy(string $id, string $value, bool $secret = false): void
     <div class="aa-copy">
         <input type="<?php echo $secret ? 'password' : 'text'; ?>" id="<?php echo esc_attr($id); ?>" class="aa-in aa-mono" readonly value="<?php echo esc_attr($value); ?>">
         <?php if ($secret) : ?>
-            <button type="button" class="aa-btn aa-btn-ghost" data-aa-reveal="<?php echo esc_attr($id); ?>"><?php esc_html_e('Show', 'parla-for-woocommerce'); ?></button>
+            <button type="button" class="aa-btn aa-btn-ghost" data-aa-reveal="<?php echo esc_attr($id); ?>"><?php esc_html_e('Show', 'askparla-ai-shopping-assistant'); ?></button>
         <?php endif; ?>
-        <button type="button" class="aa-btn aa-btn-ghost" data-aa-copy="<?php echo esc_attr($id); ?>" data-done="<?php esc_attr_e('Copied', 'parla-for-woocommerce'); ?>"><?php esc_html_e('Copy', 'parla-for-woocommerce'); ?></button>
+        <button type="button" class="aa-btn aa-btn-ghost" data-aa-copy="<?php echo esc_attr($id); ?>" data-done="<?php esc_attr_e('Copied', 'askparla-ai-shopping-assistant'); ?>"><?php esc_html_e('Copy', 'askparla-ai-shopping-assistant'); ?></button>
     </div>
     <?php
 }
@@ -226,9 +226,9 @@ function parla_ui_topics(array $rows, string $empty, array $total = []): void
             '<p class="aa-help aa-total">%s</p>',
             esc_html($hits > $terms
                 /* translators: 1: distinct things asked, 2: how many times in total */
-                ? sprintf(__('%1$s different things, asked %2$s times', 'parla-for-woocommerce'), number_format_i18n($terms), number_format_i18n($hits))
+                ? sprintf(__('%1$s different things, asked %2$s times', 'askparla-ai-shopping-assistant'), number_format_i18n($terms), number_format_i18n($hits))
                 /* translators: %s: distinct things asked */
-                : sprintf(_n('%s thing asked', '%s different things asked', $terms, 'parla-for-woocommerce'), number_format_i18n($terms)))
+                : sprintf(_n('%s thing asked', '%s different things asked', $terms, 'askparla-ai-shopping-assistant'), number_format_i18n($terms)))
         );
     }
     echo '<ol class="aa-list">';
@@ -244,10 +244,10 @@ function parla_ui_topics(array $rows, string $empty, array $total = []): void
     if (count($rows) > $shown) {
         printf(
             '<button type="button" class="aa-link" data-aa-more data-less="%s">%s</button>',
-            esc_attr__('Show fewer', 'parla-for-woocommerce'),
+            esc_attr__('Show fewer', 'askparla-ai-shopping-assistant'),
             esc_html(sprintf(
                 /* translators: %s: how many more rows are hidden */
-                __('Show %s more', 'parla-for-woocommerce'),
+                __('Show %s more', 'askparla-ai-shopping-assistant'),
                 number_format_i18n(count($rows) - $shown)
             ))
         );
@@ -258,7 +258,7 @@ function parla_ui_topics(array $rows, string $empty, array $total = []): void
             '<p class="aa-help">%s</p>',
             esc_html(sprintf(
                 /* translators: %s: number of entries shown */
-                __('Showing the busiest %s. The rest are in your Parla dashboard.', 'parla-for-woocommerce'),
+                __('Showing the busiest %s. The rest are in your Parla dashboard.', 'askparla-ai-shopping-assistant'),
                 number_format_i18n(count($rows))
             ))
         );
@@ -277,12 +277,12 @@ function parla_ui_sales(): void
     ?>
     <section class="aa-hero">
         <div class="aa-hero-top">
-            <span class="aa-eyebrow"><?php esc_html_e('Sales it helped with', 'parla-for-woocommerce'); ?></span>
-            <span class="aa-tag"><?php esc_html_e('Last 30 days', 'parla-for-woocommerce'); ?></span>
+            <span class="aa-eyebrow"><?php esc_html_e('Sales it helped with', 'askparla-ai-shopping-assistant'); ?></span>
+            <span class="aa-tag"><?php esc_html_e('Last 30 days', 'askparla-ai-shopping-assistant'); ?></span>
         </div>
         <?php if ($r['assisted_orders'] === 0) : ?>
             <div class="aa-hero-value is-empty"><?php echo esc_html(parla_ui_money(0)); ?></div>
-            <p class="aa-hero-sub"><?php esc_html_e('No orders yet from shoppers who talked to the assistant. An order counts when it is placed within 7 days of a chat or a call.', 'parla-for-woocommerce'); ?></p>
+            <p class="aa-hero-sub"><?php esc_html_e('No orders yet from shoppers who talked to the assistant. An order counts when it is placed within 7 days of a chat or a call.', 'askparla-ai-shopping-assistant'); ?></p>
         <?php else :
             $share = $r['revenue'] > 0 ? (int) round(100 * $r['assisted_revenue'] / $r['revenue']) : 0;
             $others = $r['orders'] - $r['assisted_orders'];
@@ -292,7 +292,7 @@ function parla_ui_sales(): void
                 <?php
                 printf(
                     /* translators: 1: number of orders, 2: share of the shop's sales in percent */
-                    esc_html(_n('from %1$d order, %2$d%% of your sales', 'from %1$d orders, %2$d%% of your sales', $r['assisted_orders'], 'parla-for-woocommerce')),
+                    esc_html(_n('from %1$d order, %2$d%% of your sales', 'from %1$d orders, %2$d%% of your sales', $r['assisted_orders'], 'askparla-ai-shopping-assistant')),
                     (int) $r['assisted_orders'],
                     (int) $share
                 );
@@ -305,7 +305,7 @@ function parla_ui_sales(): void
                         <span><?php
                             printf(
                                 /* translators: %d: number of items */
-                                esc_html(_n('%d item it put in the cart itself', '%d items it put in the cart itself', $r['added_items'], 'parla-for-woocommerce')),
+                                esc_html(_n('%d item it put in the cart itself', '%d items it put in the cart itself', $r['added_items'], 'askparla-ai-shopping-assistant')),
                                 (int) $r['added_items']
                             ); ?></span>
                     </div>
@@ -316,7 +316,7 @@ function parla_ui_sales(): void
                         <span><?php
                             printf(
                                 /* translators: %s: average order without the assistant */
-                                esc_html__('average order, against %s without it', 'parla-for-woocommerce'),
+                                esc_html__('average order, against %s without it', 'askparla-ai-shopping-assistant'),
                                 esc_html(parla_ui_money(($r['revenue'] - $r['assisted_revenue']) / $others))
                             ); ?></span>
                     </div>
@@ -324,9 +324,9 @@ function parla_ui_sales(): void
             </div>
         <?php endif; ?>
         <p class="aa-fine">
-            <?php esc_html_e('Paid orders, refunds taken off. Counted here from your own WooCommerce orders; nothing about them is sent anywhere.', 'parla-for-woocommerce'); ?>
+            <?php esc_html_e('Paid orders, refunds taken off. Counted here from your own WooCommerce orders; nothing about them is sent anywhere.', 'askparla-ai-shopping-assistant'); ?>
             <?php if ($r['capped']) {
-                esc_html_e(' Only your latest 3,000 orders are counted.', 'parla-for-woocommerce');
+                esc_html_e(' Only your latest 3,000 orders are counted.', 'askparla-ai-shopping-assistant');
             } ?>
         </p>
     </section>
@@ -357,58 +357,58 @@ function parla_ui_health(array $s): void
     ob_start();
     if (!$live['ok']) {
         $warnings++;
-        parla_ui_check(__('Chat server', 'parla-for-woocommerce'), __('unreachable', 'parla-for-woocommerce'), 'warn', sprintf(
+        parla_ui_check(__('Chat server', 'askparla-ai-shopping-assistant'), __('unreachable', 'askparla-ai-shopping-assistant'), 'warn', sprintf(
             /* translators: 1: server address, 2: error */
-            __('%1$s did not answer (%2$s). Shoppers see a connection error until it is back.', 'parla-for-woocommerce'),
+            __('%1$s did not answer (%2$s). Shoppers see a connection error until it is back.', 'askparla-ai-shopping-assistant'),
             parla_api_base($s),
             $live['error']
         ));
     } else {
-        parla_ui_check(__('Chat server', 'parla-for-woocommerce'), __('answering', 'parla-for-woocommerce'), 'good');
+        parla_ui_check(__('Chat server', 'askparla-ai-shopping-assistant'), __('answering', 'askparla-ai-shopping-assistant'), 'good');
         $voice_live = !empty($d['voice_calls']);
         $voice_saved = !empty($s['voice_calls']);
         $state = $voice_live ? 'good' : ($voice_saved ? 'warn' : 'neutral');
         $warnings += $state === 'warn' ? 1 : 0;
-        parla_ui_check(__('Voice calls', 'parla-for-woocommerce'), $voice_live ? __('on', 'parla-for-woocommerce') : __('off', 'parla-for-woocommerce'), $state,
-            $voice_saved && !$voice_live ? __('Switched on here but not live yet: press Save settings.', 'parla-for-woocommerce') : '');
+        parla_ui_check(__('Voice calls', 'askparla-ai-shopping-assistant'), $voice_live ? __('on', 'askparla-ai-shopping-assistant') : __('off', 'askparla-ai-shopping-assistant'), $state,
+            $voice_saved && !$voice_live ? __('Switched on here but not live yet: press Save settings.', 'askparla-ai-shopping-assistant') : '');
 
         $engine = (string) ($d['voice_engine'] ?? 'browser');
         $want = !empty($s['premium_voice']) ? 'vapi' : 'browser';
         // Premium in the plan but not live is usually this month's minutes running out: worth knowing, not a fault.
         $state = $engine === $want ? 'good' : 'neutral';
-        parla_ui_check(__('Voice quality', 'parla-for-woocommerce'), $engine === 'vapi' ? __('premium', 'parla-for-woocommerce') : __('standard', 'parla-for-woocommerce'), $state,
-            $want === 'vapi' && $engine !== 'vapi' ? __('Premium is in your plan but paused: this month\'s minutes are used up, so calls use the standard voice until next month.', 'parla-for-woocommerce') : '');
+        parla_ui_check(__('Voice quality', 'askparla-ai-shopping-assistant'), $engine === 'vapi' ? __('premium', 'askparla-ai-shopping-assistant') : __('standard', 'askparla-ai-shopping-assistant'), $state,
+            $want === 'vapi' && $engine !== 'vapi' ? __('Premium is in your plan but paused: this month\'s minutes are used up, so calls use the standard voice until next month.', 'askparla-ai-shopping-assistant') : '');
 
         $cart = !empty($d['cart']);
         $warnings += $cart ? 0 : 1;
-        parla_ui_check(__('Add to cart from the chat', 'parla-for-woocommerce'), $cart ? __('available', 'parla-for-woocommerce') : __('not available', 'parla-for-woocommerce'), $cart ? 'good' : 'warn',
-            $cart ? '' : __('The server did not recognise this store as WooCommerce. Reconnect to fix it.', 'parla-for-woocommerce'));
+        parla_ui_check(__('Add to cart from the chat', 'askparla-ai-shopping-assistant'), $cart ? __('available', 'askparla-ai-shopping-assistant') : __('not available', 'askparla-ai-shopping-assistant'), $cart ? 'good' : 'warn',
+            $cart ? '' : __('The server did not recognise this store as WooCommerce. Reconnect to fix it.', 'askparla-ai-shopping-assistant'));
 
         $theme = (string) ($d['theme'] ?? 'auto');
-        parla_ui_check(__('Light or dark', 'parla-for-woocommerce'),
-            $theme === 'auto' ? __("follows the shopper's device", 'parla-for-woocommerce') : ($theme === 'dark' ? __('always dark', 'parla-for-woocommerce') : __('always light', 'parla-for-woocommerce')),
+        parla_ui_check(__('Light or dark', 'askparla-ai-shopping-assistant'),
+            $theme === 'auto' ? __("follows the shopper's device", 'askparla-ai-shopping-assistant') : ($theme === 'dark' ? __('always dark', 'askparla-ai-shopping-assistant') : __('always light', 'askparla-ai-shopping-assistant')),
             $theme === ($s['theme'] ?? 'auto') ? 'good' : 'warn');
 
         $greeting = $d['greeting'] ?? null;
-        parla_ui_check(__('Greeting bubble', 'parla-for-woocommerce'),
+        parla_ui_check(__('Greeting bubble', 'askparla-ai-shopping-assistant'),
             /* translators: %d: the delay in seconds before the greeting appears */
-            $greeting ? sprintf(__('after %ds', 'parla-for-woocommerce'), (int) ($greeting['after_seconds'] ?? 0)) : __('off', 'parla-for-woocommerce'),
+            $greeting ? sprintf(__('after %ds', 'askparla-ai-shopping-assistant'), (int) ($greeting['after_seconds'] ?? 0)) : __('off', 'askparla-ai-shopping-assistant'),
             $greeting ? 'good' : 'neutral');
-        parla_ui_check(__('Greeting customers by name', 'parla-for-woocommerce'), !empty($s['greet_customers']) ? __('on', 'parla-for-woocommerce') : __('off', 'parla-for-woocommerce'), !empty($s['greet_customers']) ? 'good' : 'neutral');
+        parla_ui_check(__('Greeting customers by name', 'askparla-ai-shopping-assistant'), !empty($s['greet_customers']) ? __('on', 'askparla-ai-shopping-assistant') : __('off', 'askparla-ai-shopping-assistant'), !empty($s['greet_customers']) ? 'good' : 'neutral');
     }
     $rows = (string) ob_get_clean();
     ?>
     <details class="aa-card aa-health"<?php echo $warnings ? ' open' : ''; ?>>
         <summary>
             <span>
-                <strong><?php esc_html_e('Storefront check', 'parla-for-woocommerce'); ?></strong>
-                <span class="aa-muted"><?php esc_html_e('What the chat on your shop is running right now', 'parla-for-woocommerce'); ?></span>
+                <strong><?php esc_html_e('Storefront check', 'askparla-ai-shopping-assistant'); ?></strong>
+                <span class="aa-muted"><?php esc_html_e('What the chat on your shop is running right now', 'askparla-ai-shopping-assistant'); ?></span>
             </span>
             <span class="aa-pill <?php echo $warnings ? 'is-warn' : 'is-good'; ?>">
                 <?php echo $warnings
                     /* translators: %d: how many things still need fixing */
-                    ? esc_html(sprintf(_n('%d thing to fix', '%d things to fix', $warnings, 'parla-for-woocommerce'), $warnings))
-                    : esc_html__('All good', 'parla-for-woocommerce'); ?>
+                    ? esc_html(sprintf(_n('%d thing to fix', '%d things to fix', $warnings, 'askparla-ai-shopping-assistant'), $warnings))
+                    : esc_html__('All good', 'askparla-ai-shopping-assistant'); ?>
             </span>
         </summary>
         <ul class="aa-checks"><?php echo $rows; // phpcs:ignore WordPress.Security.EscapeOutput -- built from escaped parts above ?></ul>
@@ -416,7 +416,7 @@ function parla_ui_health(array $s): void
             <?php
             printf(
                 /* translators: %s: widget script URL */
-                esc_html__('Your pages load the chat from %s. After changing anything, reload your shop with a hard refresh.', 'parla-for-woocommerce'),
+                esc_html__('Your pages load the chat from %s. After changing anything, reload your shop with a hard refresh.', 'askparla-ai-shopping-assistant'),
                 '<code>' . esc_html($s['widget_url'] !== '' ? $s['widget_url'] : parla_api_base($s) . '/widget.js') . '</code>'
             );
             ?>
@@ -432,12 +432,12 @@ function parla_ui_health(array $s): void
 function parla_ui_setup(array $s): void
 {
     $steps = [
-        ['done' => true, 'label' => __('Connect your shop', 'parla-for-woocommerce'), 'tab' => 'connection', 'why' => ''],
-        ['done' => (int) $s['voice_calls'] === 1, 'label' => __('Let shoppers call the assistant', 'parla-for-woocommerce'), 'tab' => 'voice', 'why' => __('Shoppers who call ask more and buy more.', 'parla-for-woocommerce')],
-        ['done' => $s['greeting_pages'] !== 'off', 'label' => __('Turn on the greeting bubble', 'parla-for-woocommerce'), 'tab' => 'appearance', 'why' => __('Most shoppers never open a chat nobody offered.', 'parla-for-woocommerce')],
-        ['done' => trim((string) $s['size_guide']) !== '' || trim((string) $s['policy_excerpts']) !== '', 'label' => __('Add your size guide or policy notes', 'parla-for-woocommerce'), 'tab' => 'assistant', 'why' => __('Without them it says "I don\'t know" to the most common questions.', 'parla-for-woocommerce')],
-        ['done' => trim((string) $s['support_hours']) !== '', 'label' => __('Say when your team replies', 'parla-for-woocommerce'), 'tab' => 'assistant', 'why' => __('So a handoff tells the shopper when to expect an answer.', 'parla-for-woocommerce')],
-        ['done' => strtolower((string) $s['brand_color']) !== '#111827', 'label' => __('Put it in your colours', 'parla-for-woocommerce'), 'tab' => 'appearance', 'why' => __('It should look like part of your shop.', 'parla-for-woocommerce')],
+        ['done' => true, 'label' => __('Connect your shop', 'askparla-ai-shopping-assistant'), 'tab' => 'connection', 'why' => ''],
+        ['done' => (int) $s['voice_calls'] === 1, 'label' => __('Let shoppers call the assistant', 'askparla-ai-shopping-assistant'), 'tab' => 'voice', 'why' => __('Shoppers who call ask more and buy more.', 'askparla-ai-shopping-assistant')],
+        ['done' => $s['greeting_pages'] !== 'off', 'label' => __('Turn on the greeting bubble', 'askparla-ai-shopping-assistant'), 'tab' => 'appearance', 'why' => __('Most shoppers never open a chat nobody offered.', 'askparla-ai-shopping-assistant')],
+        ['done' => trim((string) $s['size_guide']) !== '' || trim((string) $s['policy_excerpts']) !== '', 'label' => __('Add your size guide or policy notes', 'askparla-ai-shopping-assistant'), 'tab' => 'assistant', 'why' => __('Without them it says "I don\'t know" to the most common questions.', 'askparla-ai-shopping-assistant')],
+        ['done' => trim((string) $s['support_hours']) !== '', 'label' => __('Say when your team replies', 'askparla-ai-shopping-assistant'), 'tab' => 'assistant', 'why' => __('So a handoff tells the shopper when to expect an answer.', 'askparla-ai-shopping-assistant')],
+        ['done' => strtolower((string) $s['brand_color']) !== '#111827', 'label' => __('Put it in your colours', 'askparla-ai-shopping-assistant'), 'tab' => 'appearance', 'why' => __('It should look like part of your shop.', 'askparla-ai-shopping-assistant')],
     ];
     $done = count(array_filter($steps, fn ($st) => $st['done']));
     if ($done === count($steps)) {
@@ -447,11 +447,11 @@ function parla_ui_setup(array $s): void
     <section class="aa-card aa-setup">
         <div class="aa-setup-head">
             <div>
-                <h3><?php esc_html_e('Finish setting up', 'parla-for-woocommerce'); ?></h3>
-                <p class="aa-muted"><?php esc_html_e('A few minutes each. This card goes away once everything is done.', 'parla-for-woocommerce'); ?></p>
+                <h3><?php esc_html_e('Finish setting up', 'askparla-ai-shopping-assistant'); ?></h3>
+                <p class="aa-muted"><?php esc_html_e('A few minutes each. This card goes away once everything is done.', 'askparla-ai-shopping-assistant'); ?></p>
             </div>
             <?php /* translators: 1: steps done, 2: steps in total */ ?>
-            <span class="aa-setup-count"><?php echo esc_html(sprintf(__('%1$d of %2$d done', 'parla-for-woocommerce'), $done, count($steps))); ?></span>
+            <span class="aa-setup-count"><?php echo esc_html(sprintf(__('%1$d of %2$d done', 'askparla-ai-shopping-assistant'), $done, count($steps))); ?></span>
         </div>
         <span class="aa-meter"><span style="width:<?php echo esc_attr((string) round($done / count($steps) * 100)); ?>%"></span></span>
         <ol class="aa-setup-list">
@@ -463,9 +463,9 @@ function parla_ui_setup(array $s): void
                         <?php if (!$st['done'] && $st['why']) : ?><span class="aa-muted"><?php echo esc_html($st['why']); ?></span><?php endif; ?>
                     </span>
                     <?php if ($st['done']) : ?>
-                        <span class="screen-reader-text"><?php esc_html_e('Done', 'parla-for-woocommerce'); ?></span>
+                        <span class="screen-reader-text"><?php esc_html_e('Done', 'askparla-ai-shopping-assistant'); ?></span>
                     <?php else : ?>
-                        <button type="button" class="aa-btn aa-btn-ghost aa-btn-sm" data-aa-go="<?php echo esc_attr($st['tab']); ?>"><?php esc_html_e('Do it', 'parla-for-woocommerce'); ?></button>
+                        <button type="button" class="aa-btn aa-btn-ghost aa-btn-sm" data-aa-go="<?php echo esc_attr($st['tab']); ?>"><?php esc_html_e('Do it', 'askparla-ai-shopping-assistant'); ?></button>
                     <?php endif; ?>
                 </li>
             <?php endforeach; ?>
@@ -479,10 +479,10 @@ function parla_ui_overview(array $s): void
     if (!parla_is_connected()) {
         ?>
         <section class="aa-card aa-welcome">
-            <span class="aa-eyebrow"><?php esc_html_e('Welcome', 'parla-for-woocommerce'); ?></span>
-            <h2><?php esc_html_e('Connect your store to meet your sales assistant', 'parla-for-woocommerce'); ?></h2>
-            <p><?php esc_html_e('Once connected, this page shows the sales it helps with, what shoppers ask for, and what they could not find.', 'parla-for-woocommerce'); ?></p>
-            <button type="button" class="aa-btn aa-btn-primary" data-aa-go="connection"><?php esc_html_e('Connect your store', 'parla-for-woocommerce'); ?></button>
+            <span class="aa-eyebrow"><?php esc_html_e('Welcome', 'askparla-ai-shopping-assistant'); ?></span>
+            <h2><?php esc_html_e('Connect your store to meet your sales assistant', 'askparla-ai-shopping-assistant'); ?></h2>
+            <p><?php esc_html_e('Once connected, this page shows the sales it helps with, what shoppers ask for, and what they could not find.', 'askparla-ai-shopping-assistant'); ?></p>
+            <button type="button" class="aa-btn aa-btn-primary" data-aa-go="connection"><?php esc_html_e('Connect your store', 'askparla-ai-shopping-assistant'); ?></button>
         </section>
         <?php
         return;
@@ -493,11 +493,11 @@ function parla_ui_overview(array $s): void
     ?>
     <div class="aa-page-head">
         <div>
-            <h2><?php esc_html_e('How it is going', 'parla-for-woocommerce'); ?></h2>
-            <p class="aa-muted"><?php esc_html_e('Everything here is about your shop only.', 'parla-for-woocommerce'); ?></p>
+            <h2><?php esc_html_e('How it is going', 'askparla-ai-shopping-assistant'); ?></h2>
+            <p class="aa-muted"><?php esc_html_e('Everything here is about your shop only.', 'askparla-ai-shopping-assistant'); ?></p>
         </div>
         <a class="aa-btn aa-btn-ghost" href="<?php echo esc_url(wp_nonce_url(admin_url('admin.php?page=parla&aa_refresh=1#overview'), 'parla_refresh')); ?>">
-            <?php esc_html_e('Refresh', 'parla-for-woocommerce'); ?>
+            <?php esc_html_e('Refresh', 'askparla-ai-shopping-assistant'); ?>
         </a>
     </div>
 
@@ -508,7 +508,7 @@ function parla_ui_overview(array $s): void
     <?php if (!$report['ok']) : ?>
         <div class="aa-card aa-alert">
             <?php /* translators: %s: the reason the figures could not be loaded */ ?>
-            <?php printf(esc_html__('The conversation numbers are not available right now (%s). Sales above come from your own orders and are always up to date.', 'parla-for-woocommerce'), esc_html($report['error'])); ?>
+            <?php printf(esc_html__('The conversation numbers are not available right now (%s). Sales above come from your own orders and are always up to date.', 'askparla-ai-shopping-assistant'), esc_html($report['error'])); ?>
         </div>
         <?php
         parla_ui_health($s);
@@ -524,30 +524,32 @@ function parla_ui_overview(array $s): void
     <div class="aa-kpis">
         <?php
         parla_ui_kpi(
-            __('Messages', 'parla-for-woocommerce'),
+            __('Messages', 'askparla-ai-shopping-assistant'),
             number_format_i18n((int) ($m['last_30_days'] ?? 0)),
             /* translators: 1: conversations today, 2: conversations this week */
-            sprintf(__('%1$s today, %2$s this week', 'parla-for-woocommerce'), number_format_i18n((int) ($m['today'] ?? 0)), number_format_i18n((int) ($m['last_7_days'] ?? 0)))
+            sprintf(__('%1$s today, %2$s this week', 'askparla-ai-shopping-assistant'), number_format_i18n((int) ($m['today'] ?? 0)), number_format_i18n((int) ($m['last_7_days'] ?? 0)))
         );
         $rated = (int) ($helpful['up'] ?? 0) + (int) ($helpful['down'] ?? 0);
         parla_ui_kpi(
-            __('Found it helpful', 'parla-for-woocommerce'),
+            __('Found it helpful', 'askparla-ai-shopping-assistant'),
             $rated >= 5 && isset($helpful['rate']) ? $helpful['rate'] . '%' : '–',
             /* translators: %d: how many shoppers rated an answer */
-            $rated >= 5 ? sprintf(_n('from %d rating', 'from %d ratings', $rated, 'parla-for-woocommerce'), $rated) : __('shows after 5 ratings', 'parla-for-woocommerce')
+            $rated >= 5 ? sprintf(_n('from %d rating', 'from %d ratings', $rated, 'askparla-ai-shopping-assistant'), $rated) : __('shows after 5 ratings', 'askparla-ai-shopping-assistant')
         );
-        parla_ui_kpi(__('Handed to your team', 'parla-for-woocommerce'), number_format_i18n((int) ($events['escalations'] ?? 0)), __('conversations that needed a person', 'parla-for-woocommerce'));
-        parla_ui_kpi(__('Back-in-stock sign-ups', 'parla-for-woocommerce'), number_format_i18n((int) ($events['restock_alerts'] ?? 0)), __('emailed when it is back', 'parla-for-woocommerce'));
-        parla_ui_kpi(__('Asked for, not sold', 'parla-for-woocommerce'), number_format_i18n((int) ($events['product_requests'] ?? 0)), __('people waiting to hear', 'parla-for-woocommerce'));
+        parla_ui_kpi(__('Handed to your team', 'askparla-ai-shopping-assistant'), number_format_i18n((int) ($events['escalations'] ?? 0)), __('conversations that needed a person', 'askparla-ai-shopping-assistant'));
+        // Counted from this site's own waiting lists rather than from Parla's tally: these are the
+        // people still waiting right now, which is the number worth acting on.
+        parla_ui_kpi(__('Waiting for a restock', 'askparla-ai-shopping-assistant'), number_format_i18n(parla_waiting_count('restock')), __('emailed when it is back', 'askparla-ai-shopping-assistant'));
+        parla_ui_kpi(__('Asked for, not sold', 'askparla-ai-shopping-assistant'), number_format_i18n(parla_waiting_count('wanted')), __('people waiting to hear', 'askparla-ai-shopping-assistant'));
         // An older server, or a plan without premium voice, simply leaves these out.
         if (!empty($s['premium_voice']) && is_array($premium) && (int) ($premium['minutes_budget'] ?? 0) > 0) {
             $used = (float) ($premium['minutes_used'] ?? 0);
             $budget = (int) ($premium['minutes_budget'] ?? 0);
             parla_ui_kpi(
-                __('Premium call minutes', 'parla-for-woocommerce'),
+                __('Premium call minutes', 'askparla-ai-shopping-assistant'),
                 sprintf('%s / %s', number_format_i18n($used, $used < 10 ? 1 : 0), number_format_i18n($budget)),
                 /* translators: %d: how many premium voice calls this month */
-                sprintf(_n('%d call this month', '%d calls this month', (int) ($premium['calls'] ?? 0), 'parla-for-woocommerce'), (int) ($premium['calls'] ?? 0)),
+                sprintf(_n('%d call this month', '%d calls this month', (int) ($premium['calls'] ?? 0), 'askparla-ai-shopping-assistant'), (int) ($premium['calls'] ?? 0)),
                 $used / $budget
             );
         }
@@ -557,15 +559,15 @@ function parla_ui_overview(array $s): void
     <?php $waiting = $d['waiting_list'] ?? []; if ($waiting) : ?>
         <section class="aa-card aa-waiting">
             <div class="aa-card-head">
-                <h3><?php esc_html_e('Asked for, and waiting to hear', 'parla-for-woocommerce'); ?></h3>
-                <p class="aa-muted"><?php esc_html_e('You do not sell these yet. Add a matching product and everyone on the list gets one email from your shop, automatically.', 'parla-for-woocommerce'); ?></p>
+                <h3><?php esc_html_e('Asked for, and waiting to hear', 'askparla-ai-shopping-assistant'); ?></h3>
+                <p class="aa-muted"><?php esc_html_e('You do not sell these yet. Add a matching product and everyone on the list gets one email from your shop, automatically.', 'askparla-ai-shopping-assistant'); ?></p>
             </div>
             <ol class="aa-list">
                 <?php foreach ($waiting as $row) : $people = (int) ($row['people'] ?? 0); ?>
                     <li>
                         <span><?php echo esc_html((string) ($row['phrase'] ?? '')); ?></span>
                         <?php /* translators: %d: how many shoppers are waiting for this product */ ?>
-                        <span class="aa-count"><?php echo esc_html(sprintf(_n('%d person', '%d people', $people, 'parla-for-woocommerce'), $people)); ?></span>
+                        <span class="aa-count"><?php echo esc_html(sprintf(_n('%d person', '%d people', $people, 'askparla-ai-shopping-assistant'), $people)); ?></span>
                     </li>
                 <?php endforeach; ?>
             </ol>
@@ -582,15 +584,15 @@ function parla_ui_overview(array $s): void
     $bad = (int) ($d['helpful']['down'] ?? 0);
     if ($miss || $gap || $bad) :
         $asked = [
-            [$miss, __('Searches that found nothing', 'parla-for-woocommerce'), __('Your restocking list', 'parla-for-woocommerce')],
-            [$gap, __('Questions your pages did not answer', 'parla-for-woocommerce'), __('Each is a paragraph worth writing', 'parla-for-woocommerce')],
-            [$bad, __('Answers marked unhelpful', 'parla-for-woocommerce'), __('Usually one missing line of policy', 'parla-for-woocommerce')],
+            [$miss, __('Searches that found nothing', 'askparla-ai-shopping-assistant'), __('Your restocking list', 'askparla-ai-shopping-assistant')],
+            [$gap, __('Questions your pages did not answer', 'askparla-ai-shopping-assistant'), __('Each is a paragraph worth writing', 'askparla-ai-shopping-assistant')],
+            [$bad, __('Answers marked unhelpful', 'askparla-ai-shopping-assistant'), __('Usually one missing line of policy', 'askparla-ai-shopping-assistant')],
         ];
         ?>
         <section class="aa-card aa-asked">
             <div class="aa-card-head">
-                <h3><?php esc_html_e('What shoppers asked for', 'parla-for-woocommerce'); ?></h3>
-                <p class="aa-muted"><?php esc_html_e('Last 30 days. The details are on the Reports tab.', 'parla-for-woocommerce'); ?></p>
+                <h3><?php esc_html_e('What shoppers asked for', 'askparla-ai-shopping-assistant'); ?></h3>
+                <p class="aa-muted"><?php esc_html_e('Last 30 days. The details are on the Reports tab.', 'askparla-ai-shopping-assistant'); ?></p>
             </div>
             <div class="aa-asked-grid">
                 <?php foreach ($asked as [$n, $label, $hint]) : ?>
@@ -614,32 +616,51 @@ function parla_ui_tab_reports(array $s): void
 {
     $d = parla_insights($s)['data'] ?? [];
     if (!$d) {
-        printf('<p class="aa-empty">%s</p>', esc_html__('Nothing to report yet. Come back once shoppers have used the chat.', 'parla-for-woocommerce'));
+        printf('<p class="aa-empty">%s</p>', esc_html__('Nothing to report yet. Come back once shoppers have used the chat.', 'askparla-ai-shopping-assistant'));
         return;
     }
     ?>
     <div class="aa-grid-2">
         <section class="aa-card">
             <div class="aa-card-head">
-                <h3><?php esc_html_e('Looked for, not found', 'parla-for-woocommerce'); ?></h3>
-                <p class="aa-muted"><?php esc_html_e('Searches with no result in the last 30 days. Your restocking list.', 'parla-for-woocommerce'); ?></p>
+                <h3><?php esc_html_e('Looked for, not found', 'askparla-ai-shopping-assistant'); ?></h3>
+                <p class="aa-muted"><?php esc_html_e('Searches with no result in the last 30 days. Your restocking list.', 'askparla-ai-shopping-assistant'); ?></p>
             </div>
-            <?php parla_ui_topics($d['not_found'] ?? [], __('Nothing yet. Every search found something.', 'parla-for-woocommerce'), (array) ($d['not_found_total'] ?? [])); ?>
+            <?php parla_ui_topics($d['not_found'] ?? [], __('Nothing yet. Every search found something.', 'askparla-ai-shopping-assistant'), (array) ($d['not_found_total'] ?? [])); ?>
         </section>
         <section class="aa-card">
             <div class="aa-card-head">
-                <h3><?php esc_html_e('Asked, but your pages do not say', 'parla-for-woocommerce'); ?></h3>
-                <p class="aa-muted"><?php esc_html_e('Questions your published pages had no answer for. Each is a paragraph worth writing.', 'parla-for-woocommerce'); ?></p>
+                <h3><?php esc_html_e('Asked, but your pages do not say', 'askparla-ai-shopping-assistant'); ?></h3>
+                <p class="aa-muted"><?php esc_html_e('Questions your published pages had no answer for. Each is a paragraph worth writing.', 'askparla-ai-shopping-assistant'); ?></p>
             </div>
-            <?php parla_ui_topics($d['unanswered'] ?? [], __('Nothing yet. Your pages covered every question.', 'parla-for-woocommerce'), (array) ($d['unanswered_total'] ?? [])); ?>
+            <?php parla_ui_topics($d['unanswered'] ?? [], __('Nothing yet. Your pages covered every question.', 'askparla-ai-shopping-assistant'), (array) ($d['unanswered_total'] ?? [])); ?>
         </section>
     </div>
+
+    <?php
+    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- a flag that only decides whether a "done" notice is printed; nothing is read from it.
+    if (isset($_GET['parla_forgot'])) {
+        printf('<div class="notice notice-success is-dismissible"><p>%s</p></div>', esc_html__('Removed from the list.', 'askparla-ai-shopping-assistant'));
+    }
+    parla_ui_waiting(
+        'restock',
+        __('Waiting for a restock', 'askparla-ai-shopping-assistant'),
+        __('They asked to be told when a sold-out size or colour is back. The email leaves from your shop, once, and the address is deleted with it.', 'askparla-ai-shopping-assistant'),
+        __('Nobody is waiting on a restock right now.', 'askparla-ai-shopping-assistant')
+    );
+    parla_ui_waiting(
+        'wanted',
+        __('Asked for something you do not sell', 'askparla-ai-shopping-assistant'),
+        __('They agreed to hear from you if it ever arrives. Nothing was promised: the assistant only ever says it will get in touch.', 'askparla-ai-shopping-assistant'),
+        __('Nobody is waiting on something you do not carry.', 'askparla-ai-shopping-assistant')
+    );
+    ?>
 
     <?php if (!empty($d['unhelpful'])) : ?>
         <section class="aa-card">
             <div class="aa-card-head">
-                <h3><?php esc_html_e('Answers shoppers marked unhelpful', 'parla-for-woocommerce'); ?></h3>
-                <p class="aa-muted"><?php esc_html_e('Most are fixed by adding a line to the policy notes or the sizing advice.', 'parla-for-woocommerce'); ?></p>
+                <h3><?php esc_html_e('Answers shoppers marked unhelpful', 'askparla-ai-shopping-assistant'); ?></h3>
+                <p class="aa-muted"><?php esc_html_e('Most are fixed by adding a line to the policy notes or the sizing advice.', 'askparla-ai-shopping-assistant'); ?></p>
                 <?php
                 // The server sends the ten most recent; the vote count is the real total.
                 $down = (int) ($d['helpful']['down'] ?? 0);
@@ -650,7 +671,7 @@ function parla_ui_tab_reports(array $s): void
                         '<p class="aa-help aa-total">%s</p>',
                         esc_html(sprintf(
                             /* translators: 1: how many are listed, 2: how many there were in total */
-                            __('The %1$s most recent, of %2$s marked unhelpful in 30 days', 'parla-for-woocommerce'),
+                            __('The %1$s most recent, of %2$s marked unhelpful in 30 days', 'askparla-ai-shopping-assistant'),
                             number_format_i18n($rows_shown),
                             number_format_i18n($down)
                         ))
@@ -661,9 +682,9 @@ function parla_ui_tab_reports(array $s): void
             <div class="aa-table-wrap">
                 <table class="aa-table">
                     <thead><tr>
-                        <th><?php esc_html_e('They asked', 'parla-for-woocommerce'); ?></th>
-                        <th><?php esc_html_e('It answered', 'parla-for-woocommerce'); ?></th>
-                        <th><?php esc_html_e('When', 'parla-for-woocommerce'); ?></th>
+                        <th><?php esc_html_e('They asked', 'askparla-ai-shopping-assistant'); ?></th>
+                        <th><?php esc_html_e('It answered', 'askparla-ai-shopping-assistant'); ?></th>
+                        <th><?php esc_html_e('When', 'askparla-ai-shopping-assistant'); ?></th>
                     </tr></thead>
                     <tbody>
                     <?php foreach (array_slice($d['unhelpful'], 0, 50) as $i => $row) : ?>
@@ -680,10 +701,10 @@ function parla_ui_tab_reports(array $s): void
             if ($sent > 10) {
                 printf(
                     '<button type="button" class="aa-link" data-aa-more data-less="%s">%s</button>',
-                    esc_attr__('Show fewer', 'parla-for-woocommerce'),
+                    esc_attr__('Show fewer', 'askparla-ai-shopping-assistant'),
                     esc_html(sprintf(
                         /* translators: %s: how many more rows are hidden */
-                        __('Show %s more', 'parla-for-woocommerce'),
+                        __('Show %s more', 'askparla-ai-shopping-assistant'),
                         number_format_i18n($sent - 10)
                     ))
                 );
@@ -694,7 +715,7 @@ function parla_ui_tab_reports(array $s): void
                     '<p class="aa-help">%s</p>',
                     esc_html(sprintf(
                         /* translators: %s: how many are listed */
-                        __('The %s most recent are listed. Fix a few and the rest will thin out on their own.', 'parla-for-woocommerce'),
+                        __('The %s most recent are listed. Fix a few and the rest will thin out on their own.', 'askparla-ai-shopping-assistant'),
                         number_format_i18n($sent)
                     ))
                 );
@@ -707,95 +728,95 @@ function parla_ui_tab_reports(array $s): void
 
 function parla_ui_tab_assistant(array $s): void
 {
-    parla_ui_section(__('What it may tell shoppers', 'parla-for-woocommerce'), __('The assistant only repeats facts you give it here or on your published pages. It never guesses a policy.', 'parla-for-woocommerce'), function () use ($s) {
-        parla_ui_row(__('Return window', 'parla-for-woocommerce'), __('Days after delivery a shopper can send something back.', 'parla-for-woocommerce'), function () use ($s) {
+    parla_ui_section(__('What it may tell shoppers', 'askparla-ai-shopping-assistant'), __('The assistant only repeats facts you give it here or on your published pages. It never guesses a policy.', 'askparla-ai-shopping-assistant'), function () use ($s) {
+        parla_ui_row(__('Return window', 'askparla-ai-shopping-assistant'), __('Days after delivery a shopper can send something back.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             printf(
                 '<span class="aa-suffix"><input name="return_window_days" id="aa_window" type="number" min="1" max="365" class="aa-in aa-in-sm" value="%s"><span>%s</span></span>',
                 esc_attr((string) $s['return_window_days']),
-                esc_html__('days', 'parla-for-woocommerce')
+                esc_html__('days', 'askparla-ai-shopping-assistant')
             );
         }, 'aa_window');
-        parla_ui_row(__('Policy notes', 'parla-for-woocommerce'), __('Short facts it may share: shipping times, free returns, final-sale rules.', 'parla-for-woocommerce'), function () use ($s) {
+        parla_ui_row(__('Policy notes', 'askparla-ai-shopping-assistant'), __('Short facts it may share: shipping times, free returns, final-sale rules.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             printf(
                 '<textarea name="policy_excerpts" id="aa_policy" rows="4" class="aa-in" placeholder="%s">%s</textarea>',
-                esc_attr__('Free returns in store. Final-sale items cannot be returned. Delivery in 2 to 4 working days.', 'parla-for-woocommerce'),
+                esc_attr__('Free returns in store. Final-sale items cannot be returned. Delivery in 2 to 4 working days.', 'askparla-ai-shopping-assistant'),
                 esc_textarea($s['policy_excerpts'])
             );
         }, 'aa_policy');
-        parla_ui_row(__('Sizing and fit', 'parla-for-woocommerce'), __('Without it, it will not invent measurements.', 'parla-for-woocommerce'), function () use ($s) {
+        parla_ui_row(__('Sizing and fit', 'askparla-ai-shopping-assistant'), __('Without it, it will not invent measurements.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             printf(
                 '<textarea name="size_guide" id="aa_sizes" rows="4" class="aa-in" placeholder="%s">%s</textarea>',
-                esc_attr__('Runs small, size up if you are between sizes. Chest: S 96cm, M 102cm, L 108cm.', 'parla-for-woocommerce'),
+                esc_attr__('Runs small, size up if you are between sizes. Chest: S 96cm, M 102cm, L 108cm.', 'askparla-ai-shopping-assistant'),
                 esc_textarea($s['size_guide'])
             );
         }, 'aa_sizes');
     });
 
-    parla_ui_section(__('Orders', 'parla-for-woocommerce'), __('How the assistant reads your order statuses.', 'parla-for-woocommerce'), function () use ($s) {
-        parla_ui_row(__('"Completed" means', 'parla-for-woocommerce'), __('WooCommerce has no delivered status. Which does yours mean?', 'parla-for-woocommerce'), function () use ($s) {
+    parla_ui_section(__('Orders', 'askparla-ai-shopping-assistant'), __('How the assistant reads your order statuses.', 'askparla-ai-shopping-assistant'), function () use ($s) {
+        parla_ui_row(__('"Completed" means', 'askparla-ai-shopping-assistant'), __('WooCommerce has no delivered status. Which does yours mean?', 'askparla-ai-shopping-assistant'), function () use ($s) {
             parla_ui_segmented('completed_means', [
-                'delivered' => __('Delivered', 'parla-for-woocommerce'),
-                'shipped' => __('Shipped', 'parla-for-woocommerce'),
-            ], (string) $s['completed_means'], __('"Completed" means', 'parla-for-woocommerce'));
+                'delivered' => __('Delivered', 'askparla-ai-shopping-assistant'),
+                'shipped' => __('Shipped', 'askparla-ai-shopping-assistant'),
+            ], (string) $s['completed_means'], __('"Completed" means', 'askparla-ai-shopping-assistant'));
         });
     });
 
-    parla_ui_section(__('Handing over to your team', 'parla-for-woocommerce'), __('When a shopper needs a person, the conversation is emailed to you.', 'parla-for-woocommerce'), function () use ($s) {
-        parla_ui_row(__('Send handoffs to', 'parla-for-woocommerce'), __('Empty uses the site admin address.', 'parla-for-woocommerce'), function () use ($s) {
+    parla_ui_section(__('Handing over to your team', 'askparla-ai-shopping-assistant'), __('When a shopper needs a person, the conversation is emailed to you.', 'askparla-ai-shopping-assistant'), function () use ($s) {
+        parla_ui_row(__('Send handoffs to', 'askparla-ai-shopping-assistant'), __('Empty uses the site admin address.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             printf('<input name="support_email" id="aa_support_email" type="email" class="aa-in" placeholder="%s" value="%s">', esc_attr((string) get_option('admin_email')), esc_attr($s['support_email']));
         }, 'aa_support_email');
         /* translators: %s: the shop's timezone, as WordPress has it */
-        parla_ui_row(__('Opening hours', 'parla-for-woocommerce'), sprintf(__('So shoppers know when a person will reply. Your site timezone is %s.', 'parla-for-woocommerce'), wp_timezone_string()), function () use ($s) {
+        parla_ui_row(__('Opening hours', 'askparla-ai-shopping-assistant'), sprintf(__('So shoppers know when a person will reply. Your site timezone is %s.', 'askparla-ai-shopping-assistant'), wp_timezone_string()), function () use ($s) {
             printf(
                 '<input name="support_hours" id="aa_hours" type="text" class="aa-in" placeholder="%s" value="%s">',
                 /* translators: an example of opening hours; translate the day names for your language */
-                esc_attr__('Mon-Fri 09:00-18:00, Sat 10:00-14:00', 'parla-for-woocommerce'),
+                esc_attr__('Mon-Fri 09:00-18:00, Sat 10:00-14:00', 'askparla-ai-shopping-assistant'),
                 esc_attr($s['support_hours'])
             );
         }, 'aa_hours');
-        parla_ui_row(__('Usual reply time', 'parla-for-woocommerce'), __('Said to shoppers outside your hours.', 'parla-for-woocommerce'), function () use ($s) {
-            printf('<input name="reply_within" id="aa_reply" type="text" class="aa-in" placeholder="%s" value="%s">', esc_attr__('within a few hours', 'parla-for-woocommerce'), esc_attr($s['reply_within']));
+        parla_ui_row(__('Usual reply time', 'askparla-ai-shopping-assistant'), __('Said to shoppers outside your hours.', 'askparla-ai-shopping-assistant'), function () use ($s) {
+            printf('<input name="reply_within" id="aa_reply" type="text" class="aa-in" placeholder="%s" value="%s">', esc_attr__('within a few hours', 'askparla-ai-shopping-assistant'), esc_attr($s['reply_within']));
         }, 'aa_reply');
     });
 }
 
 function parla_ui_tab_appearance(array $s): void
 {
-    parla_ui_section(__('Your shop', 'parla-for-woocommerce'), '', function () use ($s) {
-        parla_ui_master(__('Chat on the storefront', 'parla-for-woocommerce'), __('Hide it without disconnecting, for example while you set things up.', 'parla-for-woocommerce'), function () use ($s) {
-            parla_ui_switch('enabled', (int) $s['enabled'] === 1, __('Show the chat to shoppers', 'parla-for-woocommerce'));
+    parla_ui_section(__('Your shop', 'askparla-ai-shopping-assistant'), '', function () use ($s) {
+        parla_ui_master(__('Chat on the storefront', 'askparla-ai-shopping-assistant'), __('Hide it without disconnecting, for example while you set things up.', 'askparla-ai-shopping-assistant'), function () use ($s) {
+            parla_ui_switch('enabled', (int) $s['enabled'] === 1, __('Show the chat to shoppers', 'askparla-ai-shopping-assistant'));
         });
-        parla_ui_row(__('Store name', 'parla-for-woocommerce'), __('Shown in the chat header and used by the assistant.', 'parla-for-woocommerce'), function () use ($s) {
+        parla_ui_row(__('Store name', 'askparla-ai-shopping-assistant'), __('Shown in the chat header and used by the assistant.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             printf('<input name="store_name" id="aa_name" type="text" class="aa-in" value="%s">', esc_attr($s['store_name']));
         }, 'aa_name');
     });
 
-    parla_ui_section(__('Who it is', 'parla-for-woocommerce'), __('Name and status line preview as you type. Whatever you call it, it still tells shoppers it is an AI.', 'parla-for-woocommerce'), function () use ($s) {
-        parla_ui_row(__('Name', 'parla-for-woocommerce'), __('Shown in the chat and spoken on calls. Empty means no name.', 'parla-for-woocommerce'), function () use ($s) {
+    parla_ui_section(__('Who it is', 'askparla-ai-shopping-assistant'), __('Name and status line preview as you type. Whatever you call it, it still tells shoppers it is an AI.', 'askparla-ai-shopping-assistant'), function () use ($s) {
+        parla_ui_row(__('Name', 'askparla-ai-shopping-assistant'), __('Shown in the chat and spoken on calls. Empty means no name.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             printf(
                 '<input name="agent_name" id="aa_agent_name" type="text" maxlength="120" class="aa-in" placeholder="%s" value="%s">',
-                esc_attr__('Your shop\'s assistant', 'parla-for-woocommerce'),
+                esc_attr__('Your shop\'s assistant', 'askparla-ai-shopping-assistant'),
                 // Never set up: Parla, so a shop that ignores this setting still has a named agent.
                 esc_attr($s['agent_name'] !== '' ? $s['agent_name'] : parla_default_agent_name())
             );
         }, 'aa_agent_name');
-        parla_ui_row(__('Status line', 'parla-for-woocommerce'), __('Keep ours and it is translated. Write your own and everyone reads yours.', 'parla-for-woocommerce'), function () use ($s) {
+        parla_ui_row(__('Status line', 'askparla-ai-shopping-assistant'), __('Keep ours and it is translated. Write your own and everyone reads yours.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             printf(
                 '<span class="aa-prefixed"><span class="aa-prefixed-label">%s,</span><input name="agent_status" id="aa_agent_status" type="text" maxlength="60" class="aa-in" placeholder="%s" value="%s"></span>',
-                esc_html__('AI assistant', 'parla-for-woocommerce'),
+                esc_html__('AI assistant', 'askparla-ai-shopping-assistant'),
                 esc_attr(parla_default_status()),
                 // Pre-filled rather than empty, so the merchant sees the whole line as shoppers will.
                 esc_attr($s['agent_status'] !== '' ? $s['agent_status'] : parla_default_status())
             );
         }, 'aa_agent_status');
-        parla_ui_row(__('Manner', 'parla-for-woocommerce'), __('Applies after you save.', 'parla-for-woocommerce'), function () use ($s) {
+        parla_ui_row(__('Manner', 'askparla-ai-shopping-assistant'), __('Applies after you save.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             $tones = [
-                'warm' => [__('Warm', 'parla-for-woocommerce'), __('Friendly and personal, uses the shopper\'s name', 'parla-for-woocommerce')],
-                'neutral' => [__('Neutral', 'parla-for-woocommerce'), __('Plain and efficient. A safe default', 'parla-for-woocommerce')],
-                'expert' => [__('Expert', 'parla-for-woocommerce'), __('Leads with the detail that settles the question', 'parla-for-woocommerce')],
-                'playful' => [__('Playful', 'parla-for-woocommerce'), __('Light and informal, for brands that talk that way', 'parla-for-woocommerce')],
+                'warm' => [__('Warm', 'askparla-ai-shopping-assistant'), __('Friendly and personal, uses the shopper\'s name', 'askparla-ai-shopping-assistant')],
+                'neutral' => [__('Neutral', 'askparla-ai-shopping-assistant'), __('Plain and efficient. A safe default', 'askparla-ai-shopping-assistant')],
+                'expert' => [__('Expert', 'askparla-ai-shopping-assistant'), __('Leads with the detail that settles the question', 'askparla-ai-shopping-assistant')],
+                'playful' => [__('Playful', 'askparla-ai-shopping-assistant'), __('Light and informal, for brands that talk that way', 'askparla-ai-shopping-assistant')],
             ];
-            echo '<div class="aa-tones" role="radiogroup" aria-label="' . esc_attr__('Manner', 'parla-for-woocommerce') . '">';
+            echo '<div class="aa-tones" role="radiogroup" aria-label="' . esc_attr__('Manner', 'askparla-ai-shopping-assistant') . '">';
             foreach ($tones as $key => [$label, $hint]) {
                 printf(
                     '<label class="aa-tone"><input type="radio" name="agent_tone" value="%s"%s><span><strong>%s</strong><small>%s</small></span></label>',
@@ -807,24 +828,24 @@ function parla_ui_tab_appearance(array $s): void
             }
             echo '</div>';
         });
-        parla_ui_row(__('Anything else', 'parla-for-woocommerce'), __('Changes how it sounds, not what it may claim.', 'parla-for-woocommerce'), function () use ($s) {
+        parla_ui_row(__('Anything else', 'askparla-ai-shopping-assistant'), __('Changes how it sounds, not what it may claim.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             printf(
                 '<textarea name="agent_notes" id="aa_agent_notes" rows="3" maxlength="300" class="aa-in" placeholder="%s">%s</textarea><p class="aa-help aa-count" data-for="aa_agent_notes">%s</p>',
-                esc_attr__('We say "trainers", never "sneakers". Never rush anyone into a size.', 'parla-for-woocommerce'),
+                esc_attr__('We say "trainers", never "sneakers". Never rush anyone into a size.', 'askparla-ai-shopping-assistant'),
                 esc_textarea($s['agent_notes']),
                 esc_html(sprintf(
                     /* translators: %d: number of characters left */
-                    __('%d characters left', 'parla-for-woocommerce'),
+                    __('%d characters left', 'askparla-ai-shopping-assistant'),
                     300 - strlen($s['agent_notes'])
                 ))
             );
         }, 'aa_agent_notes');
     });
 
-    parla_ui_section(__('Brand', 'parla-for-woocommerce'), __('The chat wears your colours, so it looks like part of your shop.', 'parla-for-woocommerce'), function () use ($s) {
-        parla_ui_row(__('Colours', 'parla-for-woocommerce'), __('Main is for buttons and the header. Text on main must be readable on it.', 'parla-for-woocommerce'), function () use ($s) {
+    parla_ui_section(__('Brand', 'askparla-ai-shopping-assistant'), __('The chat wears your colours, so it looks like part of your shop.', 'askparla-ai-shopping-assistant'), function () use ($s) {
+        parla_ui_row(__('Colours', 'askparla-ai-shopping-assistant'), __('Main is for buttons and the header. Text on main must be readable on it.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             echo '<div class="aa-colors">';
-            foreach (['brand_color' => __('Main', 'parla-for-woocommerce'), 'brand_contrast' => __('Text on main', 'parla-for-woocommerce')] as $name => $label) {
+            foreach (['brand_color' => __('Main', 'askparla-ai-shopping-assistant'), 'brand_contrast' => __('Text on main', 'askparla-ai-shopping-assistant')] as $name => $label) {
                 printf(
                     '<label class="aa-color"><input type="color" name="%1$s" value="%2$s" data-aa-hex="aa_hex_%1$s"><span><strong>%3$s</strong><code id="aa_hex_%1$s">%2$s</code></span></label>',
                     esc_attr($name),
@@ -833,80 +854,80 @@ function parla_ui_tab_appearance(array $s): void
                 );
             }
             echo '</div>';
-            echo '<div class="aa-presets" role="group" aria-label="' . esc_attr__('Quick colours', 'parla-for-woocommerce') . '">';
+            echo '<div class="aa-presets" role="group" aria-label="' . esc_attr__('Quick colours', 'askparla-ai-shopping-assistant') . '">';
             $presets = [
-                '#111827' => __('Ink', 'parla-for-woocommerce'), '#ff5a36' => __('Coral', 'parla-for-woocommerce'), '#2563eb' => __('Blue', 'parla-for-woocommerce'),
-                '#0f766e' => __('Teal', 'parla-for-woocommerce'), '#16a34a' => __('Green', 'parla-for-woocommerce'), '#be185d' => __('Rose', 'parla-for-woocommerce'),
-                '#b45309' => __('Amber', 'parla-for-woocommerce'), '#7c3aed' => __('Violet', 'parla-for-woocommerce'),
+                '#111827' => __('Ink', 'askparla-ai-shopping-assistant'), '#ff5a36' => __('Coral', 'askparla-ai-shopping-assistant'), '#2563eb' => __('Blue', 'askparla-ai-shopping-assistant'),
+                '#0f766e' => __('Teal', 'askparla-ai-shopping-assistant'), '#16a34a' => __('Green', 'askparla-ai-shopping-assistant'), '#be185d' => __('Rose', 'askparla-ai-shopping-assistant'),
+                '#b45309' => __('Amber', 'askparla-ai-shopping-assistant'), '#7c3aed' => __('Violet', 'askparla-ai-shopping-assistant'),
             ];
             foreach ($presets as $hex => $label) {
                 printf('<button type="button" class="aa-preset" data-aa-preset="%1$s" style="--c:%1$s" title="%2$s" aria-label="%2$s" aria-pressed="false"></button>', esc_attr($hex), esc_attr($label));
             }
-            echo '<span class="aa-muted aa-presets-note">' . esc_html__('Text colour follows, so it stays readable.', 'parla-for-woocommerce') . '</span>';
+            echo '<span class="aa-muted aa-presets-note">' . esc_html__('Text colour follows, so it stays readable.', 'askparla-ai-shopping-assistant') . '</span>';
             echo '</div>';
         });
-        parla_ui_row(__('Light or dark', 'parla-for-woocommerce'), __('Auto matches whatever the shopper\'s phone or laptop is set to.', 'parla-for-woocommerce'), function () use ($s) {
-            parla_ui_segmented('theme', ['auto' => __('Auto', 'parla-for-woocommerce'), 'light' => __('Light', 'parla-for-woocommerce'), 'dark' => __('Dark', 'parla-for-woocommerce')], (string) $s['theme'], __('Light or dark', 'parla-for-woocommerce'));
+        parla_ui_row(__('Light or dark', 'askparla-ai-shopping-assistant'), __('Auto matches whatever the shopper\'s phone or laptop is set to.', 'askparla-ai-shopping-assistant'), function () use ($s) {
+            parla_ui_segmented('theme', ['auto' => __('Auto', 'askparla-ai-shopping-assistant'), 'light' => __('Light', 'askparla-ai-shopping-assistant'), 'dark' => __('Dark', 'askparla-ai-shopping-assistant')], (string) $s['theme'], __('Light or dark', 'askparla-ai-shopping-assistant'));
         });
-        parla_ui_row(__('Button language', 'parla-for-woocommerce'), __('For buttons and hints. Replies always follow the shopper.', 'parla-for-woocommerce'), function () use ($s) {
+        parla_ui_row(__('Button language', 'askparla-ai-shopping-assistant'), __('For buttons and hints. Replies always follow the shopper.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             parla_ui_select('locale', 'aa_locale', [
-                'auto' => __("Follow the shopper's browser", 'parla-for-woocommerce'),
+                'auto' => __("Follow the shopper's browser", 'askparla-ai-shopping-assistant'),
                 'en' => 'English', 'fr' => 'Français', 'es' => 'Español', 'de' => 'Deutsch',
                 'it' => 'Italiano', 'nl' => 'Nederlands', 'pt' => 'Português', 'ar' => 'العربية',
             ], (string) $s['locale']);
         }, 'aa_locale');
     });
 
-    parla_ui_section(__('First impression', 'parla-for-woocommerce'), __('What a shopper sees before they ask anything.', 'parla-for-woocommerce'), function () use ($s) {
-        parla_ui_row(__('Greet customers by name', 'parla-for-woocommerce'), __('Signed-in customers see "Hi Sarah!". Everyone else sees "Hi!".', 'parla-for-woocommerce'), function () use ($s) {
-            parla_ui_switch('greet_customers', !empty($s['greet_customers']), __('Use the customer\'s first name', 'parla-for-woocommerce'));
+    parla_ui_section(__('First impression', 'askparla-ai-shopping-assistant'), __('What a shopper sees before they ask anything.', 'askparla-ai-shopping-assistant'), function () use ($s) {
+        parla_ui_row(__('Greet customers by name', 'askparla-ai-shopping-assistant'), __('Signed-in customers see "Hi Sarah!". Everyone else sees "Hi!".', 'askparla-ai-shopping-assistant'), function () use ($s) {
+            parla_ui_switch('greet_customers', !empty($s['greet_customers']), __('Use the customer\'s first name', 'askparla-ai-shopping-assistant'));
         });
-        parla_ui_row(__('Popular products', 'parla-for-woocommerce'), __('Turn them off if you sell services, or while your products have no photos.', 'parla-for-woocommerce'), function () use ($s) {
+        parla_ui_row(__('Popular products', 'askparla-ai-shopping-assistant'), __('Turn them off if you sell services, or while your products have no photos.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             parla_ui_segmented('suggest_products', [
-                'both' => __('Everywhere', 'parla-for-woocommerce'),
-                'home' => __('First screen', 'parla-for-woocommerce'),
-                'off' => __('Off', 'parla-for-woocommerce'),
-            ], (string) $s['suggest_products'], __('Popular products', 'parla-for-woocommerce'));
+                'both' => __('Everywhere', 'askparla-ai-shopping-assistant'),
+                'home' => __('First screen', 'askparla-ai-shopping-assistant'),
+                'off' => __('Off', 'askparla-ai-shopping-assistant'),
+            ], (string) $s['suggest_products'], __('Popular products', 'askparla-ai-shopping-assistant'));
         });
-        parla_ui_row(__('Track an order', 'parla-for-woocommerce'), __('A button on the first screen. Turn it off if you sell services or downloads.', 'parla-for-woocommerce'), function () use ($s) {
-            parla_ui_switch('show_track_order', (int) $s['show_track_order'] === 1, __('Show the track an order button', 'parla-for-woocommerce'));
+        parla_ui_row(__('Track an order', 'askparla-ai-shopping-assistant'), __('A button on the first screen. Turn it off if you sell services or downloads.', 'askparla-ai-shopping-assistant'), function () use ($s) {
+            parla_ui_switch('show_track_order', (int) $s['show_track_order'] === 1, __('Show the track an order button', 'askparla-ai-shopping-assistant'));
         });
-        parla_ui_row(__('Openers', 'parla-for-woocommerce'), __('The questions an empty chat offers. Tap-sized: a few words, not a sentence.', 'parla-for-woocommerce'), function () use ($s) {
+        parla_ui_row(__('Openers', 'askparla-ai-shopping-assistant'), __('The questions an empty chat offers. Tap-sized: a few words, not a sentence.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             $lines = $s['opener_chips'] ?: parla_default_openers();
             echo '<div class="aa-openers" id="aa-openers">';
             foreach (array_pad(array_slice($lines, 0, 6), 3, '') as $i => $line) {
                 printf(
                     '<div class="aa-opener"><input name="opener_chips[]" type="text" maxlength="80" class="aa-in" value="%s" placeholder="%s"><button type="button" class="aa-opener-x" aria-label="%s">&times;</button></div>',
                     esc_attr((string) $line),
-                    esc_attr__('Do you ship to Belgium?', 'parla-for-woocommerce'),
-                    esc_attr__('Remove this opener', 'parla-for-woocommerce')
+                    esc_attr__('Do you ship to Belgium?', 'askparla-ai-shopping-assistant'),
+                    esc_attr__('Remove this opener', 'askparla-ai-shopping-assistant')
                 );
             }
             echo '</div>';
             printf(
                 '<button type="button" class="aa-link" id="aa-opener-add" data-max="6" data-placeholder="%s" data-remove="%s">%s</button>',
-                esc_attr__('Do you ship to Belgium?', 'parla-for-woocommerce'),
-                esc_attr__('Remove this opener', 'parla-for-woocommerce'),
-                esc_html__('Add an opener', 'parla-for-woocommerce')
+                esc_attr__('Do you ship to Belgium?', 'askparla-ai-shopping-assistant'),
+                esc_attr__('Remove this opener', 'askparla-ai-shopping-assistant'),
+                esc_html__('Add an opener', 'askparla-ai-shopping-assistant')
             );
         });
-        parla_ui_row(__('Greeting bubble', 'parla-for-woocommerce'), __('Shown once per visit, next to the chat button. Empty uses our hello, translated.', 'parla-for-woocommerce'), function () use ($s) {
+        parla_ui_row(__('Greeting bubble', 'askparla-ai-shopping-assistant'), __('Shown once per visit, next to the chat button. Empty uses our hello, translated.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             printf(
                 '<input name="greeting_text" id="aa_greeting" type="text" class="aa-in" placeholder="%s" value="%s">',
-                esc_attr__('Standard: Hi! Looking for something in particular?', 'parla-for-woocommerce'),
+                esc_attr__('Standard: Hi! Looking for something in particular?', 'askparla-ai-shopping-assistant'),
                 esc_attr($s['greeting_text'])
             );
             echo '<div class="aa-inline">';
             printf(
                 '<span class="aa-suffix"><input name="greeting_seconds" type="number" min="2" max="120" class="aa-in aa-in-sm" value="%s" aria-label="%s"><span>%s</span></span>',
                 esc_attr((string) $s['greeting_seconds']),
-                esc_attr__('Seconds before it appears', 'parla-for-woocommerce'),
-                esc_html__('seconds, on', 'parla-for-woocommerce')
+                esc_attr__('Seconds before it appears', 'askparla-ai-shopping-assistant'),
+                esc_html__('seconds, on', 'askparla-ai-shopping-assistant')
             );
             parla_ui_select('greeting_pages', 'aa_greeting_pages', [
-                'off' => __('no page (off)', 'parla-for-woocommerce'),
-                'cart_checkout' => __('cart and checkout', 'parla-for-woocommerce'),
-                'all' => __('every page', 'parla-for-woocommerce'),
+                'off' => __('no page (off)', 'askparla-ai-shopping-assistant'),
+                'cart_checkout' => __('cart and checkout', 'askparla-ai-shopping-assistant'),
+                'all' => __('every page', 'askparla-ai-shopping-assistant'),
             ], (string) $s['greeting_pages']);
             echo '</div>';
         }, 'aa_greeting');
@@ -915,20 +936,20 @@ function parla_ui_tab_appearance(array $s): void
 
 function parla_ui_tab_voice(array $s): void
 {
-    parla_ui_section(__('Voice calls', 'parla-for-woocommerce'), __('Shoppers can talk to the assistant hands-free, and still see products and links on screen.', 'parla-for-woocommerce'), function () use ($s) {
-        parla_ui_row(__('Call button', 'parla-for-woocommerce'), __('Speech is processed off-device. Mention it in your privacy policy.', 'parla-for-woocommerce'), function () use ($s) {
-            parla_ui_switch('voice_calls', (int) $s['voice_calls'] === 1, __('Let shoppers call the assistant', 'parla-for-woocommerce'));
+    parla_ui_section(__('Voice calls', 'askparla-ai-shopping-assistant'), __('Shoppers can talk to the assistant hands-free, and still see products and links on screen.', 'askparla-ai-shopping-assistant'), function () use ($s) {
+        parla_ui_row(__('Call button', 'askparla-ai-shopping-assistant'), __('Speech is processed off-device. Mention it in your privacy policy.', 'askparla-ai-shopping-assistant'), function () use ($s) {
+            parla_ui_switch('voice_calls', (int) $s['voice_calls'] === 1, __('Let shoppers call the assistant', 'askparla-ai-shopping-assistant'));
         });
-        parla_ui_row(__('Premium voice', 'parla-for-woocommerce'), __('Natural voices shoppers can interrupt, in any browser and their own language.', 'parla-for-woocommerce'), function () use ($s) {
+        parla_ui_row(__('Premium voice', 'askparla-ai-shopping-assistant'), __('Natural voices shoppers can interrupt, in any browser and their own language.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             if (empty($s['premium_voice'])) {
                 printf(
                     '<p class="aa-callout"><strong>%s</strong><br>%s</p>',
-                    esc_html__('Not on your plan yet', 'parla-for-woocommerce'),
-                    esc_html__('Shoppers hear their own browser\'s voice, in Chrome and Safari. Premium switches on here by itself once your plan includes it.', 'parla-for-woocommerce')
+                    esc_html__('Not on your plan yet', 'askparla-ai-shopping-assistant'),
+                    esc_html__('Shoppers hear their own browser\'s voice, in Chrome and Safari. Premium switches on here by itself once your plan includes it.', 'askparla-ai-shopping-assistant')
                 );
                 return;
             }
-            parla_ui_switch('premium_voice_on', (int) $s['premium_voice_on'] === 1, __('Use the premium voice', 'parla-for-woocommerce'));
+            parla_ui_switch('premium_voice_on', (int) $s['premium_voice_on'] === 1, __('Use the premium voice', 'askparla-ai-shopping-assistant'));
 
             /*
              * The minutes left, right next to the switch.
@@ -946,13 +967,13 @@ function parla_ui_tab_voice(array $s): void
                     '<p class="aa-help">%s</p>',
                     esc_html(sprintf(
                         /* translators: 1: minutes left, 2: minutes included in the plan */
-                        __('%1$s of %2$s minutes left this month. When they run out, calls carry on with the standard voice.', 'parla-for-woocommerce'),
+                        __('%1$s of %2$s minutes left this month. When they run out, calls carry on with the standard voice.', 'askparla-ai-shopping-assistant'),
                         number_format_i18n($left),
                         number_format_i18n($budget)
                     ))
                 );
             } else {
-                printf('<p class="aa-help">%s</p>', esc_html__('Off keeps your minutes and uses the shopper\'s own browser voice.', 'parla-for-woocommerce'));
+                printf('<p class="aa-help">%s</p>', esc_html__('Off keeps your minutes and uses the shopper\'s own browser voice.', 'askparla-ai-shopping-assistant'));
             }
         });
     });
@@ -963,8 +984,8 @@ function parla_ui_tab_voice(array $s): void
      * assistant says. The clips are pre-recorded files, so trying all of them costs nothing.
      */
     if (!empty($s['premium_voice'])) {
-        parla_ui_section(__('Which voice speaks', 'parla-for-woocommerce'), __('Press play to hear each one say a price.', 'parla-for-woocommerce'), function () use ($s) {
-            parla_ui_row(__('Voice', 'parla-for-woocommerce'), __('A voice speaks only its own language. Automatic picks one per shopper.', 'parla-for-woocommerce'), function () use ($s) {
+        parla_ui_section(__('Which voice speaks', 'askparla-ai-shopping-assistant'), __('Press play to hear each one say a price.', 'askparla-ai-shopping-assistant'), function () use ($s) {
+            parla_ui_row(__('Voice', 'askparla-ai-shopping-assistant'), __('A voice speaks only its own language. Automatic picks one per shopper.', 'askparla-ai-shopping-assistant'), function () use ($s) {
                 printf(
                     '<input type="hidden" name="premium_voice_id" id="aa_premium_voice_id" value="%s">',
                     esc_attr($s['premium_voice_id'])
@@ -973,11 +994,11 @@ function parla_ui_tab_voice(array $s): void
                 // which would point at the hidden input nobody can click.
                 printf(
                     '<div id="aa-premium-voices" class="aa-voicelist" role="radiogroup" aria-label="%s" data-loading="%s" data-empty="%s" data-auto="%s" data-langs="%s"></div>',
-                    esc_attr__('Premium voice', 'parla-for-woocommerce'),
-                    esc_attr__('Loading voices…', 'parla-for-woocommerce'),
-                    esc_attr__('No voices to choose from right now, so calls use Parla\'s own pick.', 'parla-for-woocommerce'),
-                    esc_attr__('Automatic', 'parla-for-woocommerce'),
-                    esc_attr__('Language', 'parla-for-woocommerce')
+                    esc_attr__('Premium voice', 'askparla-ai-shopping-assistant'),
+                    esc_attr__('Loading voices…', 'askparla-ai-shopping-assistant'),
+                    esc_attr__('No voices to choose from right now, so calls use Parla\'s own pick.', 'askparla-ai-shopping-assistant'),
+                    esc_attr__('Automatic', 'askparla-ai-shopping-assistant'),
+                    esc_attr__('Language', 'askparla-ai-shopping-assistant')
                 );
             });
         });
@@ -985,21 +1006,21 @@ function parla_ui_tab_voice(array $s): void
 
     // Also used when premium minutes run out for the month, so it is always worth setting.
     $standard_note = empty($s['premium_voice'])
-        ? __('Voices belong to the shopper\'s device, so a name is a preference, not a guarantee.', 'parla-for-woocommerce')
-        : __('Used only once this month\'s premium minutes run out. Voices belong to the shopper\'s device, so a name is a preference, not a guarantee.', 'parla-for-woocommerce');
-    parla_ui_section(__('Standard voice', 'parla-for-woocommerce'), $standard_note, function () use ($s) {
-        parla_ui_row(__('Preferred voice', 'parla-for-woocommerce'), __('Your device\'s voices. Each shopper gets the nearest match on theirs.', 'parla-for-woocommerce'), function () use ($s) {
+        ? __('Voices belong to the shopper\'s device, so a name is a preference, not a guarantee.', 'askparla-ai-shopping-assistant')
+        : __('Used only once this month\'s premium minutes run out. Voices belong to the shopper\'s device, so a name is a preference, not a guarantee.', 'askparla-ai-shopping-assistant');
+    parla_ui_section(__('Standard voice', 'askparla-ai-shopping-assistant'), $standard_note, function () use ($s) {
+        parla_ui_row(__('Preferred voice', 'askparla-ai-shopping-assistant'), __('Your device\'s voices. Each shopper gets the nearest match on theirs.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             // A name typed into a box could never be right: a voice either exists on the shopper's
             // device or it does not, and no merchant knows the catalogue of eight operating systems.
             printf('<input type="hidden" name="voice_name" id="aa_voice_name" value="%s">', esc_attr($s['voice_name']));
             printf(
                 '<div id="aa-voices" class="aa-chips" data-best="%s" data-saved="%s" data-none="%s"></div>',
-                esc_attr__('Best available', 'parla-for-woocommerce'),
+                esc_attr__('Best available', 'askparla-ai-shopping-assistant'),
                 esc_attr($s['voice_name']),
-                esc_attr__('This browser offers no voices, so the setting cannot be previewed here. Shoppers still get theirs.', 'parla-for-woocommerce')
+                esc_attr__('This browser offers no voices, so the setting cannot be previewed here. Shoppers still get theirs.', 'askparla-ai-shopping-assistant')
             );
         });
-        parla_ui_row(__('Speaking speed', 'parla-for-woocommerce'), '', function () use ($s) {
+        parla_ui_row(__('Speaking speed', 'askparla-ai-shopping-assistant'), '', function () use ($s) {
             printf(
                 '<span class="aa-range"><input name="voice_rate" id="aa_voice_rate" type="range" step="0.05" min="0.6" max="1.6" value="%1$s"><output for="aa_voice_rate">%1$s×</output></span>',
                 esc_attr((string) $s['voice_rate'])
@@ -1010,20 +1031,20 @@ function parla_ui_tab_voice(array $s): void
 
 function parla_ui_tab_connection(array $s, bool $connected): void
 {
-    parla_ui_section(__('Connection', 'parla-for-woocommerce'), __('The key that links this shop to your Parla account.', 'parla-for-woocommerce'), function () use ($s, $connected) {
-        parla_ui_row(__('Shop key', 'parla-for-woocommerce'), __('Starts with parla_live_. Empty keeps the saved one.', 'parla-for-woocommerce'), function () use ($s) {
+    parla_ui_section(__('Connection', 'askparla-ai-shopping-assistant'), __('The key that links this shop to your Parla account.', 'askparla-ai-shopping-assistant'), function () use ($s, $connected) {
+        parla_ui_row(__('Shop key', 'askparla-ai-shopping-assistant'), __('Starts with parla_live_. Empty keeps the saved one.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             printf(
                 '<input name="connect_secret" id="aa_secret" type="password" class="aa-in aa-mono" autocomplete="off" placeholder="%s">',
-                $s['connect_secret'] ? esc_attr__('Saved (leave empty to keep it)', 'parla-for-woocommerce') : ''
+                $s['connect_secret'] ? esc_attr__('Saved (leave empty to keep it)', 'askparla-ai-shopping-assistant') : ''
             );
         }, 'aa_secret');
-        parla_ui_row($connected ? __('Status', 'parla-for-woocommerce') : __('Connect', 'parla-for-woocommerce'), '', function () use ($s, $connected) {
+        parla_ui_row($connected ? __('Status', 'askparla-ai-shopping-assistant') : __('Connect', 'askparla-ai-shopping-assistant'), '', function () use ($s, $connected) {
             if ($connected) {
                 printf(
                     '<p class="aa-callout is-good">%s</p>',
                     wp_kses(sprintf(
                         /* translators: 1: store id, 2: date */
-                        __('Connected as %1$s since %2$s.', 'parla-for-woocommerce'),
+                        __('Connected as %1$s since %2$s.', 'askparla-ai-shopping-assistant'),
                         '<code>' . esc_html($s['store_id']) . '</code>',
                         esc_html($s['connected_at'])
                     ), ['code' => []])
@@ -1032,14 +1053,14 @@ function parla_ui_tab_connection(array $s, bool $connected): void
             printf(
                 '<button type="submit" name="connect" value="1" class="aa-btn %s">%s</button>',
                 $connected ? 'aa-btn-ghost' : 'aa-btn-primary',
-                $connected ? esc_html__('Reconnect', 'parla-for-woocommerce') : esc_html__('Connect store', 'parla-for-woocommerce')
+                $connected ? esc_html__('Reconnect', 'askparla-ai-shopping-assistant') : esc_html__('Connect store', 'askparla-ai-shopping-assistant')
             );
             if (!$connected) {
                 printf(
                     '<ul class="aa-steps"><li>%s</li><li>%s</li><li>%s</li></ul>',
-                    esc_html__('Creates a WooCommerce API key named "Parla" so the assistant can read products and orders.', 'parla-for-woocommerce'),
-                    esc_html__('Sends your store address and that key to the Parla server. Shoppers always prove an order is theirs before seeing it.', 'parla-for-woocommerce'),
-                    esc_html__('Adds the chat to your storefront.', 'parla-for-woocommerce')
+                    esc_html__('Creates a WooCommerce API key named "Parla" so the assistant can read products and orders.', 'askparla-ai-shopping-assistant'),
+                    esc_html__('Sends your store address and that key to the Parla server. Shoppers always prove an order is theirs before seeing it.', 'askparla-ai-shopping-assistant'),
+                    esc_html__('Adds the chat to your storefront.', 'askparla-ai-shopping-assistant')
                 );
             }
             // The directory requires the outside service to be named, with its terms, before anyone connects.
@@ -1048,9 +1069,9 @@ function parla_ui_tab_connection(array $s, bool $connected): void
                 wp_kses(
                     sprintf(
                         /* translators: 1: link to the terms of service, 2: link to the privacy policy */
-                        __('Parla is a paid service hosted at askparla.com. Your shoppers\' messages are processed there, not on your server. %1$s &middot; %2$s', 'parla-for-woocommerce'),
-                        '<a href="https://askparla.com/cgu" target="_blank" rel="noopener">' . esc_html__('Terms of service', 'parla-for-woocommerce') . '</a>',
-                        '<a href="https://askparla.com/confidentialite" target="_blank" rel="noopener">' . esc_html__('Privacy policy', 'parla-for-woocommerce') . '</a>'
+                        __('Parla is a paid service hosted at askparla.com. Your shoppers\' messages are processed there, not on your server. %1$s &middot; %2$s', 'askparla-ai-shopping-assistant'),
+                        '<a href="https://askparla.com/cgu" target="_blank" rel="noopener">' . esc_html__('Terms of service', 'askparla-ai-shopping-assistant') . '</a>',
+                        '<a href="https://askparla.com/confidentialite" target="_blank" rel="noopener">' . esc_html__('Privacy policy', 'askparla-ai-shopping-assistant') . '</a>'
                     ),
                     ['a' => ['href' => [], 'target' => [], 'rel' => []]]
                 )
@@ -1059,12 +1080,12 @@ function parla_ui_tab_connection(array $s, bool $connected): void
     });
 
     if ($connected) {
-        parla_ui_section(__('Disconnect', 'parla-for-woocommerce'), '', function () {
-            parla_ui_row(__('Remove the chat', 'parla-for-woocommerce'), __('The chat disappears from your shop. Your settings here are kept.', 'parla-for-woocommerce'), function () {
+        parla_ui_section(__('Disconnect', 'askparla-ai-shopping-assistant'), '', function () {
+            parla_ui_row(__('Remove the chat', 'askparla-ai-shopping-assistant'), __('The chat disappears from your shop. Your settings here are kept.', 'askparla-ai-shopping-assistant'), function () {
                 printf(
                     '<button type="submit" name="disconnect" value="1" class="aa-btn aa-btn-danger" data-aa-confirm="%s">%s</button>',
-                    esc_attr__('Disconnect the store and hide the chat?', 'parla-for-woocommerce'),
-                    esc_html__('Disconnect store', 'parla-for-woocommerce')
+                    esc_attr__('Disconnect the store and hide the chat?', 'askparla-ai-shopping-assistant'),
+                    esc_html__('Disconnect store', 'askparla-ai-shopping-assistant')
                 );
             });
         });
@@ -1072,6 +1093,75 @@ function parla_ui_tab_connection(array $s, bool $connected): void
 }
 
 // ---------------------------------------------------------------- preview
+
+/** Where the preview iframe loads its page from. Same origin as wp-admin, so admin.js can reach into it. */
+function parla_preview_url(): string
+{
+    return wp_nonce_url(admin_url('admin-post.php?action=parla_preview'), 'parla_preview');
+}
+
+/**
+ * The page inside the preview iframe: a product page sketched in grey blocks, with the real chat
+ * widget on it. Its stylesheet and the widget are registered and printed through WordPress like any
+ * other asset; this page just has no wp-admin chrome around them.
+ */
+function parla_render_preview(): void
+{
+    if (!current_user_can('manage_woocommerce')) {
+        wp_die(esc_html__('Sorry, you are not allowed to see this page.', 'askparla-ai-shopping-assistant'), 403);
+    }
+    check_admin_referer('parla_preview');
+    $s = parla_settings();
+    if (!parla_is_connected()) {
+        wp_die(esc_html__('Connect the store first.', 'askparla-ai-shopping-assistant'));
+    }
+    $public = rtrim($s['public_api_url'] ?: parla_api_base($s), '/');
+    $name = $s['store_name'] ?: get_bloginfo('name');
+
+    wp_register_style('parla-preview', plugin_dir_url(dirname(__FILE__)) . 'assets/preview.css', [], PARLA_VERSION);
+    wp_add_inline_style('parla-preview', sprintf(
+        'parla-chat{--parla-brand:%s;--parla-brand-contrast:%s}',
+        sanitize_hex_color((string) $s['brand_color']) ?: '#111827',
+        sanitize_hex_color((string) $s['brand_contrast']) ?: '#ffffff'
+    ));
+    wp_register_script('parla-preview-widget', $public . '/widget.js', [], PARLA_VERSION, true);
+    // The widget reads these from its own <script> tag. The name in the greeting is sent by the
+    // settings script, so the switch shows at once.
+    add_filter('script_loader_tag', function (string $tag, string $handle) use ($s, $public, $name): string {
+        if ($handle !== 'parla-preview-widget') {
+            return $tag;
+        }
+        $attrs = sprintf(
+            ' data-store="%s" data-api="%s" data-store-name="%s" data-preview',
+            esc_attr($s['store_id']),
+            esc_attr($public),
+            esc_attr($name)
+        );
+        return str_replace(' src=', $attrs . ' src=', $tag);
+    }, 10, 2);
+
+    nocache_headers();
+    header('Content-Type: text/html; charset=utf-8');
+    ?>
+<!doctype html>
+<html <?php language_attributes(); ?>>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title><?php esc_html_e('Chat preview', 'askparla-ai-shopping-assistant'); ?></title>
+<?php wp_print_styles('parla-preview'); ?>
+</head>
+<body>
+<div class="bar"><span class="sk logo"></span><b id="shop"><?php echo esc_html($name); ?></b></div>
+<div class="sk hero"></div><div class="sk l w62"></div><div class="sk l w34"></div>
+<div class="sk l w80"></div><div class="sk l w70"></div><div class="sk btn" id="buy"></div>
+<?php wp_print_scripts('parla-preview-widget'); ?>
+</body>
+</html>
+<?php
+    exit;
+}
+add_action('admin_post_parla_preview', 'parla_render_preview');
 
 /** The first name the preview greets: the admin's own, else a sample, so the setting can always be seen. */
 function parla_ui_sample_name(): string
@@ -1092,53 +1182,30 @@ function parla_ui_sample_name(): string
  * It follows the settings form as it is typed (colours, name, greeting, light or dark, popular
  * products, calls), so the merchant sees each change at once instead of saving to find out. It is
  * in an iframe so its fixed-position bubble cannot float over wp-admin; the page script talks to
- * it through the widget's preview events. Messages typed in it go to the real assistant.
+ * it through the widget's preview events. The iframe loads parla_render_preview(), below. Messages typed in it go to the real assistant.
  */
 function parla_ui_preview(array $s): void
 {
     if (!parla_is_connected()) {
         return;
     }
-    $public = rtrim($s['public_api_url'] ?: parla_api_base($s), '/');
-    $name = $s['store_name'] ?: get_bloginfo('name');
-    $doc = sprintf(
-        '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>'
-        . ':root{color-scheme:light}body{margin:0;font:14px/1.45 system-ui,-apple-system,sans-serif;background:#fff;color:#1d2327}'
-        . 'body.dark{background:#111317;color:#e9e9ec}body.dark .sk{background:#23252b}body.dark .bar{border-color:#26282e}'
-        . '.bar{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid #eee}.bar b{font-size:15px}'
-        . '.sk{background:#f1f1f3;border-radius:8px}.hero{height:230px;margin:14px 16px;border-radius:14px}'
-        . '.l{height:12px;margin:10px 16px}.btn{height:44px;margin:16px;border-radius:12px;opacity:.9}'
-        . 'parla-chat{--parla-brand:%1$s;--parla-brand-contrast:%2$s}'
-        . '</style></head><body><div class="bar"><span class="sk" style="width:26px;height:26px;border-radius:50%%"></span><b id="shop">%3$s</b></div>'
-        . '<div class="sk hero"></div><div class="sk l" style="width:62%%"></div><div class="sk l" style="width:34%%"></div>'
-        . '<div class="sk l" style="width:80%%;margin-top:22px"></div><div class="sk l" style="width:70%%"></div><div class="sk btn" id="buy"></div>'
-        // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- inside the preview iframe's own document, not this page.
-        . '<script src="%4$s/widget.js" data-store="%5$s" data-api="%4$s" data-store-name="%6$s" data-preview%7$s></script></body></html>',
-        esc_attr($s['brand_color'] ?: '#111827'),
-        esc_attr($s['brand_contrast'] ?: '#ffffff'),
-        esc_html($name),
-        esc_url($public),
-        esc_attr($s['store_id']),
-        esc_attr($name),
-        '' // The name in the greeting is sent by the settings script, so the switch shows at once.
-    );
     ?>
     <aside class="aa-preview" id="aa-preview">
         <div class="aa-preview-head">
             <div>
-                <strong><?php esc_html_e('Live preview', 'parla-for-woocommerce'); ?></strong>
-                <span class="aa-muted"><?php esc_html_e('Updates as you type.', 'parla-for-woocommerce'); ?></span>
+                <strong><?php esc_html_e('Live preview', 'askparla-ai-shopping-assistant'); ?></strong>
+                <span class="aa-muted"><?php esc_html_e('Updates as you type.', 'askparla-ai-shopping-assistant'); ?></span>
             </div>
-            <div class="aa-seg aa-seg-sm" role="radiogroup" aria-label="<?php esc_attr_e('What the preview shows', 'parla-for-woocommerce'); ?>">
-                <label><input type="radio" name="aa_preview_view" value="closed"><span><?php esc_html_e('Closed', 'parla-for-woocommerce'); ?></span></label>
-                <label><input type="radio" name="aa_preview_view" value="open" checked><span><?php esc_html_e('Open', 'parla-for-woocommerce'); ?></span></label>
+            <div class="aa-seg aa-seg-sm" role="radiogroup" aria-label="<?php esc_attr_e('What the preview shows', 'askparla-ai-shopping-assistant'); ?>">
+                <label><input type="radio" name="aa_preview_view" value="closed"><span><?php esc_html_e('Closed', 'askparla-ai-shopping-assistant'); ?></span></label>
+                <label><input type="radio" name="aa_preview_view" value="open" checked><span><?php esc_html_e('Open', 'askparla-ai-shopping-assistant'); ?></span></label>
             </div>
         </div>
         <div class="aa-phone">
             <span class="aa-phone-notch" aria-hidden="true"></span>
-            <iframe id="aa-preview-frame" title="<?php esc_attr_e('Chat preview', 'parla-for-woocommerce'); ?>" srcdoc="<?php echo esc_attr($doc); ?>"></iframe>
+            <iframe id="aa-preview-frame" title="<?php esc_attr_e('Chat preview', 'askparla-ai-shopping-assistant'); ?>" src="<?php echo esc_url(parla_preview_url()); ?>"></iframe>
         </div>
-        <p class="aa-preview-foot aa-muted"><?php esc_html_e('This is your real assistant: what you ask here counts as a conversation.', 'parla-for-woocommerce'); ?></p>
+        <p class="aa-preview-foot aa-muted"><?php esc_html_e('This is your real assistant: what you ask here counts as a conversation.', 'askparla-ai-shopping-assistant'); ?></p>
     </aside>
     <?php
 }
@@ -1170,17 +1237,17 @@ function parla_render_admin(): void
         }
     }
     $tabs = [
-        'overview' => __('Overview', 'parla-for-woocommerce'),
-        'reports' => __('Reports', 'parla-for-woocommerce'),
+        'overview' => __('Overview', 'askparla-ai-shopping-assistant'),
+        'reports' => __('Reports', 'askparla-ai-shopping-assistant'),
         // The two tabs with a live preview sit together, ahead of the ones that only hold text.
-        'appearance' => __('Widget', 'parla-for-woocommerce'),
-        'voice' => __('Voice', 'parla-for-woocommerce'),
-        'assistant' => __('Knowledge', 'parla-for-woocommerce'),
-        'connection' => __('Connection', 'parla-for-woocommerce'),
+        'appearance' => __('Widget', 'askparla-ai-shopping-assistant'),
+        'voice' => __('Voice', 'askparla-ai-shopping-assistant'),
+        'assistant' => __('Knowledge', 'askparla-ai-shopping-assistant'),
+        'connection' => __('Connection', 'askparla-ai-shopping-assistant'),
     ];
     ?>
     <div class="wrap aa-admin">
-        <h1 class="screen-reader-text"><?php esc_html_e('Parla', 'parla-for-woocommerce'); ?></h1>
+        <h1 class="screen-reader-text"><?php esc_html_e('Parla', 'askparla-ai-shopping-assistant'); ?></h1>
         <?php settings_errors('parla'); ?>
 
         <header class="aa-top">
@@ -1188,21 +1255,21 @@ function parla_render_admin(): void
                 <svg viewBox="22 7 70 92" width="17" height="22"><path d="M24 42A33 33 0 1 1 57 75H43v12.5a9.5 9.5 0 0 1-19 0ZM39.1 38.3a4.3 4.3 0 0 1 8.6 0v7.4a4.3 4.3 0 0 1-8.6 0ZM52.7 30.8a4.3 4.3 0 0 1 8.6 0v22.4a4.3 4.3 0 0 1-8.6 0ZM66.3 35.8a4.3 4.3 0 0 1 8.6 0v12.4a4.3 4.3 0 0 1-8.6 0Z" fill="currentColor" fill-rule="evenodd"/></svg>
             </span>
             <div class="aa-top-title">
-                <span class="aa-title"><?php esc_html_e('Parla', 'parla-for-woocommerce'); ?></span>
+                <span class="aa-title"><?php esc_html_e('Parla', 'askparla-ai-shopping-assistant'); ?></span>
                 <?php /* translators: %s: the plugin's version number */ ?>
-                <span class="aa-muted"><?php echo esc_html($s['store_name'] ?: get_bloginfo('name')); ?> · <?php echo esc_html(sprintf(__('version %s', 'parla-for-woocommerce'), PARLA_VERSION)); ?></span>
+                <span class="aa-muted"><?php echo esc_html($s['store_name'] ?: get_bloginfo('name')); ?> · <?php echo esc_html(sprintf(__('version %s', 'askparla-ai-shopping-assistant'), PARLA_VERSION)); ?></span>
             </div>
             <span class="aa-grow"></span>
             <span class="aa-pill <?php echo $connected ? ($s['enabled'] ? 'is-good' : 'is-neutral') : 'is-warn'; ?>">
                 <span class="aa-dot"></span>
                 <?php echo $connected
-                    ? ($s['enabled'] ? esc_html__('Live on your shop', 'parla-for-woocommerce') : esc_html__('Connected, hidden', 'parla-for-woocommerce'))
-                    : esc_html__('Not connected', 'parla-for-woocommerce'); ?>
+                    ? ($s['enabled'] ? esc_html__('Live on your shop', 'askparla-ai-shopping-assistant') : esc_html__('Connected, hidden', 'askparla-ai-shopping-assistant'))
+                    : esc_html__('Not connected', 'askparla-ai-shopping-assistant'); ?>
             </span>
-            <a class="aa-btn aa-btn-ghost" href="<?php echo esc_url(home_url()); ?>" target="_blank" rel="noopener"><?php esc_html_e('View shop', 'parla-for-woocommerce'); ?></a>
+            <a class="aa-btn aa-btn-ghost" href="<?php echo esc_url(home_url()); ?>" target="_blank" rel="noopener"><?php esc_html_e('View shop', 'askparla-ai-shopping-assistant'); ?></a>
         </header>
 
-        <nav class="aa-tabs" role="tablist" aria-label="<?php esc_attr_e('Parla sections', 'parla-for-woocommerce'); ?>">
+        <nav class="aa-tabs" role="tablist" aria-label="<?php esc_attr_e('Parla sections', 'askparla-ai-shopping-assistant'); ?>">
             <?php foreach ($tabs as $slug => $label) : ?>
                 <button type="button" class="aa-tab" role="tab" id="aa-tab-btn-<?php echo esc_attr($slug); ?>"
                         data-tab="<?php echo esc_attr($slug); ?>" aria-controls="aa-tab-<?php echo esc_attr($slug); ?>" aria-selected="false">
@@ -1228,14 +1295,14 @@ function parla_render_admin(): void
             </div>
 
             <div class="aa-savebar" id="aa-savebar">
-                <span class="aa-save-state" id="aa-save-state" data-dirty="<?php esc_attr_e('You have unsaved changes', 'parla-for-woocommerce'); ?>">
+                <span class="aa-save-state" id="aa-save-state" data-dirty="<?php esc_attr_e('You have unsaved changes', 'askparla-ai-shopping-assistant'); ?>">
                     <?php if ($s['last_error']) : ?>
-                        <span class="aa-error"><?php esc_html_e('Last error:', 'parla-for-woocommerce'); ?> <code><?php echo esc_html($s['last_error']); ?></code></span>
+                        <span class="aa-error"><?php esc_html_e('Last error:', 'askparla-ai-shopping-assistant'); ?> <code><?php echo esc_html($s['last_error']); ?></code></span>
                     <?php else : ?>
-                        <span class="aa-muted"><?php esc_html_e('Changes go live on your shop when you save.', 'parla-for-woocommerce'); ?></span>
+                        <span class="aa-muted"><?php esc_html_e('Changes go live on your shop when you save.', 'askparla-ai-shopping-assistant'); ?></span>
                     <?php endif; ?>
                 </span>
-                <button type="submit" class="aa-btn aa-btn-primary"><?php esc_html_e('Save settings', 'parla-for-woocommerce'); ?></button>
+                <button type="submit" class="aa-btn aa-btn-primary"><?php esc_html_e('Save settings', 'askparla-ai-shopping-assistant'); ?></button>
             </div>
         </form>
     </div>
@@ -1274,18 +1341,18 @@ function parla_admin_assets(string $hook): void
         'sampleName' => parla_ui_sample_name(),
         'api' => $base,
         'lang' => substr(get_locale(), 0, 2),
-        'voiceSample' => __('Hello! The merino crew comes in navy and grey, and both are in stock in medium.', 'parla-for-woocommerce'),
+        'voiceSample' => __('Hello! The merino crew comes in navy and grey, and both are in stock in medium.', 'askparla-ai-shopping-assistant'),
         // Voices named after sound effects and cartoon characters, which no shop wants answering the phone.
         'novelty' => ['albert', 'bad news', 'bahh', 'bells', 'boing', 'bubbles', 'cellos', 'good news', 'jester', 'organ', 'superstar', 'trinoids', 'whisper', 'wobble', 'zarvox', 'fred', 'junior', 'kathy', 'ralph', 'eddy', 'flo', 'grandma', 'grandpa', 'reed', 'rocko', 'sandy', 'shelley'],
         'languages' => [
-            'fr' => __('French', 'parla-for-woocommerce'), 'en' => __('English', 'parla-for-woocommerce'), 'es' => __('Spanish', 'parla-for-woocommerce'),
-            'de' => __('German', 'parla-for-woocommerce'), 'it' => __('Italian', 'parla-for-woocommerce'), 'nl' => __('Dutch', 'parla-for-woocommerce'),
-            'pt' => __('Portuguese', 'parla-for-woocommerce'), 'ar' => __('Arabic', 'parla-for-woocommerce'),
+            'fr' => __('French', 'askparla-ai-shopping-assistant'), 'en' => __('English', 'askparla-ai-shopping-assistant'), 'es' => __('Spanish', 'askparla-ai-shopping-assistant'),
+            'de' => __('German', 'askparla-ai-shopping-assistant'), 'it' => __('Italian', 'askparla-ai-shopping-assistant'), 'nl' => __('Dutch', 'askparla-ai-shopping-assistant'),
+            'pt' => __('Portuguese', 'askparla-ai-shopping-assistant'), 'ar' => __('Arabic', 'askparla-ai-shopping-assistant'),
         ],
         'i18n' => [
-            'play' => __('Play sample', 'parla-for-woocommerce'),
-            'more' => __('more', 'parla-for-woocommerce'),
-            'less' => __('less', 'parla-for-woocommerce'),
+            'play' => __('Play sample', 'askparla-ai-shopping-assistant'),
+            'more' => __('more', 'askparla-ai-shopping-assistant'),
+            'less' => __('less', 'askparla-ai-shopping-assistant'),
         ],
     ]);
 }

@@ -361,6 +361,17 @@
     .aa-admin .aa-tabs { width: 100%; }
 }
 
+/* The waiting lists: what people are waiting for, and who they are. */
+.aa-admin .aa-waiting td { vertical-align: top; }
+.aa-admin .aa-waiting td strong { display: block; }
+.aa-admin .aa-waiting td span.aa-muted { display: block; font-size: 12px; }
+.aa-admin .aa-waiting td small { display: block; margin-top: 2px; }
+.aa-admin .aa-waiting-people { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; }
+.aa-admin .aa-waiting-people li { display: flex; align-items: center; gap: 10px; justify-content: space-between; }
+.aa-admin .aa-waiting-drop { font-size: 12px; color: var(--aa-muted); text-decoration: underline; }
+.aa-admin .aa-waiting-drop:hover { color: #b32d2e; }
+.aa-admin .aa-waiting-note { margin-top: 10px; font-size: 12px; }
+
 /*
  * Anything clickable says so under the pointer. Most controls here set it themselves; this covers
  * the ones that do not, and everything added later, without a rule per class.

@@ -1,4 +1,4 @@
-# Parla for WooCommerce
+# AskParla AI Shopping Assistant for WooCommerce
 
 The WordPress plugin that puts [Parla](https://askparla.com) on a WooCommerce store: an AI sales
 assistant that advises shoppers from the shop's own catalogue, tracks orders, changes an address
@@ -29,7 +29,7 @@ feature flag in this code: what it can do, it does for everyone.
 **From WordPress.org** — submitted, awaiting review. Once listed, install it like any other plugin.
 
 **From a release here** — download the zip from
-[Releases](https://github.com/Hmache/parla-for-woocommerce/releases), then in WordPress go to
+[Releases](https://github.com/Hmache/askparla-ai-shopping-assistant/releases), then in WordPress go to
 Plugins → Add New → Upload Plugin, choose the file, install and activate.
 
 Then open WooCommerce → Parla, paste the shop key Parla sent you, and press Connect store. Each shop
@@ -65,8 +65,9 @@ Parla signs a GDPR data processing agreement with each shop and lists its subpro
 
 ## Reporting a security issue
 
-Email **contact@askparla.com** rather than opening a public issue, and allow a few days for a first
-reply.
+Please report privately rather than in a public issue: email **contact@askparla.com**, or use
+**Security → Report a vulnerability** on this repository (GitHub's private advisory form). Allow a
+few days for a first reply.
 
 ## Licence
 

@@ -52,11 +52,22 @@ function parla_uninstall_site(): void
     }
 }
 
+/** The waiting lists are a table of this plugin's own making, so it takes them with it. */
+function parla_uninstall_waiting(): void
+{
+    global $wpdb;
+    $table = $wpdb->prefix . 'parla_waiting';
+    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- dropping the plugin's own table; the name is built from $wpdb->prefix, never from input, and DROP takes no placeholders.
+    $wpdb->query("DROP TABLE IF EXISTS $table");
+    delete_option('parla_waiting_schema');
+}
+
 function parla_uninstall_network(): void
 {
     foreach (get_sites(['fields' => 'ids', 'number' => 0]) as $blog_id) {
         switch_to_blog((int) $blog_id);
         parla_uninstall_site();
+        parla_uninstall_waiting();
         restore_current_blog();
     }
 }
@@ -65,4 +76,5 @@ if (is_multisite()) {
     parla_uninstall_network();
 } else {
     parla_uninstall_site();
+    parla_uninstall_waiting();
 }

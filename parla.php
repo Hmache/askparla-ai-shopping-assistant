@@ -1,18 +1,19 @@
 <?php
 /**
- * Plugin Name:       Parla for WooCommerce
+ * Plugin Name:       AskParla AI Shopping Assistant for WooCommerce
  * Description:       AI shopping and order-support chat for your store: product search, order tracking, address changes and returns.
- * Version:           0.23.0
+ * Version:           0.24.0
  * Requires at least: 6.5
  * Requires PHP:      8.0
  * Requires Plugins:  woocommerce
  * WC requires at least: 8.0
  * WC tested up to: 11.1
  * Plugin URI:        https://askparla.com
- * Author:            Parla
+ * Author:            AskParla
+ * Author URI:        https://askparla.com
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       parla-for-woocommerce
+ * Text Domain:       askparla-ai-shopping-assistant
  */
 
 declare(strict_types=1);
@@ -21,7 +22,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('PARLA_VERSION', '0.23.0');
+define('PARLA_VERSION', '0.24.0');
 define('PARLA_OPTION', 'parla_settings');
 
 /**
@@ -41,7 +42,7 @@ define('PARLA_DEFAULT_API', 'https://api.askparla.com');
  */
 function parla_default_status(): string
 {
-    return __('replies right away', 'parla-for-woocommerce');
+    return __('replies right away', 'askparla-ai-shopping-assistant');
 }
 
 /**
@@ -63,9 +64,9 @@ function parla_default_agent_name(): string
 function parla_default_openers(): array
 {
     return [
-        __("What's popular right now?", 'parla-for-woocommerce'),
-        __('Where is my order?', 'parla-for-woocommerce'),
-        __("I'd like to return something", 'parla-for-woocommerce'),
+        __("What's popular right now?", 'askparla-ai-shopping-assistant'),
+        __('Where is my order?', 'askparla-ai-shopping-assistant'),
+        __("I'd like to return something", 'askparla-ai-shopping-assistant'),
     ];
 }
 
@@ -171,6 +172,7 @@ function parla_enqueue_widget(): void
     $public_api = rtrim($s['public_api_url'] ?: parla_origin_of($s['widget_url']) ?: parla_api_base($s), '/');
     $widget = $s['widget_url'] ?: $public_api . '/widget.js';
 
+    parla_enqueue_theme($s);
     wp_enqueue_script('parla-widget', $widget, [], PARLA_VERSION, true);
     wp_script_add_data('parla-widget', 'strategy', 'defer');
 
@@ -206,7 +208,7 @@ function parla_page_attributes(): string
     }
     if (function_exists('is_product_category') && (is_product_category() || is_shop())) {
         $term = get_queried_object();
-        return sprintf(' data-page-type="category" data-page-title="%s"', esc_attr(is_object($term) && isset($term->name) ? $term->name : __('Shop', 'parla-for-woocommerce')));
+        return sprintf(' data-page-type="category" data-page-title="%s"', esc_attr(is_object($term) && isset($term->name) ? $term->name : __('Shop', 'askparla-ai-shopping-assistant')));
     }
     if (function_exists('is_cart') && is_cart()) {
         return ' data-page-type="cart"';
@@ -251,18 +253,20 @@ function parla_origin_of(string $url): string
     return $parts['scheme'] . '://' . $parts['host'] . (empty($parts['port']) ? '' : ':' . $parts['port']);
 }
 
-/** Brand colors are plain CSS variables on the custom element. */
-function parla_print_theme(): void
+/**
+ * Brand colors are plain CSS variables on the custom element. There is no stylesheet file to hang
+ * them on, so they go on a handle registered without a source, which WordPress prints as an inline
+ * style in the head.
+ */
+function parla_enqueue_theme(array $s): void
 {
-    $s = parla_settings();
-    if (!$s['enabled'] || !parla_is_connected()) {
-        return;
-    }
-    printf(
-        "<style id='parla-theme'>parla-chat{--parla-brand:%s;--parla-brand-contrast:%s}</style>\n",
-        esc_html(sanitize_hex_color($s['brand_color']) ?: '#111827'),
-        esc_html(sanitize_hex_color($s['brand_contrast']) ?: '#ffffff')
-    );
+    wp_register_style('parla-theme', false, [], PARLA_VERSION);
+    wp_enqueue_style('parla-theme');
+    wp_add_inline_style('parla-theme', sprintf(
+        'parla-chat{--parla-brand:%s;--parla-brand-contrast:%s}',
+        sanitize_hex_color($s['brand_color']) ?: '#111827',
+        sanitize_hex_color($s['brand_contrast']) ?: '#ffffff'
+    ));
 }
 
 add_action('wp_enqueue_scripts', 'parla_enqueue_widget');
@@ -371,8 +375,6 @@ function parla_sales_report(): array
     return $report;
 }
 
-add_action('wp_head', 'parla_print_theme');
-
 // ---------------------------------------------------------------- connecting
 
 /**
@@ -384,7 +386,7 @@ function parla_create_api_key(): array
     $user_id = get_current_user_id();
     if (!$user_id || !user_can($user_id, 'manage_woocommerce')) {
         // WooCommerce checks the key owner's permissions on every request.
-        throw new RuntimeException(esc_html__('Connect from the WooCommerce → Parla screen while signed in as a shop manager.', 'parla-for-woocommerce'));
+        throw new RuntimeException(esc_html__('Connect from the WooCommerce → Parla screen while signed in as a shop manager.', 'askparla-ai-shopping-assistant'));
     }
 
     global $wpdb;
@@ -405,7 +407,7 @@ function parla_create_api_key(): array
         'truncated_key' => substr($consumer_key, -7),
     ]);
     if (!$ok) {
-        throw new RuntimeException(esc_html__('Could not create a WooCommerce API key.', 'parla-for-woocommerce'));
+        throw new RuntimeException(esc_html__('Could not create a WooCommerce API key.', 'askparla-ai-shopping-assistant'));
     }
     return [$consumer_key, $consumer_secret];
 }
@@ -563,7 +565,7 @@ function parla_connect(array $s, bool $new_keys = true): array
         } else {
             throw new RuntimeException(esc_html(sprintf(
                 /* translators: %1$s: API address, %2$s: the underlying connection error */
-                __('Could not reach the Parla server at %1$s (%2$s). Running WordPress in Docker? This site reaches your machine as host.docker.internal, not localhost.', 'parla-for-woocommerce'),
+                __('Could not reach the Parla server at %1$s (%2$s). Running WordPress in Docker? This site reaches your machine as host.docker.internal, not localhost.', 'askparla-ai-shopping-assistant'),
                 $api,
                 $response->get_error_message()
             )));
@@ -590,25 +592,25 @@ function parla_connect(array $s, bool $new_keys = true): array
         $extra = '';
         if (is_array($body) && !empty($body['issues']) && is_array($body['issues'])) {
             /* translators: %s: the list of settings the server refused, separated by semicolons */
-            $extra = ' ' . sprintf(__('Check these settings: %s.', 'parla-for-woocommerce'), implode('; ', array_map('sanitize_text_field', $body['issues'])));
+            $extra = ' ' . sprintf(__('Check these settings: %s.', 'askparla-ai-shopping-assistant'), implode('; ', array_map('sanitize_text_field', $body['issues'])));
         } elseif (is_array($body) && !empty($body['detail']) && is_string($body['detail'])) {
             /* translators: %s: the error message the Parla server returned */
-            $extra = ' ' . sprintf(__('The server said: %s.', 'parla-for-woocommerce'), sanitize_text_field($body['detail']));
+            $extra = ' ' . sprintf(__('The server said: %s.', 'askparla-ai-shopping-assistant'), sanitize_text_field($body['detail']));
         }
         $issues = $extra;
         throw new RuntimeException(esc_html(sprintf(
             /* translators: 1: error returned by the Parla API, 2: the settings it rejected */
-            __('The Parla API refused the connection (%1$s).%2$s', 'parla-for-woocommerce'),
+            __('The Parla API refused the connection (%1$s).%2$s', 'askparla-ai-shopping-assistant'),
             match ($detail) {
-                'bad_secret' => __('this shop key is not valid, or was revoked', 'parla-for-woocommerce'),
-                'key_in_use' => __('this key is already used by another shop', 'parla-for-woocommerce'),
-                'account_paused' => __('your Parla account is paused', 'parla-for-woocommerce'),
+                'bad_secret' => __('this shop key is not valid, or was revoked', 'askparla-ai-shopping-assistant'),
+                'key_in_use' => __('this key is already used by another shop', 'askparla-ai-shopping-assistant'),
+                'account_paused' => __('your Parla account is paused', 'askparla-ai-shopping-assistant'),
                 'store_unreachable' => sprintf(
                     /* translators: %s: this shop's address as the Parla server sees it */
-                    __('the server could not read your shop at %s with the new API key', 'parla-for-woocommerce'),
+                    __('the server could not read your shop at %s with the new API key', 'askparla-ai-shopping-assistant'),
                     home_url()
                 ),
-                'invalid_request' => __('it did not accept one of the settings', 'parla-for-woocommerce'),
+                'invalid_request' => __('it did not accept one of the settings', 'askparla-ai-shopping-assistant'),
                 default => $detail,
             },
             $issues
@@ -654,7 +656,15 @@ add_action('rest_api_init', function (): void {
             return hash_equals(parla_restock_token($s), (string) $request->get_header('x-parla-token'));
         },
         'callback' => function (WP_REST_Request $request) {
+            // Parla used to send the addresses with the message; since 0.24.0 it sends only the
+            // reference, because the addresses have been here all along. Both are accepted: a shop
+            // running an older Parla, or an older plugin, keeps working either way.
             $emails = array_filter(array_map('sanitize_email', (array) $request->get_param('emails')));
+            $ref = sanitize_text_field((string) $request->get_param('ref'));
+            $ours = !$emails && $ref !== '';
+            if ($ours) {
+                $emails = array_column(parla_waiting_for('restock', $ref), 'email');
+            }
             $title = sanitize_text_field((string) $request->get_param('product_title'));
             $variant = sanitize_text_field((string) $request->get_param('variant_label'));
             $url = esc_url_raw((string) $request->get_param('url'));
@@ -665,10 +675,10 @@ add_action('rest_api_init', function (): void {
             $shop = get_bloginfo('name');
             $item = $variant !== '' ? "$title ($variant)" : $title;
             /* translators: %s: product name */
-            $subject = sprintf(__('%s is back in stock', 'parla-for-woocommerce'), $item);
+            $subject = sprintf(__('%s is back in stock', 'askparla-ai-shopping-assistant'), $item);
             $body = sprintf(
                 /* translators: 1: product name, 2: product link, 3: shop name */
-                __("Good news — %1\$s is available again.\n\n%2\$s\n\nYou asked us to let you know in the chat on %3\$s. We only send this once.", 'parla-for-woocommerce'),
+                __("Good news — %1\$s is available again.\n\n%2\$s\n\nYou asked us to let you know in the chat on %3\$s. We only send this once.", 'askparla-ai-shopping-assistant'),
                 $item,
                 $url,
                 $shop
@@ -679,6 +689,10 @@ add_action('rest_api_init', function (): void {
                 if (wp_mail($email, $subject, $body)) {
                     $sent++;
                 }
+            }
+            // Kept for this one message, gone the moment it left.
+            if ($ours) {
+                parla_waiting_clear('restock', $ref);
             }
             return new WP_REST_Response(['sent' => $sent, 'requested' => count($emails)], 200);
         },
@@ -704,6 +718,11 @@ add_action('rest_api_init', function (): void {
         },
         'callback' => function (WP_REST_Request $request) {
             $emails = array_filter(array_map('sanitize_email', (array) $request->get_param('emails')));
+            $ref = sanitize_text_field((string) $request->get_param('ref'));
+            $ours = !$emails && $ref !== '';
+            if ($ours) {
+                $emails = array_column(parla_waiting_for('wanted', $ref), 'email');
+            }
             $title = sanitize_text_field((string) $request->get_param('product_title'));
             $asked = sanitize_text_field((string) $request->get_param('asked_for'));
             $url = esc_url_raw((string) $request->get_param('url'));
@@ -713,10 +732,10 @@ add_action('rest_api_init', function (): void {
 
             $shop = get_bloginfo('name');
             /* translators: %s: what the shopper asked for */
-            $subject = sprintf(__('We now have %s', 'parla-for-woocommerce'), $asked);
+            $subject = sprintf(__('We now have %s', 'askparla-ai-shopping-assistant'), $asked);
             $body = sprintf(
                 /* translators: 1: what they asked for, 2: product name, 3: product link, 4: shop name */
-                __("You asked us about %1\$s in the chat, and we did not have it at the time.\n\nWe do now: %2\$s\n\n%3\$s\n\nThis is the one message we said we would send, and we have deleted your address from that list. %4\$s", 'parla-for-woocommerce'),
+                __("You asked us about %1\$s in the chat, and we did not have it at the time.\n\nWe do now: %2\$s\n\n%3\$s\n\nThis is the one message we said we would send, and we have deleted your address from that list. %4\$s", 'askparla-ai-shopping-assistant'),
                 $asked,
                 $title,
                 $url,
@@ -728,6 +747,9 @@ add_action('rest_api_init', function (): void {
                 if (wp_mail($email, $subject, $body)) {
                     $sent++;
                 }
+            }
+            if ($ours) {
+                parla_waiting_clear('wanted', $ref);
             }
             return new WP_REST_Response(['sent' => $sent, 'requested' => count($emails)], 200);
         },
@@ -753,15 +775,15 @@ add_action('rest_api_init', function (): void {
             $order = sanitize_text_field((string) $request->get_param('order_id'));
             $lines = array_map('sanitize_textarea_field', (array) $request->get_param('transcript'));
 
-            $body = __('A shopper asked for a human in the chat.', 'parla-for-woocommerce') . "\n\n"
-                . __('Reason:', 'parla-for-woocommerce') . ' ' . $reason . "\n"
-                . __('Shopper:', 'parla-for-woocommerce') . ' ' . ($from !== '' ? $from : __('not given', 'parla-for-woocommerce')) . "\n"
-                . ($order !== '' ? __('Order:', 'parla-for-woocommerce') . ' #' . $order . "\n" : '')
-                . "\n" . __('Conversation:', 'parla-for-woocommerce') . "\n" . implode("\n", $lines);
+            $body = __('A shopper asked for a human in the chat.', 'askparla-ai-shopping-assistant') . "\n\n"
+                . __('Reason:', 'askparla-ai-shopping-assistant') . ' ' . $reason . "\n"
+                . __('Shopper:', 'askparla-ai-shopping-assistant') . ' ' . ($from !== '' ? $from : __('not given', 'askparla-ai-shopping-assistant')) . "\n"
+                . ($order !== '' ? __('Order:', 'askparla-ai-shopping-assistant') . ' #' . $order . "\n" : '')
+                . "\n" . __('Conversation:', 'askparla-ai-shopping-assistant') . "\n" . implode("\n", $lines);
 
             $headers = $from !== '' ? ['Reply-To: ' . $from] : [];
             /* translators: %s: the first words of the shopper's question */
-            $sent = wp_mail($to, sprintf(__('[Chat] %s', 'parla-for-woocommerce'), wp_trim_words($reason, 8)), $body, $headers);
+            $sent = wp_mail($to, sprintf(__('[Chat] %s', 'askparla-ai-shopping-assistant'), wp_trim_words($reason, 8)), $body, $headers);
             return new WP_REST_Response(['sent' => (bool) $sent], $sent ? 200 : 500);
         },
     ]);
@@ -785,8 +807,8 @@ function parla_admin_menu(): void
     // parent slug, so guessing it means the stylesheet silently stops loading if the parent changes.
     parla_admin_hook((string) add_submenu_page(
         'woocommerce',
-        __('Parla', 'parla-for-woocommerce'),
-        __('Parla', 'parla-for-woocommerce'),
+        __('Parla', 'askparla-ai-shopping-assistant'),
+        __('Parla', 'askparla-ai-shopping-assistant'),
         'manage_woocommerce',
         'parla',
         'parla_render_admin'
@@ -799,10 +821,10 @@ function parla_handle_post(array $s): array
     /** The settings as they were, so a failed connect can fall back to the key that was working. */
     $before = $s;
     if (!isset($_POST['parla_nonce']) || !wp_verify_nonce(sanitize_key(wp_unslash($_POST['parla_nonce'])), 'parla_save')) {
-        wp_die(esc_html__('Security check failed. Please try again.', 'parla-for-woocommerce'));
+        wp_die(esc_html__('Security check failed. Please try again.', 'askparla-ai-shopping-assistant'));
     }
     if (!current_user_can('manage_woocommerce')) {
-        wp_die(esc_html__('You are not allowed to change these settings.', 'parla-for-woocommerce'));
+        wp_die(esc_html__('You are not allowed to change these settings.', 'askparla-ai-shopping-assistant'));
     }
 
     $posted = wp_unslash($_POST);
@@ -868,7 +890,7 @@ function parla_handle_post(array $s): array
         $s['premium_voice'] = 0;
         $s['plan'] = '';
         parla_save($s);
-        add_settings_error('parla', 'disconnected', __('Store disconnected. The chat no longer appears on your site.', 'parla-for-woocommerce'), 'updated');
+        add_settings_error('parla', 'disconnected', __('Store disconnected. The chat no longer appears on your site.', 'askparla-ai-shopping-assistant'), 'updated');
         return $s;
     }
 
@@ -884,7 +906,7 @@ function parla_handle_post(array $s): array
             parla_save($s);
             add_settings_error('parla', 'sync', sprintf(
                 /* translators: %s: error message */
-                __('Settings saved here, but the assistant could not be updated: %s', 'parla-for-woocommerce'),
+                __('Settings saved here, but the assistant could not be updated: %s', 'askparla-ai-shopping-assistant'),
                 esc_html($e->getMessage())
             ));
             return $s;
@@ -893,13 +915,13 @@ function parla_handle_post(array $s): array
 
     if (!empty($posted['connect'])) {
         if ($s['connect_secret'] === '') {
-            add_settings_error('parla', 'missing', __('Paste your shop key first.', 'parla-for-woocommerce'));
+            add_settings_error('parla', 'missing', __('Paste your shop key first.', 'askparla-ai-shopping-assistant'));
             return $s;
         }
         try {
             $s = parla_connect($s);
             parla_save($s);
-            add_settings_error('parla', 'connected', __('Store connected. The chat is now live on your storefront.', 'parla-for-woocommerce'), 'updated');
+            add_settings_error('parla', 'connected', __('Store connected. The chat is now live on your storefront.', 'askparla-ai-shopping-assistant'), 'updated');
         } catch (Throwable $e) {
             // A failed attempt has already created a key. Drop it, keeping whichever one was working
             // before, so repeated attempts cannot leave a trail of live credentials behind them.
@@ -911,7 +933,7 @@ function parla_handle_post(array $s): array
         return $s;
     }
 
-    add_settings_error('parla', 'saved', __('Settings saved.', 'parla-for-woocommerce'), 'updated');
+    add_settings_error('parla', 'saved', __('Settings saved.', 'askparla-ai-shopping-assistant'), 'updated');
     return $s;
 }
 
@@ -957,9 +979,9 @@ function parla_insights(array $s, bool $refresh = false): array
     $body = json_decode((string) wp_remote_retrieve_body($res), true);
     if ($code !== 200 || !is_array($body)) {
         $detail = $code === 401
-            ? __('the shop key on this page does not match the server', 'parla-for-woocommerce')
+            ? __('the shop key on this page does not match the server', 'askparla-ai-shopping-assistant')
             /* translators: %d: the HTTP status code the server returned */
-            : sprintf(__('the server answered %d', 'parla-for-woocommerce'), $code);
+            : sprintf(__('the server answered %d', 'askparla-ai-shopping-assistant'), $code);
         $memo = ['ok' => false, 'data' => [], 'error' => $detail];
         return $memo;
     }
@@ -969,18 +991,27 @@ function parla_insights(array $s, bool $refresh = false): array
 }
 
 // The settings screen itself: statistics first, then settings, all in includes/admin.php.
+require_once __DIR__ . '/includes/waiting.php';
 require_once __DIR__ . '/includes/admin.php';
+
+/*
+ * The waiting lists need a table. Created on activation, and checked once per admin load in case
+ * the plugin was updated rather than reactivated, which is how most shops get a new version.
+ */
+register_activation_hook(__FILE__, 'parla_waiting_install');
+add_action('admin_init', 'parla_waiting_install');
+add_action('admin_init', 'parla_waiting_handle_forget');
 
 /** Settings link on the Plugins screen. */
 add_filter('plugin_action_links_' . plugin_basename(__FILE__), function (array $links): array {
     $url = admin_url('admin.php?page=parla');
-    array_unshift($links, '<a href="' . esc_url($url) . '">' . esc_html__('Settings', 'parla-for-woocommerce') . '</a>');
+    array_unshift($links, '<a href="' . esc_url($url) . '">' . esc_html__('Settings', 'askparla-ai-shopping-assistant') . '</a>');
     return $links;
 });
 
 /** Warn instead of fataling if WooCommerce is missing. */
 add_action('admin_notices', function (): void {
     if (!class_exists('WooCommerce')) {
-        echo '<div class="notice notice-error"><p>' . esc_html__('Parla needs WooCommerce to be installed and active.', 'parla-for-woocommerce') . '</p></div>';
+        echo '<div class="notice notice-error"><p>' . esc_html__('Parla needs WooCommerce to be installed and active.', 'askparla-ai-shopping-assistant') . '</p></div>';
     }
 });

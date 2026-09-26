@@ -1,10 +1,10 @@
-=== Parla for WooCommerce ===
+=== AskParla AI Shopping Assistant for WooCommerce ===
 Contributors: askparla
 Tags: chat, ai, sales, live chat, product search
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 0.23.0
+Stable tag: 0.24.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -87,8 +87,11 @@ What is sent, and when:
 * **When a shopper asks about an order.** The order number and the email address they type, so the
   order can be confirmed as theirs before anything is shown. Addresses are masked before the AI model
   sees them.
-* **When a shopper leaves an email for something out of stock.** That email address, so you can see
-  what people keep asking for.
+* **When a shopper leaves an email to be told about a restock, or about something you do not sell.**
+  Their address passes through Parla and is written straight back into your own site, where you can
+  read the list and remove anyone from it (WooCommerce &rarr; Parla &rarr; Reports). Parla keeps only
+  the product or the phrase they are waiting on, never the address. The email, when the moment comes,
+  is sent by your site from your own address.
 * **When you open WooCommerce &rarr; Parla in your admin.** The page asks Parla for this shop's
   figures and its saved settings, and the live preview loads the chat script so you can see your
   changes; that preview counts as one conversation against your plan, and it is seeded with your own
@@ -107,7 +110,21 @@ The privacy policy above lists every subprocessor and where each one processes d
 
 To count the sales it helps with, the chat sets two first-party cookies on your site when a shopper uses it: parla_assist (a random conversation id, 7 days) and parla_added (the ids of products it put in the cart, 7 days). They hold nothing personal and are only read by this plugin, on your site, when an order is placed. Depending on your country and your consent setup, you may want to list them in your cookie policy.
 
+== Screenshots ==
+
+1. A shopper asks in their own words and gets the real product, with the variant already chosen and a button to add it to the cart.
+2. What shoppers looked for and did not find, what your pages could not answer, and the answers they marked unhelpful. The part worth reading every Monday.
+3. Everything shoppers see, with a live preview that updates as you type: name, manner, colours, opening questions.
+4. Hands-free calls, the voices to choose from, and how many premium minutes are left this month.
+
 == Changelog ==
+
+= 0.24.0 =
+* The plugin is now called AskParla AI Shopping Assistant for WooCommerce
+* Brand colours and the settings preview are loaded the WordPress way, with no inline tags
+* The people waiting on a restock, or on something you do not sell, are now listed on the Reports tab, with their email addresses
+* Those addresses live on your site instead of on Parla, so you can read the list and remove anyone from it
+* Each address is still used for one message and deleted when it goes out
 
 = 0.23.0 =
 * Overview shows three counts; the full lists moved to a Reports tab
