@@ -10,7 +10,6 @@
  * WC tested up to: 11.1
  * Plugin URI:        https://askparla.com
  * Author:            AskParla
- * Author URI:        https://askparla.com
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       askparla-ai-shopping-assistant
