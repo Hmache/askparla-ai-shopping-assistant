@@ -51,7 +51,7 @@ every subprocessor, is in [`readme.txt`](readme.txt) under `== External services
   them, and the assistant refuses any order that was not verified in that same conversation.
 - **Nothing** if a visitor loads the page and never uses the chat, beyond the script request.
 
-Conversation text is passed to Anthropic (Claude) to write the answers. On a premium voice call the
+Conversation text is passed to Anthropic to write the answers. On a premium voice call the
 audio also goes to Deepgram (speech recognition) and Cartesia (the voice).
 
 ## Privacy
