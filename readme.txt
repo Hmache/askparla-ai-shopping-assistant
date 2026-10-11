@@ -1,19 +1,22 @@
 === AskParla AI Shopping Assistant for WooCommerce ===
 Contributors: askparla
-Tags: chat, ai, sales, live chat, product search
+Tags: woocommerce, chatbot, ai, voice, product search
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 0.24.0
+Stable tag: 0.26.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-An AI sales assistant for WooCommerce. Shoppers can type or talk to it.
+An AI sales agent for WooCommerce that shoppers can call or chat with. Sells from your catalogue, tracks orders, speaks 8 languages. 14 days free.
 
 == Description ==
 
-Parla adds a chat to your store that opens on a choice: talk, or type. It sells first and
-handles the rest of the order lifecycle after.
+Most online shops have a "Contact us" page. Very few have someone who answers. Parla is an AI sales agent that lives on your WooCommerce shop: a shopper taps Call and asks out loud, or types, and gets an answer from your own catalogue, puts the right item in the cart, and tracks their order.
+
+**Try it before installing anything:** [a demo shop with Parla on it](https://askparla.com/demo?utm_source=wporg). **Free for 14 days, no card:** [create your account at askparla.com](https://askparla.com/account/signup?utm_source=wporg), the shop key is shown straight away.
+
+Parla adds a chat to your store that opens on a choice: talk, or type. It sells first and handles the rest of the order lifecycle after.
 
 * Finds products in the shopper's own words ("red sweater size M"), typos and other languages included
 * Recommends one of them and says why, from your own product data - never an invented claim
@@ -26,85 +29,54 @@ handles the rest of the order lifecycle after.
 
 It speaks eight languages, follows the shopper's light or dark setting, and wears your brand colour.
 
-Nothing is invented to make a sale: scarcity is only ever mentioned when your stock says so, and the
-assistant never offers a discount, because it has no way to make one.
+Nothing is invented to make a sale: scarcity is only ever mentioned when your stock says so, and the assistant never offers a discount, because it has no way to make one. It says it is an AI, in the chat and at the start of every call, and when it does not know, it says so and hands over to your team with a ticket number.
+
+Three plans from 19 EUR a month, no commitment, with the extra conversations capped by default at the price of your plan. Full details on [the pricing page](https://askparla.com/pricing?utm_source=wporg).
 
 == Installation ==
 
 1. Install and activate the plugin.
-2. Go to WooCommerce -> Parla.
-3. Paste the shop key Parla sent you, then press "Connect store". Each shop has its own key.
+2. Create your account at [askparla.com](https://askparla.com/account/signup?utm_source=wporg): your shop key is shown straight away. The first 14 days are free, with no card. The plugin opens its own page once after activation, with the same link.
+3. In WordPress, go to WooCommerce -> Parla, paste the key under Connection, then press "Connect store". Each shop has its own key.
 
-The Status tab tells you what your storefront is actually using, which is the fastest way to see
-whether a setting reached the server.
+The Status tab tells you what your storefront is actually using, which is the fastest way to see whether a setting reached the server.
 
 == Frequently Asked Questions ==
 
 = Does this send my customer data anywhere? =
 
-The assistant reads an order only after a shopper gives the matching order number and the email used
-for it. Addresses are masked before the AI ever sees them, and order tools refuse any order that has
-not been verified in that same conversation.
+The assistant reads an order only after a shopper gives the matching order number and the email used for it. Addresses are masked before the AI ever sees them, and order tools refuse any order that has not been verified in that same conversation.
 
 = What does "Completed" mean in my shop? =
 
-WooCommerce has no "delivered" status. Tell Parla in the settings whether Completed means
-delivered (so returns may start) or shipped.
+WooCommerce has no "delivered" status. Tell Parla in the settings whether Completed means delivered (so returns may start) or shipped.
 
 = What happens on a voice call? =
 
-The shopper's browser does the speech, not us: it turns their voice into text and reads the reply
-back. In Chrome that means the audio goes to the browser's own speech service, which is why calls
-are off until you switch them on, and why the chat says so the first time. Firefox has no recognizer,
-so the call button never appears there.
+The shopper's browser does the speech, not us: it turns their voice into text and reads the reply back. In Chrome that means the audio goes to the browser's own speech service, which is why calls are off until you switch them on, and why the chat says so the first time. Firefox has no recognizer, so the call button never appears there.
 
 = Can I make it match my site's dark mode? =
 
-Appearance -> Light or dark. Auto follows whatever the shopper has their own device set to, which
-suits most shops; pin it if your storefront is only ever one or the other.
+Appearance -> Light or dark. Auto follows whatever the shopper has their own device set to, which suits most shops; pin it if your storefront is only ever one or the other.
 
 == External services ==
 
-This plugin is the shop's end of Parla, a hosted AI sales assistant. The assistant itself runs on
-Parla's servers, not in your WordPress: without a Parla account and a shop key, the plugin does
-nothing. Installing it therefore means your shop talks to a third-party service, and this section
-sets out exactly what leaves your site and when.
+This plugin is the shop's end of Parla, a hosted AI sales assistant. The assistant itself runs on Parla's servers, not in your WordPress: without a Parla account and a shop key, the plugin does nothing. Installing it therefore means your shop talks to a third-party service, and this section sets out exactly what leaves your site and when.
 
 Service: Parla, https://askparla.com
-Terms of service: https://askparla.com/cgu
-Privacy policy: https://askparla.com/confidentialite
+Terms of service: https://askparla.com/en/terms
+Privacy policy: https://askparla.com/en/privacy
 
 What is sent, and when:
 
-* **On every page where the chat is enabled.** The chat script is loaded from Parla's servers, so
-  the visitor's IP address and browser user agent reach Parla as part of that request, as they would
-  with any externally hosted script. The script tag also carries your shop id, your shop's name, the
-  type of page (product, category, cart, checkout, order), the product id and page title on a product
-  page, and, only if you switch on "Greet customers by name", the first name of a signed-in customer.
-* **When a shopper opens the chat and writes or speaks.** What they type or say, a random
-  conversation id, the page they are on, and their browser's language. Nothing is sent if a visitor
-  loads the page and never uses the chat, beyond the script request above.
-* **When a shopper asks about an order.** The order number and the email address they type, so the
-  order can be confirmed as theirs before anything is shown. Addresses are masked before the AI model
-  sees them.
-* **When a shopper leaves an email to be told about a restock, or about something you do not sell.**
-  Their address passes through Parla and is written straight back into your own site, where you can
-  read the list and remove anyone from it (WooCommerce &rarr; Parla &rarr; Reports). Parla keeps only
-  the product or the phrase they are waiting on, never the address. The email, when the moment comes,
-  is sent by your site from your own address.
-* **When you open WooCommerce &rarr; Parla in your admin.** The page asks Parla for this shop's
-  figures and its saved settings, and the live preview loads the chat script so you can see your
-  changes; that preview counts as one conversation against your plan, and it is seeded with your own
-  first name from your WordPress profile so the greeting looks right. On the Voice tab, if your plan
-  includes premium voice, your browser also asks Parla for the list of voices you may choose from and
-  plays a sample clip from Parla's servers when you press play on one.
-* **When you press "Connect store".** Your site address and your Parla settings, and the plugin
-  creates a WooCommerce REST API key so Parla can read your catalogue and, when a shopper has proved
-  an order is theirs, that order. Deleting the plugin removes that key.
+* **On every page where the chat is enabled.** The chat script is loaded from Parla's servers, so the visitor's IP address and browser user agent reach Parla as part of that request, as they would with any externally hosted script. The script tag also carries your shop id, your shop's name, the type of page (product, category, cart, checkout, order), the product id and page title on a product page, and, only if you switch on "Greet customers by name", the first name of a signed-in customer.
+* **When a shopper opens the chat and writes or speaks.** What they type or say, a random conversation id, the page they are on, and their browser's language. Nothing is sent if a visitor loads the page and never uses the chat, beyond the script request above.
+* **When a shopper asks about an order.** The order number and the email address they type, so the order can be confirmed as theirs before anything is shown. Addresses are masked before the AI model sees them.
+* **When a shopper leaves an email to be told about a restock, or about something you do not sell.** Their address passes through Parla and is written straight back into your own site, where you can read the list and remove anyone from it (WooCommerce &rarr; Parla &rarr; Reports). Parla keeps only the product or the phrase they are waiting on, never the address. The email, when the moment comes, is sent by your site from your own address.
+* **When you open WooCommerce &rarr; Parla in your admin.** The page asks Parla for this shop's figures and its saved settings, and the live preview loads the chat script so you can see your changes; that preview counts as one conversation against your plan, and it is seeded with your own first name from your WordPress profile so the greeting looks right. On the Voice tab, if your plan includes premium voice, your browser also asks Parla for the list of voices you may choose from and plays a sample clip from Parla's servers when you press play on one.
+* **When you press "Connect store".** Your site address and your Parla settings, and the plugin creates a WooCommerce REST API key so Parla can read your catalogue and, when a shopper has proved an order is theirs, that order. Deleting the plugin removes that key.
 
-Parla passes conversation text to Anthropic (Claude) to write the answers. When premium voice is
-switched on, the audio of a call also goes to Deepgram (speech recognition) and Cartesia (the voice).
-The privacy policy above lists every subprocessor and where each one processes data.
+Parla passes conversation text to Anthropic (Claude) to write the answers. When premium voice is switched on, the audio of a call also goes to Deepgram (speech recognition) and Cartesia (the voice). The privacy policy above lists every subprocessor and where each one processes data.
 
 == Privacy ==
 
@@ -118,6 +90,20 @@ To count the sales it helps with, the chat sets two first-party cookies on your 
 4. Hands-free calls, the voices to choose from, and how many premium minutes are left this month.
 
 == Changelog ==
+
+= 0.26.0 =
+* After activation, the plugin opens its page once and says where to get an account: a button to create it, free for 14 days, and a link to a demo shop
+* The Connection tab says the same for a shop that has no key yet
+* The terms and privacy links follow the language of your WordPress
+
+= 0.25.0 =
+* The settings are in French when your site is: every screen, message and email the plugin writes
+* Opening hours are read in your own language: "Lun-Ven 9h-18h", "Mo-Fr 9-18", "Seg-Sex 9h-18h" and the like all work now, where only "Mon-Fri 09:00-18:00" did
+* Hours that cannot be read are flagged under the field, and the setup list only ticks them off once they can be
+* The sizing field is now "Sizes and measurements", and only for shops whose products come in sizes or dimensions: the setup list no longer asks for it
+
+= 0.24.1 =
+* The directory page reads as written, without lines broken in the middle of a sentence
 
 = 0.24.0 =
 * The plugin is now called AskParla AI Shopping Assistant for WooCommerce

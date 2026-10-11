@@ -435,8 +435,8 @@ function parla_ui_setup(array $s): void
         ['done' => true, 'label' => __('Connect your shop', 'askparla-ai-shopping-assistant'), 'tab' => 'connection', 'why' => ''],
         ['done' => (int) $s['voice_calls'] === 1, 'label' => __('Let shoppers call the assistant', 'askparla-ai-shopping-assistant'), 'tab' => 'voice', 'why' => __('Shoppers who call ask more and buy more.', 'askparla-ai-shopping-assistant')],
         ['done' => $s['greeting_pages'] !== 'off', 'label' => __('Turn on the greeting bubble', 'askparla-ai-shopping-assistant'), 'tab' => 'appearance', 'why' => __('Most shoppers never open a chat nobody offered.', 'askparla-ai-shopping-assistant')],
-        ['done' => trim((string) $s['size_guide']) !== '' || trim((string) $s['policy_excerpts']) !== '', 'label' => __('Add your size guide or policy notes', 'askparla-ai-shopping-assistant'), 'tab' => 'assistant', 'why' => __('Without them it says "I don\'t know" to the most common questions.', 'askparla-ai-shopping-assistant')],
-        ['done' => trim((string) $s['support_hours']) !== '', 'label' => __('Say when your team replies', 'askparla-ai-shopping-assistant'), 'tab' => 'assistant', 'why' => __('So a handoff tells the shopper when to expect an answer.', 'askparla-ai-shopping-assistant')],
+        ['done' => trim((string) $s['policy_excerpts']) !== '', 'label' => __('Add your policy notes', 'askparla-ai-shopping-assistant'), 'tab' => 'assistant', 'why' => __('Without them it says "I don\'t know" to the most common questions.', 'askparla-ai-shopping-assistant')],
+        ['done' => parla_parse_hours((string) $s['support_hours']) !== [], 'label' => __('Say when your team replies', 'askparla-ai-shopping-assistant'), 'tab' => 'assistant', 'why' => __('So a handoff tells the shopper when to expect an answer.', 'askparla-ai-shopping-assistant')],
         ['done' => strtolower((string) $s['brand_color']) !== '#111827', 'label' => __('Put it in your colours', 'askparla-ai-shopping-assistant'), 'tab' => 'appearance', 'why' => __('It should look like part of your shop.', 'askparla-ai-shopping-assistant')],
     ];
     $done = count(array_filter($steps, fn ($st) => $st['done']));
@@ -481,8 +481,12 @@ function parla_ui_overview(array $s): void
         <section class="aa-card aa-welcome">
             <span class="aa-eyebrow"><?php esc_html_e('Welcome', 'askparla-ai-shopping-assistant'); ?></span>
             <h2><?php esc_html_e('Connect your store to meet your sales assistant', 'askparla-ai-shopping-assistant'); ?></h2>
-            <p><?php esc_html_e('Once connected, this page shows the sales it helps with, what shoppers ask for, and what they could not find.', 'askparla-ai-shopping-assistant'); ?></p>
-            <button type="button" class="aa-btn aa-btn-primary" data-aa-go="connection"><?php esc_html_e('Connect your store', 'askparla-ai-shopping-assistant'); ?></button>
+            <p><?php esc_html_e('Two minutes: create your Parla account (the first 14 days are free, no card), copy the shop key it shows you, paste it here. Once connected, this page shows the sales it helps with, what shoppers ask for, and what they could not find.', 'askparla-ai-shopping-assistant'); ?></p>
+            <p class="aa-actions">
+                <a class="aa-btn aa-btn-primary" href="<?php echo esc_url(parla_site_url('signup')); ?>" target="_blank" rel="noopener"><?php esc_html_e('Create your free account', 'askparla-ai-shopping-assistant'); ?></a>
+                <button type="button" class="aa-btn aa-btn-ghost" data-aa-go="connection"><?php esc_html_e('I have my shop key', 'askparla-ai-shopping-assistant'); ?></button>
+                <a class="aa-link" href="<?php echo esc_url(parla_site_url('demo')); ?>" target="_blank" rel="noopener"><?php esc_html_e('See it on a demo shop first', 'askparla-ai-shopping-assistant'); ?></a>
+            </p>
         </section>
         <?php
         return;
@@ -545,11 +549,12 @@ function parla_ui_overview(array $s): void
         if (!empty($s['premium_voice']) && is_array($premium) && (int) ($premium['minutes_budget'] ?? 0) > 0) {
             $used = (float) ($premium['minutes_used'] ?? 0);
             $budget = (int) ($premium['minutes_budget'] ?? 0);
+            $calls = (int) ($premium['calls'] ?? 0);
             parla_ui_kpi(
                 __('Premium call minutes', 'askparla-ai-shopping-assistant'),
                 sprintf('%s / %s', number_format_i18n($used, $used < 10 ? 1 : 0), number_format_i18n($budget)),
                 /* translators: %d: how many premium voice calls this month */
-                sprintf(_n('%d call this month', '%d calls this month', (int) ($premium['calls'] ?? 0), 'askparla-ai-shopping-assistant'), (int) ($premium['calls'] ?? 0)),
+                sprintf(_n('%d call this month', '%d calls this month', $calls, 'askparla-ai-shopping-assistant'), $calls),
                 $used / $budget
             );
         }
@@ -743,7 +748,7 @@ function parla_ui_tab_assistant(array $s): void
                 esc_textarea($s['policy_excerpts'])
             );
         }, 'aa_policy');
-        parla_ui_row(__('Sizing and fit', 'askparla-ai-shopping-assistant'), __('Without it, it will not invent measurements.', 'askparla-ai-shopping-assistant'), function () use ($s) {
+        parla_ui_row(__('Sizes and measurements', 'askparla-ai-shopping-assistant'), __('Only if what you sell comes in sizes or has to fit somewhere: clothes, shoes, rings, furniture. Without it, it never guesses a size or a measurement.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             printf(
                 '<textarea name="size_guide" id="aa_sizes" rows="4" class="aa-in" placeholder="%s">%s</textarea>',
                 esc_attr__('Runs small, size up if you are between sizes. Chest: S 96cm, M 102cm, L 108cm.', 'askparla-ai-shopping-assistant'),
@@ -773,6 +778,15 @@ function parla_ui_tab_assistant(array $s): void
                 esc_attr__('Mon-Fri 09:00-18:00, Sat 10:00-14:00', 'askparla-ai-shopping-assistant'),
                 esc_attr($s['support_hours'])
             );
+            // Typed but unreadable means the shop has no hours at all as far as the chat knows, and
+            // it would tell every shopper nobody replies. Better to say so here.
+            if (trim((string) $s['support_hours']) !== '' && parla_parse_hours((string) $s['support_hours']) === []) {
+                printf(
+                    '<p class="aa-help aa-help-warn">%s</p>',
+                    /* translators: an example of opening hours in the format the field reads; translate the day names */
+                    esc_html__('These hours could not be read. Write a day or a span of days, then two times, for example: Mon-Fri 09:00-18:00, Sat 10:00-14:00.', 'askparla-ai-shopping-assistant')
+                );
+            }
         }, 'aa_hours');
         parla_ui_row(__('Usual reply time', 'askparla-ai-shopping-assistant'), __('Said to shoppers outside your hours.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             printf('<input name="reply_within" id="aa_reply" type="text" class="aa-in" placeholder="%s" value="%s">', esc_attr__('within a few hours', 'askparla-ai-shopping-assistant'), esc_attr($s['reply_within']));
@@ -893,13 +907,24 @@ function parla_ui_tab_appearance(array $s): void
             parla_ui_switch('show_track_order', (int) $s['show_track_order'] === 1, __('Show the track an order button', 'askparla-ai-shopping-assistant'));
         });
         parla_ui_row(__('Openers', 'askparla-ai-shopping-assistant'), __('The questions an empty chat offers. Tap-sized: a few words, not a sentence.', 'askparla-ai-shopping-assistant'), function () use ($s) {
-            $lines = $s['opener_chips'] ?: parla_default_openers();
+            /*
+             * Ours are shown as placeholders, never as values.
+             *
+             * They used to be filled in as real values, defended by a save-time check that cleared
+             * them only when all three came back exactly as issued. Change one and the other two
+             * went in with it, so a shop that wanted a single question of its own ended up storing
+             * two of ours as well, frozen in the language the admin happened to be in at the time.
+             * An empty box posts nothing, which is what keeps each shopper reading them in their
+             * own language.
+             */
+            $lines = $s['opener_chips'];
+            $ours = parla_default_openers();
             echo '<div class="aa-openers" id="aa-openers">';
             foreach (array_pad(array_slice($lines, 0, 6), 3, '') as $i => $line) {
                 printf(
                     '<div class="aa-opener"><input name="opener_chips[]" type="text" maxlength="80" class="aa-in" value="%s" placeholder="%s"><button type="button" class="aa-opener-x" aria-label="%s">&times;</button></div>',
                     esc_attr((string) $line),
-                    esc_attr__('Do you ship to Belgium?', 'askparla-ai-shopping-assistant'),
+                    esc_attr((string) ($ours[$i] ?? __('Do you ship to Belgium?', 'askparla-ai-shopping-assistant'))),
                     esc_attr__('Remove this opener', 'askparla-ai-shopping-assistant')
                 );
             }
@@ -1032,6 +1057,15 @@ function parla_ui_tab_voice(array $s): void
 function parla_ui_tab_connection(array $s, bool $connected): void
 {
     parla_ui_section(__('Connection', 'askparla-ai-shopping-assistant'), __('The key that links this shop to your Parla account.', 'askparla-ai-shopping-assistant'), function () use ($s, $connected) {
+        if (!$connected) {
+            parla_ui_row(__('No account yet?', 'askparla-ai-shopping-assistant'), __('The first 14 days are free, with no card. The key for this shop is shown as soon as the account exists.', 'askparla-ai-shopping-assistant'), function () {
+                printf(
+                    '<a class="aa-btn aa-btn-primary" href="%s" target="_blank" rel="noopener">%s</a>',
+                    esc_url(parla_site_url('signup')),
+                    esc_html__('Create your free Parla account', 'askparla-ai-shopping-assistant')
+                );
+            });
+        }
         parla_ui_row(__('Shop key', 'askparla-ai-shopping-assistant'), __('Starts with parla_live_. Empty keeps the saved one.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             printf(
                 '<input name="connect_secret" id="aa_secret" type="password" class="aa-in aa-mono" autocomplete="off" placeholder="%s">',
@@ -1070,8 +1104,8 @@ function parla_ui_tab_connection(array $s, bool $connected): void
                     sprintf(
                         /* translators: 1: link to the terms of service, 2: link to the privacy policy */
                         __('Parla is a paid service hosted at askparla.com. Your shoppers\' messages are processed there, not on your server. %1$s &middot; %2$s', 'askparla-ai-shopping-assistant'),
-                        '<a href="https://askparla.com/cgu" target="_blank" rel="noopener">' . esc_html__('Terms of service', 'askparla-ai-shopping-assistant') . '</a>',
-                        '<a href="https://askparla.com/confidentialite" target="_blank" rel="noopener">' . esc_html__('Privacy policy', 'askparla-ai-shopping-assistant') . '</a>'
+                        '<a href="' . esc_url(parla_site_url('terms')) . '" target="_blank" rel="noopener">' . esc_html__('Terms of service', 'askparla-ai-shopping-assistant') . '</a>',
+                        '<a href="' . esc_url(parla_site_url('privacy')) . '" target="_blank" rel="noopener">' . esc_html__('Privacy policy', 'askparla-ai-shopping-assistant') . '</a>'
                     ),
                     ['a' => ['href' => [], 'target' => [], 'rel' => []]]
                 )

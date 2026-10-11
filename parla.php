@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       AskParla AI Shopping Assistant for WooCommerce
  * Description:       AI shopping and order-support chat for your store: product search, order tracking, address changes and returns.
- * Version:           0.24.0
+ * Version:           0.26.0
  * Requires at least: 6.5
  * Requires PHP:      8.0
  * Requires Plugins:  woocommerce
@@ -13,6 +13,7 @@
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       askparla-ai-shopping-assistant
+ * Domain Path:       /languages
  */
 
 declare(strict_types=1);
@@ -21,7 +22,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('PARLA_VERSION', '0.24.0');
+define('PARLA_VERSION', '0.26.0');
 define('PARLA_OPTION', 'parla_settings');
 
 /**
@@ -436,35 +437,6 @@ function parla_prune_api_keys(string $keep_consumer_key): void
         'AgentAssist', // keys made before the rename
         wc_api_hash($keep_consumer_key)
     ));
-}
-
-/**
- * "Mon-Fri 09:00-18:00, Sat 10:00-14:00" -> { "1": {from,to}, ... } with 0 = Sunday.
- * Anything it cannot read is ignored rather than guessed.
- */
-function parla_parse_hours(string $text): array
-{
-    $names = ['sun' => 0, 'mon' => 1, 'tue' => 2, 'wed' => 3, 'thu' => 4, 'fri' => 5, 'sat' => 6];
-    $days = [];
-    foreach (preg_split('/[,;\n]+/', strtolower($text)) as $chunk) {
-        if (!preg_match('/([a-z]{3})\s*(?:-\s*([a-z]{3}))?\s+(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/', trim($chunk), $m)) {
-            continue;
-        }
-        $from = str_pad($m[3], 5, '0', STR_PAD_LEFT);
-        $to = str_pad($m[4], 5, '0', STR_PAD_LEFT);
-        $start = $names[$m[1]] ?? null;
-        $end = $m[2] !== '' ? ($names[$m[2]] ?? $start) : $start;
-        if ($start === null) {
-            continue;
-        }
-        for ($d = $start; ; $d = ($d + 1) % 7) {
-            $days[(string) $d] = ['from' => $from, 'to' => $to];
-            if ($d === $end) {
-                break;
-            }
-        }
-    }
-    return $days;
 }
 
 /** Registers this store with the Parla API and stores the returned ids. */
@@ -990,6 +962,25 @@ function parla_insights(array $s, bool $refresh = false): array
 }
 
 // The settings screen itself: statistics first, then settings, all in includes/admin.php.
+/*
+ * Translations shipped with the plugin, for languages WordPress.org has no approved pack for yet.
+ * A pack from translate.wordpress.org always wins: this only answers when WordPress found none.
+ */
+add_filter('lang_dir_for_domain', function ($path, $domain, $locale) {
+    if ($domain !== 'askparla-ai-shopping-assistant') {
+        return $path;
+    }
+    $has = static fn ($dir) => $dir && (is_readable($dir . $domain . '-' . $locale . '.l10n.php') || is_readable($dir . $domain . '-' . $locale . '.mo'));
+    // WordPress may hand over a folder with nothing for this locale in it (the plugin's root, when
+    // something registered that before the Domain Path was read). Only a folder that has the file counts.
+    if ($has($path)) {
+        return $path;
+    }
+    $dir = plugin_dir_path(__FILE__) . 'languages/';
+    return $has($dir) ? $dir : $path;
+}, 10, 3);
+
+require_once __DIR__ . '/includes/hours.php';
 require_once __DIR__ . '/includes/waiting.php';
 require_once __DIR__ . '/includes/admin.php';
 
@@ -1000,6 +991,48 @@ require_once __DIR__ . '/includes/admin.php';
 register_activation_hook(__FILE__, 'parla_waiting_install');
 add_action('admin_init', 'parla_waiting_install');
 add_action('admin_init', 'parla_waiting_handle_forget');
+
+/**
+ * A page on askparla.com, in the language the admin reads WordPress in, with the plugin named as
+ * the source so an account made from here is counted as such. The site is English at the root and
+ * French under /fr; the legal pages have their own addresses in each language.
+ */
+function parla_site_url(string $page = ''): string
+{
+    $fr = str_starts_with(get_locale(), 'fr');
+    $paths = [
+        '' => $fr ? '/fr' : '/',
+        'signup' => '/account/signup',
+        'demo' => '/demo',
+        'terms' => $fr ? '/cgu' : '/en/terms',
+        'privacy' => $fr ? '/confidentialite' : '/en/privacy',
+    ];
+    $url = 'https://askparla.com' . ($paths[$page] ?? '/');
+    return add_query_arg(['utm_source' => 'wordpress-plugin', 'utm_medium' => 'plugin'], $url);
+}
+
+/*
+ * After activation, open the Parla page once: a merchant who installed from the directory has no
+ * account yet, and the page says where to get one. Not on bulk activation, not on a network, and
+ * only for whoever pressed Activate.
+ */
+register_activation_hook(__FILE__, function (): void {
+    if (!is_network_admin() && !isset($_GET['activate-multi'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        set_transient('parla_activated_' . get_current_user_id(), 1, MINUTE_IN_SECONDS);
+    }
+});
+add_action('admin_init', function (): void {
+    $key = 'parla_activated_' . get_current_user_id();
+    if (!get_transient($key)) {
+        return;
+    }
+    delete_transient($key);
+    if (!current_user_can('manage_woocommerce') || wp_doing_ajax() || (defined('DOING_CRON') && DOING_CRON)) {
+        return;
+    }
+    wp_safe_redirect(admin_url('admin.php?page=parla'));
+    exit;
+});
 
 /** Settings link on the Plugins screen. */
 add_filter('plugin_action_links_' . plugin_basename(__FILE__), function (array $links): array {
