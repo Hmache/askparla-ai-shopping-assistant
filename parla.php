@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       AskParla AI Shopping Assistant for WooCommerce
  * Description:       AI shopping and order-support chat for your store: product search, order tracking, address changes and returns.
- * Version:           0.26.0
+ * Version:           0.26.2
  * Requires at least: 6.5
  * Requires PHP:      8.0
  * Requires Plugins:  woocommerce
@@ -22,7 +22,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('PARLA_VERSION', '0.26.0');
+define('PARLA_VERSION', '0.26.2');
 define('PARLA_OPTION', 'parla_settings');
 
 /**
@@ -1008,7 +1008,12 @@ function parla_site_url(string $page = ''): string
         'privacy' => $fr ? '/confidentialite' : '/en/privacy',
     ];
     $url = 'https://askparla.com' . ($paths[$page] ?? '/');
-    return add_query_arg(['utm_source' => 'wordpress-plugin', 'utm_medium' => 'plugin'], $url);
+    $args = ['utm_source' => 'wordpress-plugin', 'utm_medium' => 'plugin'];
+    // The account pages are in English unless the link asks for French.
+    if ($page === 'signup' && $fr) {
+        $args['lang'] = 'fr';
+    }
+    return add_query_arg($args, $url);
 }
 
 /*

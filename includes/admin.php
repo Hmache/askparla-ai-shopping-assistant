@@ -24,12 +24,16 @@ function parla_live_config(array $s): array
     if (!parla_is_connected()) {
         return ['ok' => false, 'data' => [], 'error' => ''];
     }
-    $res = wp_remote_get(parla_api_base($s) . '/v1/stores/' . rawurlencode($s['store_id']) . '/config', ['timeout' => 6]);
+    // With the shop's key, so a paused account is told apart from a server that is down.
+    $res = wp_remote_get(parla_api_base($s) . '/v1/stores/' . rawurlencode($s['store_id']) . '/config', ['timeout' => 6, 'headers' => ['x-connect-secret' => (string) ($s['connect_secret'] ?? '')]]);
     if (is_wp_error($res)) {
         return ['ok' => false, 'data' => [], 'error' => $res->get_error_message()];
     }
     $code = (int) wp_remote_retrieve_response_code($res);
     $body = json_decode((string) wp_remote_retrieve_body($res), true);
+    if ($code === 403 && is_array($body) && ($body['error'] ?? '') === 'account_paused') {
+        return ['ok' => false, 'data' => [], 'error' => 'account_paused'];
+    }
     if ($code !== 200 || !is_array($body)) {
         /* translators: %d: the HTTP status code the server returned */
         return ['ok' => false, 'data' => [], 'error' => sprintf(__('the server answered %d', 'askparla-ai-shopping-assistant'), $code)];
@@ -355,7 +359,11 @@ function parla_ui_health(array $s): void
     $d = $live['data'];
     $warnings = 0;
     ob_start();
-    if (!$live['ok']) {
+    if (!$live['ok'] && $live['error'] === 'account_paused') {
+        $warnings++;
+        parla_ui_check(__('Parla account', 'askparla-ai-shopping-assistant'), __('paused', 'askparla-ai-shopping-assistant'), 'warn',
+            __('The chat server is up, but your Parla account is paused, so shoppers see a connection error. Choose a plan in your Parla account, or write to us, and it answers again within the minute.', 'askparla-ai-shopping-assistant'));
+    } elseif (!$live['ok']) {
         $warnings++;
         parla_ui_check(__('Chat server', 'askparla-ai-shopping-assistant'), __('unreachable', 'askparla-ai-shopping-assistant'), 'warn', sprintf(
             /* translators: 1: server address, 2: error */
@@ -748,10 +756,10 @@ function parla_ui_tab_assistant(array $s): void
                 esc_textarea($s['policy_excerpts'])
             );
         }, 'aa_policy');
-        parla_ui_row(__('Sizes and measurements', 'askparla-ai-shopping-assistant'), __('Only if what you sell comes in sizes or has to fit somewhere: clothes, shoes, rings, furniture. Without it, it never guesses a size or a measurement.', 'askparla-ai-shopping-assistant'), function () use ($s) {
+        parla_ui_row(__('Fit and compatibility', 'askparla-ai-shopping-assistant'), __('What a shopper needs to know to buy the right one: sizes for clothes and shoes, dimensions for furniture, which models a case, charger or spare part works with. Without it, it never guesses a size or whether something fits.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             printf(
                 '<textarea name="size_guide" id="aa_sizes" rows="4" class="aa-in" placeholder="%s">%s</textarea>',
-                esc_attr__('Runs small, size up if you are between sizes. Chest: S 96cm, M 102cm, L 108cm.', 'askparla-ai-shopping-assistant'),
+                esc_attr__('Runs small, size up if you are between sizes. Chest: S 96cm, M 102cm, L 108cm. Phone cases fit only the model in their name: an iPhone 15 case does not fit the 15 Pro.', 'askparla-ai-shopping-assistant'),
                 esc_textarea($s['size_guide'])
             );
         }, 'aa_sizes');

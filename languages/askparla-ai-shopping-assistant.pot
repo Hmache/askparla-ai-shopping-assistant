@@ -14,6 +14,18 @@ msgstr ""
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: askparla-ai-shopping-assistant\n"
 
+#: includes/admin.php
+msgid "Parla account"
+msgstr ""
+
+#: includes/admin.php
+msgid "paused"
+msgstr ""
+
+#: includes/admin.php
+msgid "The chat server is up, but your Parla account is paused, so shoppers see a connection error. Choose a plan in your Parla account, or write to us, and it answers again within the minute."
+msgstr ""
+
 #. Plugin Name of the plugin
 #: parla.php
 msgid "AskParla AI Shopping Assistant for WooCommerce"
@@ -596,15 +608,15 @@ msgid "Free returns in store. Final-sale items cannot be returned. Delivery in 2
 msgstr ""
 
 #: includes/admin.php:751
-msgid "Sizes and measurements"
+msgid "Fit and compatibility"
 msgstr ""
 
 #: includes/admin.php:751
-msgid "Only if what you sell comes in sizes or has to fit somewhere: clothes, shoes, rings, furniture. Without it, it never guesses a size or a measurement."
+msgid "What a shopper needs to know to buy the right one: sizes for clothes and shoes, dimensions for furniture, which models a case, charger or spare part works with. Without it, it never guesses a size or whether something fits."
 msgstr ""
 
 #: includes/admin.php:754
-msgid "Runs small, size up if you are between sizes. Chest: S 96cm, M 102cm, L 108cm."
+msgid "Runs small, size up if you are between sizes. Chest: S 96cm, M 102cm, L 108cm. Phone cases fit only the model in their name: an iPhone 15 case does not fit the 15 Pro."
 msgstr ""
 
 #: includes/admin.php:760

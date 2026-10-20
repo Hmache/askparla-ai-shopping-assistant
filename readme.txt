@@ -4,7 +4,7 @@ Tags: woocommerce, chatbot, ai, voice, product search
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 0.26.0
+Stable tag: 0.26.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -84,12 +84,20 @@ To count the sales it helps with, the chat sets two first-party cookies on your 
 
 == Screenshots ==
 
-1. A shopper asks in their own words and gets the real product, with the variant already chosen and a button to add it to the cart.
-2. What shoppers looked for and did not find, what your pages could not answer, and the answers they marked unhelpful. The part worth reading every Monday.
-3. Everything shoppers see, with a live preview that updates as you type: name, manner, colours, opening questions.
-4. Hands-free calls, the voices to choose from, and how many premium minutes are left this month.
+1. A shopper writes in English to a French shop and gets the real product, in their language, with the size already chosen and a button to add it to the cart.
+2. Where is my order? It asks for the order number and the email first, then gives the carrier's tracking link and the delivery date.
+3. Returns, delivery and care questions are answered from the policies the shop wrote, never made up.
+4. On a phone the chat takes the whole screen. Asked for a colour, it shows everything the shop has in it, with what is left in stock.
 
 == Changelog ==
+
+= 0.26.2 =
+* The sizes box is now "Fit and compatibility": besides clothes and shoe sizes, it covers which models a case, charger or spare part works with, so the assistant never guesses whether something fits
+* When your Parla account is paused, the Overview now says so, instead of reporting the chat server as unreachable
+
+= 0.26.1 =
+* "Create your account" opens the signup page in French when your WordPress is in French
+* Screenshots of the assistant on a demo shop
 
 = 0.26.0 =
 * After activation, the plugin opens its page once and says where to get an account: a button to create it, free for 14 days, and a link to a demo shop

@@ -13,6 +13,18 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Domain: askparla-ai-shopping-assistant\n"
 
+#: includes/admin.php
+msgid "Parla account"
+msgstr "Compte Parla"
+
+#: includes/admin.php
+msgid "paused"
+msgstr "en pause"
+
+#: includes/admin.php
+msgid "The chat server is up, but your Parla account is paused, so shoppers see a connection error. Choose a plan in your Parla account, or write to us, and it answers again within the minute."
+msgstr "Le serveur du chat fonctionne, mais votre compte Parla est en pause : vos clients voient une erreur de connexion. Choisissez une formule dans votre compte Parla, ou écrivez-nous, et le chat répond de nouveau dans la minute."
+
 #. Plugin Name of the plugin
 #: parla.php
 msgid "AskParla AI Shopping Assistant for WooCommerce"
@@ -607,16 +619,16 @@ msgid "Free returns in store. Final-sale items cannot be returned. Delivery in 2
 msgstr "Retours gratuits en magasin. Les articles soldés ne sont pas repris. Livraison en 2 à 4 jours ouvrés."
 
 #: includes/admin.php:751
-msgid "Sizes and measurements"
-msgstr "Tailles et dimensions"
+msgid "Fit and compatibility"
+msgstr "Taille et compatibilité"
 
 #: includes/admin.php:751
-msgid "Only if what you sell comes in sizes or has to fit somewhere: clothes, shoes, rings, furniture. Without it, it never guesses a size or a measurement."
-msgstr "Seulement si vos articles ont une taille ou doivent trouver leur place : vêtements, chaussures, bagues, meubles. Sans ces informations, il ne devine jamais une taille ni une mesure."
+msgid "What a shopper needs to know to buy the right one: sizes for clothes and shoes, dimensions for furniture, which models a case, charger or spare part works with. Without it, it never guesses a size or whether something fits."
+msgstr "Ce qu’un client doit savoir pour choisir le bon article : les tailles des vêtements et chaussures, les dimensions des meubles, les modèles avec lesquels une coque, un chargeur ou une pièce est compatible. Sans ces informations, il ne devine jamais une taille ni une compatibilité."
 
 #: includes/admin.php:754
-msgid "Runs small, size up if you are between sizes. Chest: S 96cm, M 102cm, L 108cm."
-msgstr "Taille petit, prenez la taille au-dessus si vous hésitez. Tour de poitrine : S 96 cm, M 102 cm, L 108 cm."
+msgid "Runs small, size up if you are between sizes. Chest: S 96cm, M 102cm, L 108cm. Phone cases fit only the model in their name: an iPhone 15 case does not fit the 15 Pro."
+msgstr "Taille petit, prenez la taille au-dessus si vous hésitez. Tour de poitrine : S 96 cm, M 102 cm, L 108 cm. Les coques ne vont qu’au modèle indiqué : une coque iPhone 15 ne va pas sur l’iPhone 15 Pro."
 
 #: includes/admin.php:760
 msgid "Orders"
