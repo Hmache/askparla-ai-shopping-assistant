@@ -4,17 +4,17 @@ Tags: woocommerce, chatbot, ai, voice, product search
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 0.27.0
+Stable tag: 0.28.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-An AI sales agent for WooCommerce that shoppers can call or chat with. Sells from your catalogue, tracks orders, speaks 8 languages. 14 days free.
+An AI sales agent for WooCommerce that shoppers can call or chat with. Sells from your catalogue, tracks orders, 8 languages. Free plan, no card.
 
 == Description ==
 
 Most online shops have a "Contact us" page. Very few have someone who answers. Parla is an AI sales agent that lives on your WooCommerce shop: a shopper taps Call and asks out loud, or types, and gets an answer from your own catalogue, puts the right item in the cart, and tracks their order.
 
-**Try it before installing anything:** [a demo shop with Parla on it](https://askparla.com/demo?utm_source=wporg). **Free for 14 days, no card:** [create your account at askparla.com](https://askparla.com/account/signup?utm_source=wporg), the shop key is shown straight away.
+**Try it before installing anything:** [a demo shop with Parla on it](https://askparla.com/demo?utm_source=wporg). **Free to start, no card:** [create your account at askparla.com](https://askparla.com/account/signup?utm_source=wporg), the shop key is shown straight away. Every plan starts with 14 days free, and the Free plan (50 conversations a month) stays free for good.
 
 Parla adds a chat to your store that opens on a choice: talk, or type. It sells first and handles the rest of the order lifecycle after.
 
@@ -36,7 +36,7 @@ Three plans from 19 EUR a month, no commitment, with the extra conversations cap
 == Installation ==
 
 1. Install and activate the plugin.
-2. Create your account at [askparla.com](https://askparla.com/account/signup?utm_source=wporg): your shop key is shown straight away. The first 14 days are free, with no card. The plugin opens its own page once after activation, with the same link.
+2. Create your account at [askparla.com](https://askparla.com/account/signup?utm_source=wporg): your shop key is shown straight away. The first 14 days are free, with no card, and the Free plan (50 conversations a month) costs nothing after that. The plugin opens its own page once after activation, with the same link.
 3. In WordPress, go to WooCommerce -> Parla, paste the key under Connection, then press "Connect store". Each shop has its own key.
 
 The Status tab tells you what your storefront is actually using, which is the fastest way to see whether a setting reached the server.
@@ -90,6 +90,10 @@ To count the sales it helps with, the chat sets two first-party cookies on your 
 4. On a phone the chat takes the whole screen. Asked for a colour, it shows everything the shop has in it, with what is left in stock.
 
 == Changelog ==
+
+= 0.28.0 =
+* Once the assistant has sold something for your shop, the Overview asks, once, whether you would leave a review on WordPress.org. "Not now" puts it away for good
+* Works with Parla's new Free plan: 50 conversations a month, no card
 
 = 0.27.0 =
 * Parla's screen is regrouped into Overview, Reports and Settings. Settings has a page per job: Look, Assistant, First screen, Voice, Knowledge & team and Connection, with the live preview beside the ones that change the chat

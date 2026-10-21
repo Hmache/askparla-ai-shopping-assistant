@@ -85,6 +85,9 @@
 .aa-admin .aa-hero-value { font-size: 40px; font-weight: 700; letter-spacing: -0.03em; color: var(--aa-ink); line-height: 1.1; margin-top: 8px; font-variant-numeric: tabular-nums; }
 .aa-admin .aa-hero-value.is-empty { color: #c4c8cf; }
 .aa-admin .aa-hero-sub { margin: 6px 0 0; color: var(--aa-muted); font-size: 14px; max-width: 60ch; }
+.aa-admin .aa-review-ask { margin: 12px 0 0; padding-top: 12px; border-top: 1px solid var(--aa-line); font-size: 13px; color: var(--aa-muted); }
+.aa-admin .aa-review-ask a { margin-left: 8px; font-weight: 550; }
+.aa-admin .aa-review-ask .aa-review-later { font-weight: 400; color: var(--aa-faint); }
 .aa-admin .aa-facts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
 .aa-admin .aa-fact { display: flex; flex-direction: column; padding: 10px 14px; border-radius: 11px; background: rgb(255 255 255 / .8); border: 1px solid var(--aa-line); min-width: 190px; }
 .aa-admin .aa-fact strong { font-size: 17px; color: var(--aa-ink); font-variant-numeric: tabular-nums; }

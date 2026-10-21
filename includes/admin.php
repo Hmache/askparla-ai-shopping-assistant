@@ -334,6 +334,7 @@ function parla_ui_sales(): void
                 esc_html_e(' Only your latest 3,000 orders are counted.', 'askparla-ai-shopping-assistant');
             } ?>
         </p>
+        <?php parla_ui_review_ask($r); ?>
     </section>
     <?php
 }
@@ -455,6 +456,45 @@ function parla_ui_days_chart(array $days, int $total): void
     </section>
     <?php
 }
+
+/**
+ * Asking for a review on WordPress.org, once the assistant has sold something for this shop.
+ *
+ * Not before: a merchant who has not seen it sell has nothing to say yet. One quiet line under the
+ * sales figure, never a notice on other admin screens, and "Not now" puts it away for good for that
+ * user. Nothing is offered in exchange for a review.
+ */
+function parla_ui_review_ask(array $r): void
+{
+    if ($r['assisted_orders'] === 0 && $r['added_items'] === 0) {
+        return;
+    }
+    if (get_user_meta(get_current_user_id(), 'parla_review_dismissed', true)) {
+        return;
+    }
+    $review = 'https://wordpress.org/support/plugin/askparla-ai-shopping-assistant/reviews/#new-post';
+    $dismiss = wp_nonce_url(admin_url('admin-post.php?action=parla_review_dismiss'), 'parla_review_dismiss');
+    ?>
+    <p class="aa-review-ask">
+        <?php esc_html_e('Is Parla earning its keep? A short review on WordPress.org helps other shops find it.', 'askparla-ai-shopping-assistant'); ?>
+        <a href="<?php echo esc_url($review); ?>" target="_blank" rel="noopener"><?php esc_html_e('Leave a review', 'askparla-ai-shopping-assistant'); ?></a>
+        <a href="<?php echo esc_url($dismiss); ?>" class="aa-review-later"><?php esc_html_e('Not now', 'askparla-ai-shopping-assistant'); ?></a>
+    </p>
+    <?php
+}
+
+/** "Not now" on the review line: this user is not asked again. */
+function parla_review_dismiss(): void
+{
+    if (!current_user_can('manage_woocommerce')) {
+        wp_die(esc_html__('Sorry, you are not allowed to see this page.', 'askparla-ai-shopping-assistant'), 403);
+    }
+    check_admin_referer('parla_review_dismiss');
+    update_user_meta(get_current_user_id(), 'parla_review_dismissed', gmdate('c'));
+    wp_safe_redirect(wp_get_referer() ?: admin_url('admin.php?page=parla'));
+    exit;
+}
+add_action('admin_post_parla_review_dismiss', 'parla_review_dismiss');
 
 /** One line of the storefront check. $state is good (all set), warn (needs doing) or neutral (a choice). */
 function parla_ui_check(string $label, string $value, string $state, string $todo = ''): void
