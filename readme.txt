@@ -4,7 +4,7 @@ Tags: woocommerce, chatbot, ai, voice, product search
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 0.28.0
+Stable tag: 0.28.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,7 @@ An AI sales agent for WooCommerce that shoppers can call or chat with. Sells fro
 
 Most online shops have a "Contact us" page. Very few have someone who answers. Parla is an AI sales agent that lives on your WooCommerce shop: a shopper taps Call and asks out loud, or types, and gets an answer from your own catalogue, puts the right item in the cart, and tracks their order.
 
-**Try it before installing anything:** [a demo shop with Parla on it](https://askparla.com/demo?utm_source=wporg). **Free to start, no card:** [create your account at askparla.com](https://askparla.com/account/signup?utm_source=wporg), the shop key is shown straight away. Every plan starts with 14 days free, and the Free plan (50 conversations a month) stays free for good.
+**Try it before installing anything:** [a demo shop with Parla on it](https://askparla.com/demo?utm_source=wporg). **Free to start, no card:** [create your account at askparla.com](https://askparla.com/account/signup?utm_source=wporg) and the shop key is shown straight away. You get 14 days of a full plan, then the Free plan, 50 conversations a month, for as long as you like.
 
 Parla adds a chat to your store that opens on a choice: talk, or type. It sells first and handles the rest of the order lifecycle after.
 
@@ -31,15 +31,25 @@ It speaks eight languages, follows the shopper's light or dark setting, and wear
 
 Nothing is invented to make a sale: scarcity is only ever mentioned when your stock says so, and the assistant never offers a discount, because it has no way to make one. It says it is an AI, in the chat and at the start of every call, and when it does not know, it says so and hands over to your team with a ticket number.
 
-Three plans from 19 EUR a month, no commitment, with the extra conversations capped by default at the price of your plan. Full details on [the pricing page](https://askparla.com/pricing?utm_source=wporg).
+= In your WordPress admin =
+
+Everything lives under WooCommerce -> Parla, in three places:
+
+* **Overview:** the sales the assistant helped with over the last 30 days, week by week, counted from your own WooCommerce orders. Below that, messages per day, what shoppers asked for, and a storefront check that tells you what the chat on your shop is actually running.
+* **Reports:** what shoppers searched for and did not find, questions your pages did not answer, answers marked unhelpful, and the people waiting for a restock. Long waiting lists are folded by product, with a search to find one address.
+* **Settings:** one page per job. Look, Assistant and First screen change what shoppers see, with a live preview beside them. Voice sets up calls. Knowledge & team holds your policies, sizes and opening hours. Connection holds the shop key.
+
+= Plans =
+
+The Free plan includes 50 conversations a month, standard voice calls and "Powered by Parla" under the chat. Three paid plans start at 19 EUR a month with no commitment; extra conversations are capped by default at the price of your plan. Full details are on [the pricing page](https://askparla.com/pricing?utm_source=wporg).
 
 == Installation ==
 
 1. Install and activate the plugin.
-2. Create your account at [askparla.com](https://askparla.com/account/signup?utm_source=wporg): your shop key is shown straight away. The first 14 days are free, with no card, and the Free plan (50 conversations a month) costs nothing after that. The plugin opens its own page once after activation, with the same link.
-3. In WordPress, go to WooCommerce -> Parla, paste the key under Connection, then press "Connect store". Each shop has its own key.
+2. Create your account at [askparla.com](https://askparla.com/account/signup?utm_source=wporg): your shop key is shown straight away. It is free to start, with no card: 14 days of a full plan, then the Free plan, 50 conversations a month. The plugin opens its own page once after activation, with the same link.
+3. In WordPress, go to WooCommerce -> Parla -> Settings -> Connection, paste the key, then press "Connect store". Each shop has its own key.
 
-The Status tab tells you what your storefront is actually using, which is the fastest way to see whether a setting reached the server.
+The storefront check at the bottom of the Overview shows what your storefront is actually running, which is the fastest way to see whether a setting reached the server.
 
 == Frequently Asked Questions ==
 
@@ -57,7 +67,7 @@ The shopper's browser does the speech, not us: it turns their voice into text an
 
 = Can I make it match my site's dark mode? =
 
-Appearance -> Light or dark. Auto follows whatever the shopper has their own device set to, which suits most shops; pin it if your storefront is only ever one or the other.
+Settings -> Look -> Light or dark. Auto follows whatever the shopper has their own device set to, which suits most shops; pin it if your storefront is only ever one or the other.
 
 == External services ==
 
@@ -73,7 +83,7 @@ What is sent, and when:
 * **When a shopper opens the chat and writes or speaks.** What they type or say, a random conversation id, the page they are on, and their browser's language. Nothing is sent if a visitor loads the page and never uses the chat, beyond the script request above.
 * **When a shopper asks about an order.** The order number and the email address they type, so the order can be confirmed as theirs before anything is shown. Addresses are masked before the AI model sees them.
 * **When a shopper leaves an email to be told about a restock, or about something you do not sell.** Their address passes through Parla and is written straight back into your own site, where you can read the list and remove anyone from it (WooCommerce &rarr; Parla &rarr; Reports). Parla keeps only the product or the phrase they are waiting on, never the address. The email, when the moment comes, is sent by your site from your own address.
-* **When you open WooCommerce &rarr; Parla in your admin.** The page asks Parla for this shop's figures and its saved settings, and the live preview loads the chat script so you can see your changes; that preview counts as one conversation against your plan, and it is seeded with your own first name from your WordPress profile so the greeting looks right. On the Voice tab, if your plan includes premium voice, your browser also asks Parla for the list of voices you may choose from and plays a sample clip from Parla's servers when you press play on one.
+* **When you open WooCommerce &rarr; Parla in your admin.** The page asks Parla for this shop's figures and its saved settings, and the live preview loads the chat script so you can see your changes; that preview counts as one conversation against your plan, and it is seeded with your own first name from your WordPress profile so the greeting looks right. On Settings -> Voice, if your plan includes premium voice, your browser also asks Parla for the list of voices you may choose from and plays a sample clip from Parla's servers when you press play on one.
 * **When you press "Connect store".** Your site address and your Parla settings, and the plugin creates a WooCommerce REST API key so Parla can read your catalogue and, when a shopper has proved an order is theirs, that order. Deleting the plugin removes that key.
 
 Parla passes conversation text to Anthropic (Claude) to write the answers. When premium voice is switched on, the audio of a call also goes to Deepgram (speech recognition) and Cartesia (the voice). The privacy policy above lists every subprocessor and where each one processes data.
@@ -88,8 +98,16 @@ To count the sales it helps with, the chat sets two first-party cookies on your 
 2. Where is my order? It asks for the order number and the email first, then gives the carrier's tracking link and the delivery date.
 3. Returns, delivery and care questions are answered from the policies the shop wrote, never made up.
 4. On a phone the chat takes the whole screen. Asked for a colour, it shows everything the shop has in it, with what is left in stock.
+5. The Overview in your admin: sales the assistant helped with, week by week, the setup steps still to do, and messages per day.
+6. Reports: what shoppers looked for and did not find, and restock waiting lists folded by product.
+7. Settings -> Look: your colours, light or dark, and the button language, with a live preview of the chat.
 
 == Changelog ==
+
+= 0.28.1 =
+* The welcome card and the Connection page say what happens after the 14 days: the account moves to the Free plan, 50 conversations a month
+* Waiting lists say how long each person has been waiting ("waiting 3 days")
+* New screenshots of the Overview, Reports and Settings pages
 
 = 0.28.0 =
 * Once the assistant has sold something for your shop, the Overview asks, once, whether you would leave a review on WordPress.org. "Not now" puts it away for good

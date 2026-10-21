@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       AskParla AI Shopping Assistant for WooCommerce
  * Description:       AI shopping and order-support chat for your store: product search, order tracking, address changes and returns.
- * Version:           0.28.0
+ * Version:           0.28.1
  * Requires at least: 6.5
  * Requires PHP:      8.0
  * Requires Plugins:  woocommerce
@@ -22,7 +22,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('PARLA_VERSION', '0.28.0');
+define('PARLA_VERSION', '0.28.1');
 define('PARLA_OPTION', 'parla_settings');
 
 /**

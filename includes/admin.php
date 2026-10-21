@@ -648,7 +648,7 @@ function parla_ui_overview(array $s): void
         <section class="aa-card aa-welcome">
             <span class="aa-eyebrow"><?php esc_html_e('Welcome', 'askparla-ai-shopping-assistant'); ?></span>
             <h2><?php esc_html_e('Connect your store to meet your sales assistant', 'askparla-ai-shopping-assistant'); ?></h2>
-            <p><?php esc_html_e('Two minutes: create your Parla account (the first 14 days are free, no card), copy the shop key it shows you, paste it here. Once connected, this page shows the sales it helps with, what shoppers ask for, and what they could not find.', 'askparla-ai-shopping-assistant'); ?></p>
+            <p><?php esc_html_e('Two minutes: create your Parla account (free, no card: 14 days of a full plan, then the Free plan, 50 conversations a month), copy the shop key it shows you, paste it here. Once connected, this page shows the sales it helps with, what shoppers ask for, and what they could not find.', 'askparla-ai-shopping-assistant'); ?></p>
             <p class="aa-actions">
                 <a class="aa-btn aa-btn-primary" href="<?php echo esc_url(parla_site_url('signup')); ?>" target="_blank" rel="noopener"><?php esc_html_e('Create your free account', 'askparla-ai-shopping-assistant'); ?></a>
                 <button type="button" class="aa-btn aa-btn-ghost" data-aa-go="connection"><?php esc_html_e('I have my shop key', 'askparla-ai-shopping-assistant'); ?></button>
@@ -1265,7 +1265,7 @@ function parla_ui_tab_connection(array $s, bool $connected): void
 {
     parla_ui_section(__('Connection', 'askparla-ai-shopping-assistant'), __('The key that links this shop to your Parla account.', 'askparla-ai-shopping-assistant'), function () use ($s, $connected) {
         if (!$connected) {
-            parla_ui_row(__('No account yet?', 'askparla-ai-shopping-assistant'), __('The first 14 days are free, with no card. The key for this shop is shown as soon as the account exists.', 'askparla-ai-shopping-assistant'), function () {
+            parla_ui_row(__('No account yet?', 'askparla-ai-shopping-assistant'), __('Free, with no card: 14 days of a full plan, then the Free plan, 50 conversations a month, for as long as you like. The key for this shop is shown as soon as the account exists.', 'askparla-ai-shopping-assistant'), function () {
                 printf(
                     '<a class="aa-btn aa-btn-primary" href="%s" target="_blank" rel="noopener">%s</a>',
                     esc_url(parla_site_url('signup')),

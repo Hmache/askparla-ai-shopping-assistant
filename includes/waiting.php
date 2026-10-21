@@ -248,8 +248,8 @@ function parla_ui_waiting(string $kind, string $title, string $blurb, string $em
                                     <small class="aa-muted">
                                         <?php
                                         echo esc_html(sprintf(
-                                            /* translators: %s: how long ago, e.g. "3 days" */
-                                            __('since %s', 'askparla-ai-shopping-assistant'),
+                                            /* translators: %s: how long they have been waiting, e.g. "3 days" */
+                                            __('waiting %s', 'askparla-ai-shopping-assistant'),
                                             human_time_diff(strtotime($list['since'] . ' UTC'), time())
                                         ));
                                         ?>

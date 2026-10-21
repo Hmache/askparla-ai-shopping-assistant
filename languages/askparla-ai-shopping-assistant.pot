@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: AskParla AI Shopping Assistant for WooCommerce 0.28.0\n"
+"Project-Id-Version: AskParla AI Shopping Assistant for WooCommerce 0.28.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/plugin\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-21T17:33:49+00:00\n"
+"POT-Creation-Date: 2026-10-21T18:53:36+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: askparla-ai-shopping-assistant\n"
@@ -403,7 +403,7 @@ msgid "Connect your store to meet your sales assistant"
 msgstr ""
 
 #: includes/admin.php:651
-msgid "Two minutes: create your Parla account (the first 14 days are free, no card), copy the shop key it shows you, paste it here. Once connected, this page shows the sales it helps with, what shoppers ask for, and what they could not find."
+msgid "Two minutes: create your Parla account (free, no card: 14 days of a full plan, then the Free plan, 50 conversations a month), copy the shop key it shows you, paste it here. Once connected, this page shows the sales it helps with, what shoppers ask for, and what they could not find."
 msgstr ""
 
 #: includes/admin.php:653
@@ -1196,7 +1196,7 @@ msgid "No account yet?"
 msgstr ""
 
 #: includes/admin.php:1268
-msgid "The first 14 days are free, with no card. The key for this shop is shown as soon as the account exists."
+msgid "Free, with no card: 14 days of a full plan, then the Free plan, 50 conversations a month, for as long as you like. The key for this shop is shown as soon as the account exists."
 msgstr ""
 
 #: includes/admin.php:1272
@@ -1479,10 +1479,10 @@ msgid_plural "%1$s people waiting for %2$s things"
 msgstr[0] ""
 msgstr[1] ""
 
-#. translators: %s: how long ago, e.g. "3 days"
+#. translators: %s: how long they have been waiting, e.g. "3 days"
 #: includes/waiting.php:252
 #, php-format
-msgid "since %s"
+msgid "waiting %s"
 msgstr ""
 
 #: includes/waiting.php:265
