@@ -4,7 +4,7 @@ Tags: woocommerce, chatbot, ai, voice, product search
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 0.26.2
+Stable tag: 0.27.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -90,6 +90,12 @@ To count the sales it helps with, the chat sets two first-party cookies on your 
 4. On a phone the chat takes the whole screen. Asked for a colour, it shows everything the shop has in it, with what is left in stock.
 
 == Changelog ==
+
+= 0.27.0 =
+* Parla's screen is regrouped into Overview, Reports and Settings. Settings has a page per job: Look, Assistant, First screen, Voice, Knowledge & team and Connection, with the live preview beside the ones that change the chat
+* The Overview shows your assisted sales week by week, and messages per day once the Parla service sends them
+* Waiting lists fold by product: each shows its count, five addresses, and the rest in a box you can search, so a list of hundreds stays short
+* Waiting lists show even when the Parla figures cannot be loaded, since they are kept on your own site
 
 = 0.26.2 =
 * The sizes box is now "Fit and compatibility": besides clothes and shoe sizes, it covers which models a case, charger or spare part works with, so the assistant never guesses whether something fits

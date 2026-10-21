@@ -326,6 +326,7 @@ function parla_ui_sales(): void
                     </div>
                 <?php endif; ?>
             </div>
+            <?php parla_ui_weeks_chart((array) ($r['weeks'] ?? [])); ?>
         <?php endif; ?>
         <p class="aa-fine">
             <?php esc_html_e('Paid orders, refunds taken off. Counted here from your own WooCommerce orders; nothing about them is sent anywhere.', 'askparla-ai-shopping-assistant'); ?>
@@ -333,6 +334,124 @@ function parla_ui_sales(): void
                 esc_html_e(' Only your latest 3,000 orders are counted.', 'askparla-ai-shopping-assistant');
             } ?>
         </p>
+    </section>
+    <?php
+}
+
+/**
+ * A rounded top for an axis: 112 becomes 120, 1,240 becomes 1,500, so the bars never touch the top
+ * and the gridline labels are numbers a person would pick.
+ */
+function parla_ui_nice_max(float $max): float
+{
+    if ($max <= 0) {
+        return 1.0;
+    }
+    $step = 10 ** floor(log10($max));
+    foreach ([1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10] as $m) {
+        if ($m * $step >= $max) {
+            return $m * $step;
+        }
+    }
+    return 10 * $step;
+}
+
+/**
+ * The assisted sales, one bar per calendar week, under the 30-day total. Only the best week and the
+ * current one carry their figure; every bar says its own on hover and to a screen reader.
+ */
+function parla_ui_weeks_chart(array $weeks): void
+{
+    if (count($weeks) < 2) {
+        return;
+    }
+    $top = parla_ui_nice_max((float) max($weeks));
+    $best = array_search(max($weeks), $weeks, true);
+    $now = array_key_last($weeks);
+    ?>
+    <div class="aa-chart">
+        <span class="aa-chart-title"><?php esc_html_e('By week', 'askparla-ai-shopping-assistant'); ?></span>
+        <ul class="aa-bars is-weeks" data-aa-bars>
+            <?php foreach ($weeks as $monday => $value) :
+                $label = $monday === $now
+                    ? __('This week', 'askparla-ai-shopping-assistant')
+                    /* translators: %s: the Monday a week starts on, e.g. "6 Oct" */
+                    : sprintf(__('Week of %s', 'askparla-ai-shopping-assistant'), date_i18n('j M', strtotime($monday . ' 12:00')));
+                $money = parla_ui_money((float) $value);
+                ?>
+                <li data-tip="<?php echo esc_attr($label . ' · ' . $money); ?>">
+                    <span class="aa-bar-val"<?php echo ($monday === $best || $monday === $now) ? '' : ' aria-hidden="true" style="visibility:hidden"'; ?>><?php echo esc_html($money); ?></span>
+                    <span class="aa-bar" style="height:<?php echo esc_attr((string) round($value / $top * 100, 1)); ?>%"></span>
+                    <span class="aa-sr"><?php echo esc_html($label . ': ' . $money); ?></span>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+        <div class="aa-weeks-x" aria-hidden="true">
+            <?php foreach (array_keys($weeks) as $monday) : ?>
+                <span><?php echo esc_html($monday === $now ? __('This week', 'askparla-ai-shopping-assistant') : date_i18n('j M', strtotime($monday . ' 12:00'))); ?></span>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <?php
+}
+
+/**
+ * Messages a day for the last 30 days. Drawn only when the Parla server sends the days: an older
+ * server sends only the totals, and then the tile above says enough.
+ *
+ * @param array<int, array{date?: string, messages?: int}> $days Oldest first.
+ */
+function parla_ui_days_chart(array $days, int $total): void
+{
+    $days = array_values(array_filter($days, 'is_array'));
+    if (count($days) < 7) {
+        return;
+    }
+    $counts = array_map(static fn(array $d): int => (int) ($d['messages'] ?? 0), $days);
+    $top = parla_ui_nice_max((float) max($counts));
+    $peak = array_search(max($counts), $counts, true);
+    $day = static fn(int $i): string => date_i18n('D j M', strtotime(((string) ($days[$i]['date'] ?? '')) . ' 12:00'));
+    ?>
+    <section class="aa-card">
+        <div class="aa-card-head">
+            <h3><?php esc_html_e('Messages per day', 'askparla-ai-shopping-assistant'); ?></h3>
+            <p class="aa-muted">
+                <?php
+                echo esc_html(sprintf(
+                    /* translators: 1: messages in the last 30 days, 2: the busiest day, 3: messages that day */
+                    __('Last 30 days: %1$s in total. Busiest day %2$s, with %3$s.', 'askparla-ai-shopping-assistant'),
+                    number_format_i18n($total),
+                    $day((int) $peak),
+                    number_format_i18n($counts[$peak])
+                ));
+                ?>
+            </p>
+        </div>
+        <div class="aa-chart aa-chart-days">
+            <div class="aa-chart-y" aria-hidden="true">
+                <span><?php echo esc_html(number_format_i18n($top)); ?></span>
+                <span><?php echo esc_html(number_format_i18n($top / 2)); ?></span>
+                <span>0</span>
+            </div>
+            <div class="aa-chart-plot">
+                <ul class="aa-bars is-days" data-aa-bars>
+                    <?php foreach ($counts as $i => $n) :
+                        /* translators: 1: a day, 2: messages that day */
+                        $tip = sprintf(_n('%1$s: %2$s message', '%1$s: %2$s messages', $n, 'askparla-ai-shopping-assistant'), $day($i), number_format_i18n($n));
+                        ?>
+                        <li data-tip="<?php echo esc_attr($tip); ?>">
+                            <span class="aa-bar" style="height:<?php echo esc_attr((string) round($n / $top * 100, 1)); ?>%"></span>
+                            <span class="aa-sr"><?php echo esc_html($tip); ?></span>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+                <div class="aa-chart-x" aria-hidden="true">
+                    <span><?php echo esc_html(date_i18n('j M', strtotime(((string) ($days[0]['date'] ?? '')) . ' 12:00'))); ?></span>
+                    <span><?php echo esc_html(date_i18n('j M', strtotime(((string) ($days[(int) floor(count($days) / 2)]['date'] ?? '')) . ' 12:00'))); ?></span>
+                    <span><?php esc_html_e('Today', 'askparla-ai-shopping-assistant'); ?></span>
+                </div>
+            </div>
+        </div>
     </section>
     <?php
 }
@@ -442,10 +561,10 @@ function parla_ui_setup(array $s): void
     $steps = [
         ['done' => true, 'label' => __('Connect your shop', 'askparla-ai-shopping-assistant'), 'tab' => 'connection', 'why' => ''],
         ['done' => (int) $s['voice_calls'] === 1, 'label' => __('Let shoppers call the assistant', 'askparla-ai-shopping-assistant'), 'tab' => 'voice', 'why' => __('Shoppers who call ask more and buy more.', 'askparla-ai-shopping-assistant')],
-        ['done' => $s['greeting_pages'] !== 'off', 'label' => __('Turn on the greeting bubble', 'askparla-ai-shopping-assistant'), 'tab' => 'appearance', 'why' => __('Most shoppers never open a chat nobody offered.', 'askparla-ai-shopping-assistant')],
-        ['done' => trim((string) $s['policy_excerpts']) !== '', 'label' => __('Add your policy notes', 'askparla-ai-shopping-assistant'), 'tab' => 'assistant', 'why' => __('Without them it says "I don\'t know" to the most common questions.', 'askparla-ai-shopping-assistant')],
-        ['done' => parla_parse_hours((string) $s['support_hours']) !== [], 'label' => __('Say when your team replies', 'askparla-ai-shopping-assistant'), 'tab' => 'assistant', 'why' => __('So a handoff tells the shopper when to expect an answer.', 'askparla-ai-shopping-assistant')],
-        ['done' => strtolower((string) $s['brand_color']) !== '#111827', 'label' => __('Put it in your colours', 'askparla-ai-shopping-assistant'), 'tab' => 'appearance', 'why' => __('It should look like part of your shop.', 'askparla-ai-shopping-assistant')],
+        ['done' => $s['greeting_pages'] !== 'off', 'label' => __('Turn on the greeting bubble', 'askparla-ai-shopping-assistant'), 'tab' => 'first', 'why' => __('Most shoppers never open a chat nobody offered.', 'askparla-ai-shopping-assistant')],
+        ['done' => trim((string) $s['policy_excerpts']) !== '', 'label' => __('Add your policy notes', 'askparla-ai-shopping-assistant'), 'tab' => 'knowledge', 'why' => __('Without them it says "I don\'t know" to the most common questions.', 'askparla-ai-shopping-assistant')],
+        ['done' => parla_parse_hours((string) $s['support_hours']) !== [], 'label' => __('Say when your team replies', 'askparla-ai-shopping-assistant'), 'tab' => 'knowledge', 'why' => __('So a handoff tells the shopper when to expect an answer.', 'askparla-ai-shopping-assistant')],
+        ['done' => strtolower((string) $s['brand_color']) !== '#111827', 'label' => __('Put it in your colours', 'askparla-ai-shopping-assistant'), 'tab' => 'look', 'why' => __('It should look like part of your shop.', 'askparla-ai-shopping-assistant')],
     ];
     $done = count(array_filter($steps, fn ($st) => $st['done']));
     if ($done === count($steps)) {
@@ -513,9 +632,11 @@ function parla_ui_overview(array $s): void
         </a>
     </div>
 
-    <?php parla_ui_setup($s); ?>
-
-    <?php parla_ui_sales(); ?>
+    <?php // The money first and wide; the setup list beside it until there is nothing left to do. ?>
+    <div class="aa-duo">
+        <?php parla_ui_sales(); ?>
+        <?php parla_ui_setup($s); ?>
+    </div>
 
     <?php if (!$report['ok']) : ?>
         <div class="aa-card aa-alert">
@@ -569,6 +690,9 @@ function parla_ui_overview(array $s): void
         ?>
     </div>
 
+    <?php parla_ui_days_chart((array) ($m['daily'] ?? []), (int) ($m['last_30_days'] ?? 0)); ?>
+
+    <div class="aa-duo">
     <?php $waiting = $d['waiting_list'] ?? []; if ($waiting) : ?>
         <section class="aa-card aa-waiting">
             <div class="aa-card-head">
@@ -618,6 +742,7 @@ function parla_ui_overview(array $s): void
             </div>
         </section>
     <?php endif; ?>
+    </div>
 
     <?php parla_ui_health($s);
 }
@@ -628,10 +753,11 @@ function parla_ui_overview(array $s): void
 function parla_ui_tab_reports(array $s): void
 {
     $d = parla_insights($s)['data'] ?? [];
+    // The waiting lists live on this site, not on Parla: they show even when the figures cannot load.
     if (!$d) {
         printf('<p class="aa-empty">%s</p>', esc_html__('Nothing to report yet. Come back once shoppers have used the chat.', 'askparla-ai-shopping-assistant'));
-        return;
     }
+    if ($d) :
     ?>
     <div class="aa-grid-2">
         <section class="aa-card">
@@ -651,10 +777,12 @@ function parla_ui_tab_reports(array $s): void
     </div>
 
     <?php
+    endif;
     // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- a flag that only decides whether a "done" notice is printed; nothing is read from it.
     if (isset($_GET['parla_forgot'])) {
         printf('<div class="notice notice-success is-dismissible"><p>%s</p></div>', esc_html__('Removed from the list.', 'askparla-ai-shopping-assistant'));
     }
+    echo '<div class="aa-grid-2 aa-waitlists">';
     parla_ui_waiting(
         'restock',
         __('Waiting for a restock', 'askparla-ai-shopping-assistant'),
@@ -666,6 +794,11 @@ function parla_ui_tab_reports(array $s): void
         __('Asked for something you do not sell', 'askparla-ai-shopping-assistant'),
         __('They agreed to hear from you if it ever arrives. Nothing was promised: the assistant only ever says it will get in touch.', 'askparla-ai-shopping-assistant'),
         __('Nobody is waiting on something you do not carry.', 'askparla-ai-shopping-assistant')
+    );
+    echo '</div>';
+    printf(
+        '<p class="aa-muted aa-waiting-note">%s</p>',
+        esc_html__('These addresses are on your site, not on Parla. Each one is used for one message and deleted when it goes out.', 'askparla-ai-shopping-assistant')
     );
     ?>
 
@@ -739,7 +872,8 @@ function parla_ui_tab_reports(array $s): void
     <?php
 }
 
-function parla_ui_tab_assistant(array $s): void
+/** Knowledge & team: the facts it may repeat, how it reads orders, and who takes over. */
+function parla_ui_tab_knowledge(array $s): void
 {
     parla_ui_section(__('What it may tell shoppers', 'askparla-ai-shopping-assistant'), __('The assistant only repeats facts you give it here or on your published pages. It never guesses a policy.', 'askparla-ai-shopping-assistant'), function () use ($s) {
         parla_ui_row(__('Return window', 'askparla-ai-shopping-assistant'), __('Days after delivery a shopper can send something back.', 'askparla-ai-shopping-assistant'), function () use ($s) {
@@ -802,7 +936,8 @@ function parla_ui_tab_assistant(array $s): void
     });
 }
 
-function parla_ui_tab_appearance(array $s): void
+/** Look: whether the chat shows at all, and the colours, theme and language it wears. */
+function parla_ui_tab_look(array $s): void
 {
     parla_ui_section(__('Your shop', 'askparla-ai-shopping-assistant'), '', function () use ($s) {
         parla_ui_master(__('Chat on the storefront', 'askparla-ai-shopping-assistant'), __('Hide it without disconnecting, for example while you set things up.', 'askparla-ai-shopping-assistant'), function () use ($s) {
@@ -813,6 +948,12 @@ function parla_ui_tab_appearance(array $s): void
         }, 'aa_name');
     });
 
+    parla_ui_brand($s);
+}
+
+/** Assistant: its name, its status line and the way it talks. */
+function parla_ui_tab_agent(array $s): void
+{
     parla_ui_section(__('Who it is', 'askparla-ai-shopping-assistant'), __('Name and status line preview as you type. Whatever you call it, it still tells shoppers it is an AI.', 'askparla-ai-shopping-assistant'), function () use ($s) {
         parla_ui_row(__('Name', 'askparla-ai-shopping-assistant'), __('Shown in the chat and spoken on calls. Empty means no name.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             printf(
@@ -863,7 +1004,11 @@ function parla_ui_tab_appearance(array $s): void
             );
         }, 'aa_agent_notes');
     });
+}
 
+/** The Brand section of Look. */
+function parla_ui_brand(array $s): void
+{
     parla_ui_section(__('Brand', 'askparla-ai-shopping-assistant'), __('The chat wears your colours, so it looks like part of your shop.', 'askparla-ai-shopping-assistant'), function () use ($s) {
         parla_ui_row(__('Colours', 'askparla-ai-shopping-assistant'), __('Main is for buttons and the header. Text on main must be readable on it.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             echo '<div class="aa-colors">';
@@ -900,7 +1045,16 @@ function parla_ui_tab_appearance(array $s): void
         }, 'aa_locale');
     });
 
-    parla_ui_section(__('First impression', 'askparla-ai-shopping-assistant'), __('What a shopper sees before they ask anything.', 'askparla-ai-shopping-assistant'), function () use ($s) {
+}
+
+/** First screen: the greeting bubble outside the chat, then what an empty chat offers. */
+function parla_ui_tab_first(array $s): void
+{
+    parla_ui_section(__('Before they open the chat', 'askparla-ai-shopping-assistant'), __('The greeting bubble appears once per visit, next to the chat button.', 'askparla-ai-shopping-assistant'), function () use ($s) {
+        parla_ui_greeting_row($s);
+    });
+
+    parla_ui_section(__('When the chat opens', 'askparla-ai-shopping-assistant'), __('What a shopper sees before they ask anything.', 'askparla-ai-shopping-assistant'), function () use ($s) {
         parla_ui_row(__('Greet customers by name', 'askparla-ai-shopping-assistant'), __('Signed-in customers see "Hi Sarah!". Everyone else sees "Hi!".', 'askparla-ai-shopping-assistant'), function () use ($s) {
             parla_ui_switch('greet_customers', !empty($s['greet_customers']), __('Use the customer\'s first name', 'askparla-ai-shopping-assistant'));
         });
@@ -944,6 +1098,12 @@ function parla_ui_tab_appearance(array $s): void
                 esc_html__('Add an opener', 'askparla-ai-shopping-assistant')
             );
         });
+    });
+}
+
+/** The greeting bubble row: its words, how long it waits and on which pages. */
+function parla_ui_greeting_row(array $s): void
+{
         parla_ui_row(__('Greeting bubble', 'askparla-ai-shopping-assistant'), __('Shown once per visit, next to the chat button. Empty uses our hello, translated.', 'askparla-ai-shopping-assistant'), function () use ($s) {
             printf(
                 '<input name="greeting_text" id="aa_greeting" type="text" class="aa-in" placeholder="%s" value="%s">',
@@ -964,7 +1124,6 @@ function parla_ui_tab_appearance(array $s): void
             ], (string) $s['greeting_pages']);
             echo '</div>';
         }, 'aa_greeting');
-    });
 }
 
 function parla_ui_tab_voice(array $s): void
@@ -1278,20 +1437,30 @@ function parla_render_admin(): void
             }
         }
     }
+    // Three places at the top: the numbers, the lists behind them, and everything that can be changed.
     $tabs = [
         'overview' => __('Overview', 'askparla-ai-shopping-assistant'),
         'reports' => __('Reports', 'askparla-ai-shopping-assistant'),
-        // The two tabs with a live preview sit together, ahead of the ones that only hold text.
-        'appearance' => __('Widget', 'askparla-ai-shopping-assistant'),
-        'voice' => __('Voice', 'askparla-ai-shopping-assistant'),
-        'assistant' => __('Knowledge', 'askparla-ai-shopping-assistant'),
-        'connection' => __('Connection', 'askparla-ai-shopping-assistant'),
+        'settings' => __('Settings', 'askparla-ai-shopping-assistant'),
+    ];
+    /*
+     * Settings, grouped by what the merchant is trying to do rather than by where the field is stored.
+     * The four that change what the chat looks like come first, since those show the live preview.
+     */
+    $pages = [
+        'look' => [__('Look', 'askparla-ai-shopping-assistant'), __('Colours, theme, language', 'askparla-ai-shopping-assistant')],
+        'assistant' => [__('Assistant', 'askparla-ai-shopping-assistant'), __('Name, status, manner', 'askparla-ai-shopping-assistant')],
+        'first' => [__('First screen', 'askparla-ai-shopping-assistant'), __('Greeting, openers, products', 'askparla-ai-shopping-assistant')],
+        'voice' => [__('Voice', 'askparla-ai-shopping-assistant'), __('Calls and voices', 'askparla-ai-shopping-assistant')],
+        'knowledge' => [__('Knowledge & team', 'askparla-ai-shopping-assistant'), __('Policies, orders, handoffs', 'askparla-ai-shopping-assistant')],
+        'connection' => [__('Connection', 'askparla-ai-shopping-assistant'), __('Shop key', 'askparla-ai-shopping-assistant')],
     ];
     ?>
     <div class="wrap aa-admin">
         <h1 class="screen-reader-text"><?php esc_html_e('Parla', 'askparla-ai-shopping-assistant'); ?></h1>
         <?php settings_errors('parla'); ?>
 
+        <div class="aa-head">
         <header class="aa-top">
             <span class="aa-mark" aria-hidden="true">
                 <svg viewBox="22 7 70 92" width="17" height="22"><path d="M24 42A33 33 0 1 1 57 75H43v12.5a9.5 9.5 0 0 1-19 0ZM39.1 38.3a4.3 4.3 0 0 1 8.6 0v7.4a4.3 4.3 0 0 1-8.6 0ZM52.7 30.8a4.3 4.3 0 0 1 8.6 0v22.4a4.3 4.3 0 0 1-8.6 0ZM66.3 35.8a4.3 4.3 0 0 1 8.6 0v12.4a4.3 4.3 0 0 1-8.6 0Z" fill="currentColor" fill-rule="evenodd"/></svg>
@@ -1319,18 +1488,29 @@ function parla_render_admin(): void
                 </button>
             <?php endforeach; ?>
         </nav>
+        </div>
 
         <form method="post" class="aa-form" id="aa-form">
             <?php wp_nonce_field('parla_save', 'parla_nonce'); ?>
             <?php // Pressing Enter in a field submits with the FIRST submit button in the form. Make that plain Save, never Reconnect or Disconnect. ?>
             <button type="submit" class="aa-default-submit" tabindex="-1" aria-hidden="true"></button>
             <div class="aa-layout">
+                <nav class="aa-subnav" id="aa-subnav" aria-label="<?php esc_attr_e('Settings pages', 'askparla-ai-shopping-assistant'); ?>" hidden>
+                    <?php foreach ($pages as $slug => [$label, $hint]) : ?>
+                        <button type="button" class="aa-subtab" id="aa-tab-btn-<?php echo esc_attr($slug); ?>" data-tab="<?php echo esc_attr($slug); ?>" aria-controls="aa-tab-<?php echo esc_attr($slug); ?>">
+                            <?php echo esc_html($label); ?>
+                            <small><?php echo esc_html($hint); ?></small>
+                        </button>
+                    <?php endforeach; ?>
+                </nav>
                 <div class="aa-main">
                     <div class="aa-panel" id="aa-tab-overview" role="tabpanel" aria-labelledby="aa-tab-btn-overview" hidden><?php parla_ui_overview($s); ?></div>
                     <div class="aa-panel" id="aa-tab-reports" role="tabpanel" aria-labelledby="aa-tab-btn-reports" hidden><?php parla_ui_tab_reports($s); ?></div>
-                    <div class="aa-panel" id="aa-tab-assistant" role="tabpanel" aria-labelledby="aa-tab-btn-assistant" hidden><?php parla_ui_tab_assistant($s); ?></div>
-                    <div class="aa-panel" id="aa-tab-appearance" role="tabpanel" aria-labelledby="aa-tab-btn-appearance" hidden><?php parla_ui_tab_appearance($s); ?></div>
+                    <div class="aa-panel" id="aa-tab-look" role="tabpanel" aria-labelledby="aa-tab-btn-look" hidden><?php parla_ui_tab_look($s); ?></div>
+                    <div class="aa-panel" id="aa-tab-assistant" role="tabpanel" aria-labelledby="aa-tab-btn-assistant" hidden><?php parla_ui_tab_agent($s); ?></div>
+                    <div class="aa-panel" id="aa-tab-first" role="tabpanel" aria-labelledby="aa-tab-btn-first" hidden><?php parla_ui_tab_first($s); ?></div>
                     <div class="aa-panel" id="aa-tab-voice" role="tabpanel" aria-labelledby="aa-tab-btn-voice" hidden><?php parla_ui_tab_voice($s); ?></div>
+                    <div class="aa-panel" id="aa-tab-knowledge" role="tabpanel" aria-labelledby="aa-tab-btn-knowledge" hidden><?php parla_ui_tab_knowledge($s); ?></div>
                     <div class="aa-panel" id="aa-tab-connection" role="tabpanel" aria-labelledby="aa-tab-btn-connection" hidden><?php parla_ui_tab_connection($s, $connected); ?></div>
                 </div>
                 <?php parla_ui_preview($s); ?>

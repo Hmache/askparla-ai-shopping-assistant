@@ -13,15 +13,15 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Domain: askparla-ai-shopping-assistant\n"
 
-#: includes/admin.php
+#: includes/admin.php:483
 msgid "Parla account"
 msgstr "Compte Parla"
 
-#: includes/admin.php
+#: includes/admin.php:483
 msgid "paused"
 msgstr "en pause"
 
-#: includes/admin.php
+#: includes/admin.php:484
 msgid "The chat server is up, but your Parla account is paused, so shoppers see a connection error. Choose a plan in your Parla account, or write to us, and it answers again within the minute."
 msgstr "Le serveur du chat fonctionne, mais votre compte Parla est en pause : vos clients voient une erreur de connexion. Choisissez une formule dans votre compte Parla, ou écrivez-nous, et le chat répond de nouveau dans la minute."
 
@@ -46,70 +46,73 @@ msgid "AskParla"
 msgstr "AskParla"
 
 #. translators: %d: the HTTP status code the server returned
-#: includes/admin.php:35
-#: parla.php:955
+#: includes/admin.php:39
+#: parla.php:983
 #, php-format
 msgid "the server answered %d"
 msgstr "le serveur a répondu %d"
 
-#: includes/admin.php:182
+#: includes/admin.php:186
 msgid "Show"
 msgstr "Afficher"
 
-#: includes/admin.php:184
+#: includes/admin.php:188
 msgid "Copied"
 msgstr "Copié"
 
-#: includes/admin.php:184
+#: includes/admin.php:188
 msgid "Copy"
 msgstr "Copier"
 
 #. translators: 1: distinct things asked, 2: how many times in total
-#: includes/admin.php:229
+#: includes/admin.php:233
 #, php-format
 msgid "%1$s different things, asked %2$s times"
 msgstr "%1$s demandes différentes, posées %2$s fois"
 
 #. translators: %s: distinct things asked
-#: includes/admin.php:231
+#: includes/admin.php:235
 #, php-format
 msgid "%s thing asked"
 msgid_plural "%s different things asked"
 msgstr[0] "%s demande"
 msgstr[1] "%s demandes différentes"
 
-#: includes/admin.php:247
-#: includes/admin.php:709
+#: includes/admin.php:251
+#: includes/admin.php:850
+#: includes/waiting.php:280
+#: includes/waiting.php:293
 msgid "Show fewer"
 msgstr "Afficher moins"
 
 #. translators: %s: how many more rows are hidden
-#: includes/admin.php:250
-#: includes/admin.php:712
+#: includes/admin.php:254
+#: includes/admin.php:853
+#: includes/waiting.php:299
 #, php-format
 msgid "Show %s more"
 msgstr "Afficher %s de plus"
 
 #. translators: %s: number of entries shown
-#: includes/admin.php:261
+#: includes/admin.php:265
 #, php-format
 msgid "Showing the busiest %s. The rest are in your Parla dashboard."
 msgstr "Les %s plus fréquentes sont affichées. Les autres sont dans votre espace Parla."
 
-#: includes/admin.php:280
+#: includes/admin.php:284
 msgid "Sales it helped with"
 msgstr "Ventes auxquelles il a contribué"
 
-#: includes/admin.php:281
+#: includes/admin.php:285
 msgid "Last 30 days"
 msgstr "30 derniers jours"
 
-#: includes/admin.php:285
+#: includes/admin.php:289
 msgid "No orders yet from shoppers who talked to the assistant. An order counts when it is placed within 7 days of a chat or a call."
 msgstr "Aucune commande pour l’instant de clients ayant parlé à l’assistant. Une commande compte si elle est passée dans les 7 jours qui suivent un échange écrit ou un appel."
 
 #. translators: 1: number of orders, 2: share of the shop's sales in percent
-#: includes/admin.php:295
+#: includes/admin.php:299
 #, php-format
 msgid "from %1$d order, %2$d%% of your sales"
 msgid_plural "from %1$d orders, %2$d%% of your sales"
@@ -117,7 +120,7 @@ msgstr[0] "sur %1$d commande, %2$d %% de vos ventes"
 msgstr[1] "sur %1$d commandes, %2$d %% de vos ventes"
 
 #. translators: %d: number of items
-#: includes/admin.php:308
+#: includes/admin.php:312
 #, php-format
 msgid "%d item it put in the cart itself"
 msgid_plural "%d items it put in the cart itself"
@@ -125,287 +128,287 @@ msgstr[0] "%d article ajouté au panier par l’assistant"
 msgstr[1] "%d articles ajoutés au panier par l’assistant"
 
 #. translators: %s: average order without the assistant
-#: includes/admin.php:319
+#: includes/admin.php:323
 #, php-format
 msgid "average order, against %s without it"
 msgstr "panier moyen, contre %s sans lui"
 
-#: includes/admin.php:327
+#: includes/admin.php:332
 msgid "Paid orders, refunds taken off. Counted here from your own WooCommerce orders; nothing about them is sent anywhere."
 msgstr "Commandes payées, remboursements déduits. Calculé ici à partir de vos propres commandes WooCommerce ; rien n’en est envoyé ailleurs."
 
-#: includes/admin.php:329
+#: includes/admin.php:334
 msgid " Only your latest 3,000 orders are counted."
 msgstr " Seules vos 3 000 dernières commandes sont prises en compte."
 
-#: includes/admin.php:360
-#: includes/admin.php:367
+#: includes/admin.php:487
+#: includes/admin.php:494
 msgid "Chat server"
 msgstr "Serveur du chat"
 
-#: includes/admin.php:360
+#: includes/admin.php:487
 msgid "unreachable"
 msgstr "injoignable"
 
 #. translators: 1: server address, 2: error
-#: includes/admin.php:362
+#: includes/admin.php:489
 #, php-format
 msgid "%1$s did not answer (%2$s). Shoppers see a connection error until it is back."
 msgstr "%1$s n’a pas répondu (%2$s). Les clients voient une erreur de connexion jusqu’à son retour."
 
-#: includes/admin.php:367
+#: includes/admin.php:494
 msgid "answering"
 msgstr "répond"
 
-#: includes/admin.php:372
-#: includes/admin.php:964
+#: includes/admin.php:499
+#: includes/admin.php:1131
 msgid "Voice calls"
 msgstr "Appels vocaux"
 
-#: includes/admin.php:372
-#: includes/admin.php:397
+#: includes/admin.php:499
+#: includes/admin.php:524
 msgid "on"
 msgstr "activé"
 
 #. translators: %d: the delay in seconds before the greeting appears
-#: includes/admin.php:372
-#: includes/admin.php:395
-#: includes/admin.php:397
+#: includes/admin.php:499
+#: includes/admin.php:522
+#: includes/admin.php:524
 msgid "off"
 msgstr "désactivé"
 
-#: includes/admin.php:373
+#: includes/admin.php:500
 msgid "Switched on here but not live yet: press Save settings."
 msgstr "Activé ici mais pas encore en ligne : cliquez sur Enregistrer les réglages."
 
-#: includes/admin.php:379
+#: includes/admin.php:506
 msgid "Voice quality"
 msgstr "Qualité de la voix"
 
-#: includes/admin.php:379
+#: includes/admin.php:506
 msgid "premium"
 msgstr "premium"
 
-#: includes/admin.php:379
+#: includes/admin.php:506
 msgid "standard"
 msgstr "standard"
 
-#: includes/admin.php:380
+#: includes/admin.php:507
 msgid "Premium is in your plan but paused: this month's minutes are used up, so calls use the standard voice until next month."
 msgstr "La voix premium est incluse dans votre formule mais en pause : les minutes de ce mois sont épuisées, les appels utilisent donc la voix standard jusqu’au mois prochain."
 
-#: includes/admin.php:384
+#: includes/admin.php:511
 msgid "Add to cart from the chat"
 msgstr "Ajout au panier depuis le chat"
 
-#: includes/admin.php:384
+#: includes/admin.php:511
 msgid "available"
 msgstr "disponible"
 
-#: includes/admin.php:384
+#: includes/admin.php:511
 msgid "not available"
 msgstr "indisponible"
 
-#: includes/admin.php:385
+#: includes/admin.php:512
 msgid "The server did not recognise this store as WooCommerce. Reconnect to fix it."
 msgstr "Le serveur n’a pas reconnu cette boutique comme une boutique WooCommerce. Reconnectez-la pour corriger."
 
-#: includes/admin.php:388
-#: includes/admin.php:883
-#: includes/admin.php:884
+#: includes/admin.php:515
+#: includes/admin.php:1036
+#: includes/admin.php:1037
 msgid "Light or dark"
 msgstr "Clair ou sombre"
 
-#: includes/admin.php:389
+#: includes/admin.php:516
 msgid "follows the shopper's device"
 msgstr "suit l’appareil du client"
 
-#: includes/admin.php:389
+#: includes/admin.php:516
 msgid "always dark"
 msgstr "toujours sombre"
 
-#: includes/admin.php:389
+#: includes/admin.php:516
 msgid "always light"
 msgstr "toujours clair"
 
-#: includes/admin.php:393
-#: includes/admin.php:939
+#: includes/admin.php:520
+#: includes/admin.php:1107
 msgid "Greeting bubble"
 msgstr "Bulle d’accueil"
 
 #. translators: %d: the delay in seconds before the greeting appears
-#: includes/admin.php:395
+#: includes/admin.php:522
 #, php-format
 msgid "after %ds"
 msgstr "après %d s"
 
-#: includes/admin.php:397
+#: includes/admin.php:524
 msgid "Greeting customers by name"
 msgstr "Accueil des clients par leur prénom"
 
-#: includes/admin.php:404
+#: includes/admin.php:531
 msgid "Storefront check"
 msgstr "Vérification de la boutique"
 
-#: includes/admin.php:405
+#: includes/admin.php:532
 msgid "What the chat on your shop is running right now"
 msgstr "Ce que le chat de votre boutique utilise en ce moment"
 
 #. translators: %d: how many things still need fixing
-#: includes/admin.php:410
+#: includes/admin.php:537
 #, php-format
 msgid "%d thing to fix"
 msgid_plural "%d things to fix"
 msgstr[0] "%d point à corriger"
 msgstr[1] "%d points à corriger"
 
-#: includes/admin.php:411
+#: includes/admin.php:538
 msgid "All good"
 msgstr "Tout est en ordre"
 
 #. translators: %s: widget script URL
-#: includes/admin.php:419
+#: includes/admin.php:546
 #, php-format
 msgid "Your pages load the chat from %s. After changing anything, reload your shop with a hard refresh."
 msgstr "Vos pages chargent le chat depuis %s. Après une modification, rechargez votre boutique en forçant l’actualisation."
 
-#: includes/admin.php:435
+#: includes/admin.php:562
 msgid "Connect your shop"
 msgstr "Connecter votre boutique"
 
-#: includes/admin.php:436
-#: includes/admin.php:966
+#: includes/admin.php:563
+#: includes/admin.php:1133
 msgid "Let shoppers call the assistant"
 msgstr "Permettre aux clients d’appeler l’assistant"
 
-#: includes/admin.php:436
+#: includes/admin.php:563
 msgid "Shoppers who call ask more and buy more."
 msgstr "Les clients qui appellent posent plus de questions et achètent davantage."
 
-#: includes/admin.php:437
+#: includes/admin.php:564
 msgid "Turn on the greeting bubble"
 msgstr "Activer la bulle d’accueil"
 
-#: includes/admin.php:437
+#: includes/admin.php:564
 msgid "Most shoppers never open a chat nobody offered."
 msgstr "La plupart des clients n’ouvrent jamais un chat que personne ne leur propose."
 
-#: includes/admin.php:438
+#: includes/admin.php:565
 msgid "Add your policy notes"
 msgstr "Ajouter vos conditions"
 
-#: includes/admin.php:438
+#: includes/admin.php:565
 msgid "Without them it says \"I don't know\" to the most common questions."
 msgstr "Sans eux, il répond « je ne sais pas » aux questions les plus fréquentes."
 
-#: includes/admin.php:439
+#: includes/admin.php:566
 msgid "Say when your team replies"
 msgstr "Indiquer quand votre équipe répond"
 
-#: includes/admin.php:439
+#: includes/admin.php:566
 msgid "So a handoff tells the shopper when to expect an answer."
 msgstr "Pour qu’un transfert dise au client quand attendre une réponse."
 
-#: includes/admin.php:440
+#: includes/admin.php:567
 msgid "Put it in your colours"
 msgstr "Lui donner vos couleurs"
 
-#: includes/admin.php:440
+#: includes/admin.php:567
 msgid "It should look like part of your shop."
 msgstr "Il doit avoir l’air de faire partie de votre boutique."
 
-#: includes/admin.php:450
+#: includes/admin.php:577
 msgid "Finish setting up"
 msgstr "Terminer la configuration"
 
-#: includes/admin.php:451
+#: includes/admin.php:578
 msgid "A few minutes each. This card goes away once everything is done."
 msgstr "Quelques minutes chacune. Cette carte disparaît une fois tout terminé."
 
 #. translators: 1: steps done, 2: steps in total
-#: includes/admin.php:454
+#: includes/admin.php:581
 #, php-format
 msgid "%1$d of %2$d done"
 msgstr "%1$d sur %2$d terminées"
 
-#: includes/admin.php:466
+#: includes/admin.php:593
 msgid "Done"
 msgstr "Fait"
 
-#: includes/admin.php:468
+#: includes/admin.php:595
 msgid "Do it"
 msgstr "Le faire"
 
-#: includes/admin.php:482
+#: includes/admin.php:609
 msgid "Welcome"
 msgstr "Bienvenue"
 
-#: includes/admin.php:483
+#: includes/admin.php:610
 msgid "Connect your store to meet your sales assistant"
 msgstr "Connectez votre boutique pour découvrir votre assistant de vente"
 
-#: includes/admin.php:484
+#: includes/admin.php:611
 msgid "Two minutes: create your Parla account (the first 14 days are free, no card), copy the shop key it shows you, paste it here. Once connected, this page shows the sales it helps with, what shoppers ask for, and what they could not find."
 msgstr "Deux minutes : créez votre compte Parla (les 14 premiers jours sont gratuits, sans carte bancaire), copiez la clé de boutique qu’il vous montre, collez-la ici. Une fois la boutique connectée, cette page affiche les ventes auxquelles il contribue, ce que demandent les clients et ce qu’ils n’ont pas trouvé."
 
-#: includes/admin.php:486
+#: includes/admin.php:613
 msgid "Create your free account"
 msgstr "Créer mon compte gratuit"
 
-#: includes/admin.php:487
+#: includes/admin.php:614
 msgid "I have my shop key"
 msgstr "J’ai déjà ma clé de boutique"
 
-#: includes/admin.php:488
+#: includes/admin.php:615
 msgid "See it on a demo shop first"
 msgstr "Le voir d’abord sur une boutique de démonstration"
 
-#: includes/admin.php:1061
+#: includes/admin.php:1228
 msgid "No account yet?"
 msgstr "Pas encore de compte ?"
 
-#: includes/admin.php:1061
+#: includes/admin.php:1228
 msgid "The first 14 days are free, with no card. The key for this shop is shown as soon as the account exists."
 msgstr "Les 14 premiers jours sont gratuits, sans carte bancaire. La clé de cette boutique s’affiche dès que le compte existe."
 
-#: includes/admin.php:1065
+#: includes/admin.php:1232
 msgid "Create your free Parla account"
 msgstr "Créer mon compte Parla gratuit"
 
-#: includes/admin.php:500
+#: includes/admin.php:627
 msgid "How it is going"
 msgstr "Où en est votre assistant"
 
-#: includes/admin.php:501
+#: includes/admin.php:628
 msgid "Everything here is about your shop only."
 msgstr "Tout ce qui figure ici concerne uniquement votre boutique."
 
-#: includes/admin.php:504
+#: includes/admin.php:631
 msgid "Refresh"
 msgstr "Actualiser"
 
 #. translators: %s: the reason the figures could not be loaded
-#: includes/admin.php:515
+#: includes/admin.php:644
 #, php-format
 msgid "The conversation numbers are not available right now (%s). Sales above come from your own orders and are always up to date."
 msgstr "Les chiffres des conversations ne sont pas disponibles pour le moment (%s). Les ventes ci-dessus viennent de vos propres commandes et sont toujours à jour."
 
-#: includes/admin.php:531
+#: includes/admin.php:660
 msgid "Messages"
 msgstr "Messages"
 
 #. translators: 1: conversations today, 2: conversations this week
-#: includes/admin.php:534
+#: includes/admin.php:663
 #, php-format
 msgid "%1$s today, %2$s this week"
 msgstr "%1$s aujourd’hui, %2$s cette semaine"
 
-#: includes/admin.php:538
+#: includes/admin.php:667
 msgid "Found it helpful"
 msgstr "Réponses jugées utiles"
 
 #. translators: %d: how many shoppers rated an answer
-#: includes/admin.php:541
+#: includes/admin.php:670
 #, php-format
 msgid "from %d rating"
 msgid_plural "from %d ratings"
@@ -413,973 +416,956 @@ msgstr[0] "sur %d note"
 msgstr[1] "sur %d notes"
 
 #. translators: %d: how many shoppers rated an answer
-#: includes/admin.php:541
+#: includes/admin.php:670
 msgid "shows after 5 ratings"
 msgstr "s’affiche après 5 notes"
 
-#: includes/admin.php:543
+#: includes/admin.php:672
 msgid "Handed to your team"
 msgstr "Transmis à votre équipe"
 
-#: includes/admin.php:543
+#: includes/admin.php:672
 msgid "conversations that needed a person"
 msgstr "conversations qui ont demandé une personne"
 
-#: includes/admin.php:546
-#: includes/admin.php:652
+#: includes/admin.php:675
+#: includes/admin.php:788
 msgid "Waiting for a restock"
 msgstr "En attente de réassort"
 
-#: includes/admin.php:546
+#: includes/admin.php:675
 msgid "emailed when it is back"
 msgstr "prévenus par e-mail au retour en stock"
 
-#: includes/admin.php:547
+#: includes/admin.php:676
 msgid "Asked for, not sold"
 msgstr "Demandé, non vendu"
 
-#: includes/admin.php:547
+#: includes/admin.php:676
 msgid "people waiting to hear"
 msgstr "personnes en attente de nouvelles"
 
-#: includes/admin.php:554
+#: includes/admin.php:683
 msgid "Premium call minutes"
 msgstr "Minutes d’appel premium"
 
 #. translators: %d: how many premium voice calls this month
-#: includes/admin.php:557
+#: includes/admin.php:686
 #, php-format
 msgid "%d call this month"
 msgid_plural "%d calls this month"
 msgstr[0] "%d appel ce mois-ci"
 msgstr[1] "%d appels ce mois-ci"
 
-#: includes/admin.php:567
+#: includes/admin.php:699
 msgid "Asked for, and waiting to hear"
 msgstr "Demandé, en attente de nouvelles"
 
-#: includes/admin.php:568
+#: includes/admin.php:700
 msgid "You do not sell these yet. Add a matching product and everyone on the list gets one email from your shop, automatically."
 msgstr "Vous ne vendez pas encore ces articles. Ajoutez un produit correspondant et chaque personne de la liste reçoit automatiquement un e-mail de votre boutique."
 
 #. translators: %d: how many shoppers are waiting for this product
-#: includes/admin.php:575
+#: includes/admin.php:707
+#: includes/waiting.php:260
 #, php-format
 msgid "%d person"
 msgid_plural "%d people"
 msgstr[0] "%d personne"
 msgstr[1] "%d personnes"
 
-#: includes/admin.php:592
+#: includes/admin.php:724
 msgid "Searches that found nothing"
 msgstr "Recherches sans résultat"
 
-#: includes/admin.php:592
+#: includes/admin.php:724
 msgid "Your restocking list"
 msgstr "Votre liste de réassort"
 
-#: includes/admin.php:593
+#: includes/admin.php:725
 msgid "Questions your pages did not answer"
 msgstr "Questions sans réponse sur vos pages"
 
-#: includes/admin.php:593
+#: includes/admin.php:725
 msgid "Each is a paragraph worth writing"
 msgstr "Chacune mérite un paragraphe"
 
-#: includes/admin.php:594
+#: includes/admin.php:726
 msgid "Answers marked unhelpful"
 msgstr "Réponses jugées inutiles"
 
-#: includes/admin.php:594
+#: includes/admin.php:726
 msgid "Usually one missing line of policy"
 msgstr "Souvent une ligne qui manque dans vos conditions"
 
-#: includes/admin.php:599
+#: includes/admin.php:731
 msgid "What shoppers asked for"
 msgstr "Ce que les clients ont demandé"
 
-#: includes/admin.php:600
+#: includes/admin.php:732
 msgid "Last 30 days. The details are on the Reports tab."
 msgstr "30 derniers jours. Le détail est dans l’onglet Rapports."
 
-#: includes/admin.php:624
+#: includes/admin.php:758
 msgid "Nothing to report yet. Come back once shoppers have used the chat."
 msgstr "Rien à signaler pour l’instant. Revenez quand des clients auront utilisé le chat."
 
-#: includes/admin.php:631
+#: includes/admin.php:765
 msgid "Looked for, not found"
 msgstr "Cherché, pas trouvé"
 
-#: includes/admin.php:632
+#: includes/admin.php:766
 msgid "Searches with no result in the last 30 days. Your restocking list."
 msgstr "Recherches sans résultat ces 30 derniers jours. Votre liste de réassort."
 
-#: includes/admin.php:634
+#: includes/admin.php:768
 msgid "Nothing yet. Every search found something."
 msgstr "Rien pour l’instant. Chaque recherche a trouvé quelque chose."
 
-#: includes/admin.php:638
+#: includes/admin.php:772
 msgid "Asked, but your pages do not say"
 msgstr "Demandé, mais vos pages n’en disent rien"
 
-#: includes/admin.php:639
+#: includes/admin.php:773
 msgid "Questions your published pages had no answer for. Each is a paragraph worth writing."
 msgstr "Les questions auxquelles vos pages publiées ne répondaient pas. Chacune mérite un paragraphe."
 
-#: includes/admin.php:641
+#: includes/admin.php:775
 msgid "Nothing yet. Your pages covered every question."
 msgstr "Rien pour l’instant. Vos pages ont répondu à toutes les questions."
 
-#: includes/admin.php:648
+#: includes/admin.php:783
 msgid "Removed from the list."
 msgstr "Retiré de la liste."
 
-#: includes/admin.php:653
+#: includes/admin.php:789
 msgid "They asked to be told when a sold-out size or colour is back. The email leaves from your shop, once, and the address is deleted with it."
 msgstr "Ils ont demandé à être prévenus du retour d’une taille ou d’une couleur épuisée. L’e-mail part de votre boutique, une seule fois, et l’adresse est supprimée au même moment."
 
-#: includes/admin.php:654
+#: includes/admin.php:790
 msgid "Nobody is waiting on a restock right now."
 msgstr "Personne n’attend de réassort pour le moment."
 
-#: includes/admin.php:658
+#: includes/admin.php:794
 msgid "Asked for something you do not sell"
 msgstr "Ont demandé un article que vous ne vendez pas"
 
-#: includes/admin.php:659
+#: includes/admin.php:795
 msgid "They agreed to hear from you if it ever arrives. Nothing was promised: the assistant only ever says it will get in touch."
 msgstr "Ils ont accepté d’avoir de vos nouvelles si l’article arrive un jour. Rien n’a été promis : l’assistant dit seulement que vous reprendrez contact."
 
-#: includes/admin.php:660
+#: includes/admin.php:796
 msgid "Nobody is waiting on something you do not carry."
 msgstr "Personne n’attend un article que vous ne proposez pas."
 
-#: includes/admin.php:667
+#: includes/admin.php:808
 msgid "Answers shoppers marked unhelpful"
 msgstr "Réponses jugées inutiles par les clients"
 
-#: includes/admin.php:668
+#: includes/admin.php:809
 msgid "Most are fixed by adding a line to the policy notes or the sizing advice."
 msgstr "La plupart se règlent en ajoutant une ligne à vos conditions ou aux conseils de taille."
 
 #. translators: 1: how many are listed, 2: how many there were in total
-#: includes/admin.php:679
+#: includes/admin.php:820
 #, php-format
 msgid "The %1$s most recent, of %2$s marked unhelpful in 30 days"
 msgstr "Les %1$s plus récentes, sur %2$s jugées inutiles en 30 jours"
 
-#: includes/admin.php:690
+#: includes/admin.php:831
 msgid "They asked"
 msgstr "Question"
 
-#: includes/admin.php:691
+#: includes/admin.php:832
 msgid "It answered"
 msgstr "Réponse"
 
-#: includes/admin.php:692
+#: includes/admin.php:833
 msgid "When"
 msgstr "Quand"
 
 #. translators: %s: how many are listed
-#: includes/admin.php:723
+#: includes/admin.php:864
 #, php-format
 msgid "The %s most recent are listed. Fix a few and the rest will thin out on their own."
 msgstr "Les %s plus récentes sont affichées. Corrigez-en quelques-unes et les autres se raréfieront d’elles-mêmes."
 
-#: includes/admin.php:736
+#: includes/admin.php:878
 msgid "What it may tell shoppers"
 msgstr "Ce qu’il peut dire aux clients"
 
-#: includes/admin.php:736
+#: includes/admin.php:878
 msgid "The assistant only repeats facts you give it here or on your published pages. It never guesses a policy."
 msgstr "L’assistant ne répète que les informations que vous lui donnez ici ou sur vos pages publiées. Il ne devine jamais une condition."
 
-#: includes/admin.php:737
+#: includes/admin.php:879
 msgid "Return window"
 msgstr "Délai de retour"
 
-#: includes/admin.php:737
+#: includes/admin.php:879
 msgid "Days after delivery a shopper can send something back."
 msgstr "Nombre de jours après la livraison pendant lesquels un client peut renvoyer un article."
 
-#: includes/admin.php:741
+#: includes/admin.php:883
 msgid "days"
 msgstr "jours"
 
-#: includes/admin.php:744
+#: includes/admin.php:886
 msgid "Policy notes"
 msgstr "Vos conditions"
 
-#: includes/admin.php:744
+#: includes/admin.php:886
 msgid "Short facts it may share: shipping times, free returns, final-sale rules."
 msgstr "Des informations courtes qu’il peut donner : délais de livraison, retours gratuits, articles non repris."
 
-#: includes/admin.php:747
+#: includes/admin.php:889
 msgid "Free returns in store. Final-sale items cannot be returned. Delivery in 2 to 4 working days."
 msgstr "Retours gratuits en magasin. Les articles soldés ne sont pas repris. Livraison en 2 à 4 jours ouvrés."
 
-#: includes/admin.php:751
+#: includes/admin.php:893
 msgid "Fit and compatibility"
 msgstr "Taille et compatibilité"
 
-#: includes/admin.php:751
+#: includes/admin.php:893
 msgid "What a shopper needs to know to buy the right one: sizes for clothes and shoes, dimensions for furniture, which models a case, charger or spare part works with. Without it, it never guesses a size or whether something fits."
 msgstr "Ce qu’un client doit savoir pour choisir le bon article : les tailles des vêtements et chaussures, les dimensions des meubles, les modèles avec lesquels une coque, un chargeur ou une pièce est compatible. Sans ces informations, il ne devine jamais une taille ni une compatibilité."
 
-#: includes/admin.php:754
+#: includes/admin.php:896
 msgid "Runs small, size up if you are between sizes. Chest: S 96cm, M 102cm, L 108cm. Phone cases fit only the model in their name: an iPhone 15 case does not fit the 15 Pro."
 msgstr "Taille petit, prenez la taille au-dessus si vous hésitez. Tour de poitrine : S 96 cm, M 102 cm, L 108 cm. Les coques ne vont qu’au modèle indiqué : une coque iPhone 15 ne va pas sur l’iPhone 15 Pro."
 
-#: includes/admin.php:760
+#: includes/admin.php:902
 msgid "Orders"
 msgstr "Commandes"
 
-#: includes/admin.php:760
+#: includes/admin.php:902
 msgid "How the assistant reads your order statuses."
 msgstr "Comment l’assistant lit les statuts de vos commandes."
 
-#: includes/admin.php:761
-#: includes/admin.php:765
+#: includes/admin.php:903
+#: includes/admin.php:907
 msgid "\"Completed\" means"
 msgstr "« Terminée » signifie"
 
-#: includes/admin.php:761
+#: includes/admin.php:903
 msgid "WooCommerce has no delivered status. Which does yours mean?"
 msgstr "WooCommerce n’a pas de statut « livrée ». Que signifie le vôtre ?"
 
-#: includes/admin.php:763
+#: includes/admin.php:905
 msgid "Delivered"
 msgstr "Livrée"
 
-#: includes/admin.php:764
+#: includes/admin.php:906
 msgid "Shipped"
 msgstr "Expédiée"
 
-#: includes/admin.php:769
+#: includes/admin.php:911
 msgid "Handing over to your team"
 msgstr "Transmettre à votre équipe"
 
-#: includes/admin.php:769
+#: includes/admin.php:911
 msgid "When a shopper needs a person, the conversation is emailed to you."
 msgstr "Quand un client a besoin d’une personne, la conversation vous est envoyée par e-mail."
 
-#: includes/admin.php:770
+#: includes/admin.php:912
 msgid "Send handoffs to"
 msgstr "Envoyer les transferts à"
 
-#: includes/admin.php:770
+#: includes/admin.php:912
 msgid "Empty uses the site admin address."
 msgstr "Vide : l’adresse de l’administrateur du site est utilisée."
 
 #. translators: %s: the shop's timezone, as WordPress has it
-#: includes/admin.php:774
+#: includes/admin.php:916
 msgid "Opening hours"
 msgstr "Horaires d’ouverture"
 
 #. translators: %s: the shop's timezone, as WordPress has it
-#: includes/admin.php:774
+#: includes/admin.php:916
 #, php-format
 msgid "So shoppers know when a person will reply. Your site timezone is %s."
 msgstr "Pour que les clients sachent quand une personne répondra. Le fuseau horaire de votre site est %s."
 
 #. translators: an example of opening hours; translate the day names for your language
-#: includes/admin.php:778
+#: includes/admin.php:920
 msgid "Mon-Fri 09:00-18:00, Sat 10:00-14:00"
 msgstr "Lun-Ven 9h-18h, Sam 10h-14h"
 
 #. translators: an example of opening hours in the format the field reads; translate the day names
-#: includes/admin.php:787
+#: includes/admin.php:929
 msgid "These hours could not be read. Write a day or a span of days, then two times, for example: Mon-Fri 09:00-18:00, Sat 10:00-14:00."
 msgstr "Ces horaires n’ont pas pu être lus. Indiquez un jour ou une période, puis deux heures, par exemple : Lun-Ven 9h-18h, Sam 10h-14h."
 
-#: includes/admin.php:791
+#: includes/admin.php:933
 msgid "Usual reply time"
 msgstr "Délai de réponse habituel"
 
-#: includes/admin.php:791
+#: includes/admin.php:933
 msgid "Said to shoppers outside your hours."
 msgstr "Indiqué aux clients en dehors de vos horaires."
 
-#: includes/admin.php:792
+#: includes/admin.php:934
 msgid "within a few hours"
 msgstr "sous quelques heures"
 
-#: includes/admin.php:799
+#: includes/admin.php:942
 msgid "Your shop"
 msgstr "Votre boutique"
 
-#: includes/admin.php:800
+#: includes/admin.php:943
 msgid "Chat on the storefront"
 msgstr "Chat sur la boutique"
 
-#: includes/admin.php:800
+#: includes/admin.php:943
 msgid "Hide it without disconnecting, for example while you set things up."
 msgstr "Masquez-le sans déconnecter la boutique, par exemple pendant la configuration."
 
-#: includes/admin.php:801
+#: includes/admin.php:944
 msgid "Show the chat to shoppers"
 msgstr "Afficher le chat aux clients"
 
-#: includes/admin.php:803
+#: includes/admin.php:946
 msgid "Store name"
 msgstr "Nom de la boutique"
 
-#: includes/admin.php:803
+#: includes/admin.php:946
 msgid "Shown in the chat header and used by the assistant."
 msgstr "Affiché en haut du chat et utilisé par l’assistant."
 
-#: includes/admin.php:808
+#: includes/admin.php:957
 msgid "Who it is"
 msgstr "Son identité"
 
-#: includes/admin.php:808
+#: includes/admin.php:957
 msgid "Name and status line preview as you type. Whatever you call it, it still tells shoppers it is an AI."
 msgstr "Le nom et la ligne de statut s’affichent dans l’aperçu pendant la saisie. Quel que soit son nom, il dit toujours aux clients qu’il est une IA."
 
-#: includes/admin.php:809
+#: includes/admin.php:958
 msgid "Name"
 msgstr "Nom"
 
-#: includes/admin.php:809
+#: includes/admin.php:958
 msgid "Shown in the chat and spoken on calls. Empty means no name."
 msgstr "Affiché dans le chat et prononcé pendant les appels. Vide : pas de nom."
 
-#: includes/admin.php:812
+#: includes/admin.php:961
 msgid "Your shop's assistant"
 msgstr "L’assistant de votre boutique"
 
-#: includes/admin.php:817
+#: includes/admin.php:966
 msgid "Status line"
 msgstr "Ligne de statut"
 
-#: includes/admin.php:817
+#: includes/admin.php:966
 msgid "Keep ours and it is translated. Write your own and everyone reads yours."
 msgstr "Gardez la nôtre et elle est traduite. Écrivez la vôtre et tout le monde la lit telle quelle."
 
-#: includes/admin.php:820
+#: includes/admin.php:969
 msgid "AI assistant"
 msgstr "Assistant IA"
 
-#: includes/admin.php:826
-#: includes/admin.php:833
+#: includes/admin.php:975
+#: includes/admin.php:982
 msgid "Manner"
 msgstr "Ton"
 
-#: includes/admin.php:826
+#: includes/admin.php:975
 msgid "Applies after you save."
 msgstr "S’applique après l’enregistrement."
 
-#: includes/admin.php:828
+#: includes/admin.php:977
 msgid "Warm"
 msgstr "Chaleureux"
 
-#: includes/admin.php:828
+#: includes/admin.php:977
 msgid "Friendly and personal, uses the shopper's name"
 msgstr "Aimable et personnel, appelle le client par son prénom"
 
-#: includes/admin.php:829
+#: includes/admin.php:978
 msgid "Neutral"
 msgstr "Neutre"
 
-#: includes/admin.php:829
+#: includes/admin.php:978
 msgid "Plain and efficient. A safe default"
 msgstr "Simple et efficace. Un choix sûr"
 
-#: includes/admin.php:830
+#: includes/admin.php:979
 msgid "Expert"
 msgstr "Expert"
 
-#: includes/admin.php:830
+#: includes/admin.php:979
 msgid "Leads with the detail that settles the question"
 msgstr "Commence par le détail qui règle la question"
 
-#: includes/admin.php:831
+#: includes/admin.php:980
 msgid "Playful"
 msgstr "Enjoué"
 
-#: includes/admin.php:831
+#: includes/admin.php:980
 msgid "Light and informal, for brands that talk that way"
 msgstr "Léger et détendu, pour les marques qui parlent ainsi"
 
-#: includes/admin.php:845
+#: includes/admin.php:994
 msgid "Anything else"
 msgstr "Autre chose"
 
-#: includes/admin.php:845
+#: includes/admin.php:994
 msgid "Changes how it sounds, not what it may claim."
 msgstr "Change sa façon de parler, pas ce qu’il a le droit d’affirmer."
 
-#: includes/admin.php:848
+#: includes/admin.php:997
 msgid "We say \"trainers\", never \"sneakers\". Never rush anyone into a size."
 msgstr "Nous disons « baskets », jamais « sneakers ». Ne jamais presser quelqu’un pour une taille."
 
 #. translators: %d: number of characters left
-#: includes/admin.php:852
+#: includes/admin.php:1001
 #, php-format
 msgid "%d characters left"
 msgstr "%d caractères restants"
 
-#: includes/admin.php:859
+#: includes/admin.php:1012
 msgid "Brand"
 msgstr "Marque"
 
-#: includes/admin.php:859
+#: includes/admin.php:1012
 msgid "The chat wears your colours, so it looks like part of your shop."
 msgstr "Le chat porte vos couleurs, pour faire partie de votre boutique."
 
-#: includes/admin.php:860
+#: includes/admin.php:1013
 msgid "Colours"
 msgstr "Couleurs"
 
-#: includes/admin.php:860
+#: includes/admin.php:1013
 msgid "Main is for buttons and the header. Text on main must be readable on it."
 msgstr "La couleur principale sert aux boutons et à l’en-tête. Le texte doit y rester lisible."
 
-#: includes/admin.php:862
+#: includes/admin.php:1015
 msgid "Main"
 msgstr "Principale"
 
-#: includes/admin.php:862
+#: includes/admin.php:1015
 msgid "Text on main"
 msgstr "Texte sur la principale"
 
-#: includes/admin.php:871
+#: includes/admin.php:1024
 msgid "Quick colours"
 msgstr "Couleurs rapides"
 
-#: includes/admin.php:873
+#: includes/admin.php:1026
 msgid "Ink"
 msgstr "Encre"
 
-#: includes/admin.php:873
+#: includes/admin.php:1026
 msgid "Coral"
 msgstr "Corail"
 
-#: includes/admin.php:873
+#: includes/admin.php:1026
 msgid "Blue"
 msgstr "Bleu"
 
-#: includes/admin.php:874
+#: includes/admin.php:1027
 msgid "Teal"
 msgstr "Bleu canard"
 
-#: includes/admin.php:874
+#: includes/admin.php:1027
 msgid "Green"
 msgstr "Vert"
 
-#: includes/admin.php:874
+#: includes/admin.php:1027
 msgid "Rose"
 msgstr "Rose"
 
-#: includes/admin.php:875
+#: includes/admin.php:1028
 msgid "Amber"
 msgstr "Ambre"
 
-#: includes/admin.php:875
+#: includes/admin.php:1028
 msgid "Violet"
 msgstr "Violet"
 
-#: includes/admin.php:880
+#: includes/admin.php:1033
 msgid "Text colour follows, so it stays readable."
 msgstr "La couleur du texte suit, pour rester lisible."
 
-#: includes/admin.php:883
+#: includes/admin.php:1036
 msgid "Auto matches whatever the shopper's phone or laptop is set to."
 msgstr "Auto suit le réglage du téléphone ou de l’ordinateur du client."
 
-#: includes/admin.php:884
+#: includes/admin.php:1037
 msgid "Auto"
 msgstr "Auto"
 
-#: includes/admin.php:884
+#: includes/admin.php:1037
 msgid "Light"
 msgstr "Clair"
 
-#: includes/admin.php:884
+#: includes/admin.php:1037
 msgid "Dark"
 msgstr "Sombre"
 
-#: includes/admin.php:886
+#: includes/admin.php:1039
 msgid "Button language"
 msgstr "Langue des boutons"
 
-#: includes/admin.php:886
+#: includes/admin.php:1039
 msgid "For buttons and hints. Replies always follow the shopper."
 msgstr "Pour les boutons et les indications. Les réponses suivent toujours le client."
 
-#: includes/admin.php:888
+#: includes/admin.php:1041
 msgid "Follow the shopper's browser"
 msgstr "Suivre le navigateur du client"
 
-#: includes/admin.php:895
-msgid "First impression"
-msgstr "Première impression"
-
-#: includes/admin.php:895
+#: includes/admin.php:1057
 msgid "What a shopper sees before they ask anything."
 msgstr "Ce que voit un client avant de poser une question."
 
-#: includes/admin.php:896
+#: includes/admin.php:1058
 msgid "Greet customers by name"
 msgstr "Saluer les clients par leur prénom"
 
-#: includes/admin.php:896
+#: includes/admin.php:1058
 msgid "Signed-in customers see \"Hi Sarah!\". Everyone else sees \"Hi!\"."
 msgstr "Les clients connectés voient « Bonjour Sarah ! ». Les autres voient « Bonjour ! »."
 
-#: includes/admin.php:897
+#: includes/admin.php:1059
 msgid "Use the customer's first name"
 msgstr "Utiliser le prénom du client"
 
-#: includes/admin.php:899
-#: includes/admin.php:904
+#: includes/admin.php:1061
+#: includes/admin.php:1066
 msgid "Popular products"
 msgstr "Produits populaires"
 
-#: includes/admin.php:899
+#: includes/admin.php:1061
 msgid "Turn them off if you sell services, or while your products have no photos."
 msgstr "Désactivez-les si vous vendez des services, ou tant que vos produits n’ont pas de photos."
 
-#: includes/admin.php:901
+#: includes/admin.php:1063
 msgid "Everywhere"
 msgstr "Partout"
 
-#: includes/admin.php:902
+#: includes/admin.php:1064
+#: includes/admin.php:1453
 msgid "First screen"
 msgstr "Premier écran"
 
-#: includes/admin.php:903
+#: includes/admin.php:1065
 msgid "Off"
 msgstr "Désactivé"
 
-#: includes/admin.php:906
+#: includes/admin.php:1068
 msgid "Track an order"
 msgstr "Suivre une commande"
 
-#: includes/admin.php:906
+#: includes/admin.php:1068
 msgid "A button on the first screen. Turn it off if you sell services or downloads."
 msgstr "Un bouton sur le premier écran. Désactivez-le si vous vendez des services ou des téléchargements."
 
-#: includes/admin.php:907
+#: includes/admin.php:1069
 msgid "Show the track an order button"
 msgstr "Afficher le bouton Suivre une commande"
 
-#: includes/admin.php:909
+#: includes/admin.php:1071
 msgid "Openers"
 msgstr "Questions d’accroche"
 
-#: includes/admin.php:909
+#: includes/admin.php:1071
 msgid "The questions an empty chat offers. Tap-sized: a few words, not a sentence."
 msgstr "Les questions proposées dans un chat vide. Courtes : quelques mots, pas une phrase."
 
-#: includes/admin.php:927
-#: includes/admin.php:934
+#: includes/admin.php:1089
+#: includes/admin.php:1096
 msgid "Do you ship to Belgium?"
 msgstr "Vous livrez en Belgique ?"
 
-#: includes/admin.php:928
-#: includes/admin.php:935
+#: includes/admin.php:1090
+#: includes/admin.php:1097
 msgid "Remove this opener"
 msgstr "Retirer cette question"
 
-#: includes/admin.php:936
+#: includes/admin.php:1098
 msgid "Add an opener"
 msgstr "Ajouter une question"
 
-#: includes/admin.php:939
+#: includes/admin.php:1107
 msgid "Shown once per visit, next to the chat button. Empty uses our hello, translated."
 msgstr "Affichée une fois par visite, à côté du bouton du chat. Vide : notre bonjour, traduit."
 
-#: includes/admin.php:942
+#: includes/admin.php:1110
 msgid "Standard: Hi! Looking for something in particular?"
 msgstr "Par défaut : Bonjour ! Vous cherchez quelque chose en particulier ?"
 
-#: includes/admin.php:949
+#: includes/admin.php:1117
 msgid "Seconds before it appears"
 msgstr "Secondes avant l’affichage"
 
-#: includes/admin.php:950
+#: includes/admin.php:1118
 msgid "seconds, on"
 msgstr "secondes, sur"
 
-#: includes/admin.php:953
+#: includes/admin.php:1121
 msgid "no page (off)"
 msgstr "aucune page (désactivée)"
 
-#: includes/admin.php:954
+#: includes/admin.php:1122
 msgid "cart and checkout"
 msgstr "le panier et la commande"
 
-#: includes/admin.php:955
+#: includes/admin.php:1123
 msgid "every page"
 msgstr "toutes les pages"
 
-#: includes/admin.php:964
+#: includes/admin.php:1131
 msgid "Shoppers can talk to the assistant hands-free, and still see products and links on screen."
 msgstr "Les clients parlent à l’assistant sans les mains, et voient toujours les produits et les liens à l’écran."
 
-#: includes/admin.php:965
+#: includes/admin.php:1132
 msgid "Call button"
 msgstr "Bouton d’appel"
 
-#: includes/admin.php:965
+#: includes/admin.php:1132
 msgid "Speech is processed off-device. Mention it in your privacy policy."
 msgstr "La voix est traitée en dehors de l’appareil. Mentionnez-le dans votre politique de confidentialité."
 
-#: includes/admin.php:968
-#: includes/admin.php:1022
+#: includes/admin.php:1135
+#: includes/admin.php:1189
 msgid "Premium voice"
 msgstr "Voix premium"
 
-#: includes/admin.php:968
+#: includes/admin.php:1135
 msgid "Natural voices shoppers can interrupt, in any browser and their own language."
 msgstr "Des voix naturelles que les clients peuvent interrompre, dans tous les navigateurs et dans leur langue."
 
-#: includes/admin.php:972
+#: includes/admin.php:1139
 msgid "Not on your plan yet"
 msgstr "Pas encore dans votre formule"
 
-#: includes/admin.php:973
+#: includes/admin.php:1140
 msgid "Shoppers hear their own browser's voice, in Chrome and Safari. Premium switches on here by itself once your plan includes it."
 msgstr "Les clients entendent la voix de leur propre navigateur, dans Chrome et Safari. La voix premium s’active ici d’elle-même dès que votre formule l’inclut."
 
-#: includes/admin.php:977
+#: includes/admin.php:1144
 msgid "Use the premium voice"
 msgstr "Utiliser la voix premium"
 
 #. translators: 1: minutes left, 2: minutes included in the plan
-#: includes/admin.php:995
+#: includes/admin.php:1162
 #, php-format
 msgid "%1$s of %2$s minutes left this month. When they run out, calls carry on with the standard voice."
 msgstr "%1$s minutes restantes sur %2$s ce mois-ci. Une fois épuisées, les appels continuent avec la voix standard."
 
-#: includes/admin.php:1001
+#: includes/admin.php:1168
 msgid "Off keeps your minutes and uses the shopper's own browser voice."
 msgstr "Désactivée, vos minutes sont conservées et c’est la voix du navigateur du client qui parle."
 
-#: includes/admin.php:1012
+#: includes/admin.php:1179
 msgid "Which voice speaks"
 msgstr "Quelle voix parle"
 
-#: includes/admin.php:1012
+#: includes/admin.php:1179
 msgid "Press play to hear each one say a price."
 msgstr "Appuyez sur lecture pour entendre chacune annoncer un prix."
 
-#: includes/admin.php:1013
-#: includes/admin.php:1278
+#: includes/admin.php:1180
+#: includes/admin.php:1454
 msgid "Voice"
 msgstr "Voix"
 
-#: includes/admin.php:1013
+#: includes/admin.php:1180
 msgid "A voice speaks only its own language. Automatic picks one per shopper."
 msgstr "Une voix ne parle que sa propre langue. Automatique en choisit une pour chaque client."
 
-#: includes/admin.php:1023
+#: includes/admin.php:1190
 msgid "Loading voices…"
 msgstr "Chargement des voix…"
 
-#: includes/admin.php:1024
+#: includes/admin.php:1191
 msgid "No voices to choose from right now, so calls use Parla's own pick."
 msgstr "Aucune voix au choix pour le moment, les appels utilisent donc celle choisie par Parla."
 
-#: includes/admin.php:1025
+#: includes/admin.php:1192
 msgid "Automatic"
 msgstr "Automatique"
 
-#: includes/admin.php:1026
+#: includes/admin.php:1193
 msgid "Language"
 msgstr "Langue"
 
-#: includes/admin.php:1034
+#: includes/admin.php:1201
 msgid "Voices belong to the shopper's device, so a name is a preference, not a guarantee."
 msgstr "Les voix dépendent de l’appareil du client : un nom est une préférence, pas une garantie."
 
-#: includes/admin.php:1035
+#: includes/admin.php:1202
 msgid "Used only once this month's premium minutes run out. Voices belong to the shopper's device, so a name is a preference, not a guarantee."
 msgstr "Utilisée seulement une fois les minutes premium du mois épuisées. Les voix dépendent de l’appareil du client : un nom est une préférence, pas une garantie."
 
-#: includes/admin.php:1036
+#: includes/admin.php:1203
 msgid "Standard voice"
 msgstr "Voix standard"
 
-#: includes/admin.php:1037
+#: includes/admin.php:1204
 msgid "Preferred voice"
 msgstr "Voix préférée"
 
-#: includes/admin.php:1037
+#: includes/admin.php:1204
 msgid "Your device's voices. Each shopper gets the nearest match on theirs."
 msgstr "Les voix de votre appareil. Chaque client obtient la plus proche sur le sien."
 
-#: includes/admin.php:1043
+#: includes/admin.php:1210
 msgid "Best available"
 msgstr "La meilleure disponible"
 
-#: includes/admin.php:1045
+#: includes/admin.php:1212
 msgid "This browser offers no voices, so the setting cannot be previewed here. Shoppers still get theirs."
 msgstr "Ce navigateur ne propose aucune voix, le réglage ne peut donc pas être écouté ici. Les clients ont toujours la leur."
 
-#: includes/admin.php:1048
+#: includes/admin.php:1215
 msgid "Speaking speed"
 msgstr "Vitesse de parole"
 
-#: includes/admin.php:1059
-#: includes/admin.php:1280
+#: includes/admin.php:1226
+#: includes/admin.php:1456
 msgid "Connection"
 msgstr "Connexion"
 
-#: includes/admin.php:1059
+#: includes/admin.php:1226
 msgid "The key that links this shop to your Parla account."
 msgstr "La clé qui relie cette boutique à votre compte Parla."
 
-#: includes/admin.php:1069
+#: includes/admin.php:1236
+#: includes/admin.php:1456
 msgid "Shop key"
 msgstr "Clé de boutique"
 
-#: includes/admin.php:1069
+#: includes/admin.php:1236
 msgid "Starts with parla_live_. Empty keeps the saved one."
 msgstr "Commence par parla_live_. Vide : la clé enregistrée est conservée."
 
-#: includes/admin.php:1072
+#: includes/admin.php:1239
 msgid "Saved (leave empty to keep it)"
 msgstr "Enregistrée (laisser vide pour la conserver)"
 
-#: includes/admin.php:1075
+#: includes/admin.php:1242
 msgid "Status"
 msgstr "État"
 
-#: includes/admin.php:1075
+#: includes/admin.php:1242
 msgid "Connect"
 msgstr "Connecter"
 
 #. translators: 1: store id, 2: date
-#: includes/admin.php:1081
+#: includes/admin.php:1248
 #, php-format
 msgid "Connected as %1$s since %2$s."
 msgstr "Connectée en tant que %1$s depuis le %2$s."
 
-#: includes/admin.php:1090
+#: includes/admin.php:1257
 msgid "Reconnect"
 msgstr "Reconnecter"
 
-#: includes/admin.php:1090
+#: includes/admin.php:1257
 msgid "Connect store"
 msgstr "Connecter la boutique"
 
-#: includes/admin.php:1095
+#: includes/admin.php:1262
 msgid "Creates a WooCommerce API key named \"Parla\" so the assistant can read products and orders."
 msgstr "Crée une clé d’API WooCommerce nommée « Parla » pour que l’assistant puisse lire les produits et les commandes."
 
-#: includes/admin.php:1096
+#: includes/admin.php:1263
 msgid "Sends your store address and that key to the Parla server. Shoppers always prove an order is theirs before seeing it."
 msgstr "Envoie l’adresse de votre boutique et cette clé au serveur Parla. Les clients prouvent toujours qu’une commande est la leur avant de la voir."
 
-#: includes/admin.php:1097
+#: includes/admin.php:1264
 msgid "Adds the chat to your storefront."
 msgstr "Ajoute le chat à votre boutique."
 
 #. translators: 1: link to the terms of service, 2: link to the privacy policy
-#: includes/admin.php:1106
+#: includes/admin.php:1273
 #, php-format
 msgid "Parla is a paid service hosted at askparla.com. Your shoppers' messages are processed there, not on your server. %1$s &middot; %2$s"
 msgstr "Parla est un service payant hébergé sur askparla.com. Les messages de vos clients y sont traités, pas sur votre serveur. %1$s &middot; %2$s"
 
-#: includes/admin.php:1107
+#: includes/admin.php:1274
 msgid "Terms of service"
 msgstr "Conditions générales"
 
-#: includes/admin.php:1108
+#: includes/admin.php:1275
 msgid "Privacy policy"
 msgstr "Politique de confidentialité"
 
-#: includes/admin.php:1117
+#: includes/admin.php:1284
 msgid "Disconnect"
 msgstr "Déconnexion"
 
-#: includes/admin.php:1118
+#: includes/admin.php:1285
 msgid "Remove the chat"
 msgstr "Retirer le chat"
 
-#: includes/admin.php:1118
+#: includes/admin.php:1285
 msgid "The chat disappears from your shop. Your settings here are kept."
 msgstr "Le chat disparaît de votre boutique. Vos réglages ici sont conservés."
 
-#: includes/admin.php:1121
+#: includes/admin.php:1288
 msgid "Disconnect the store and hide the chat?"
 msgstr "Déconnecter la boutique et masquer le chat ?"
 
-#: includes/admin.php:1122
+#: includes/admin.php:1289
 msgid "Disconnect store"
 msgstr "Déconnecter la boutique"
 
-#: includes/admin.php:1145
+#: includes/admin.php:1312
 msgid "Sorry, you are not allowed to see this page."
 msgstr "Désolé, vous n’avez pas l’autorisation de voir cette page."
 
-#: includes/admin.php:1150
+#: includes/admin.php:1317
 msgid "Connect the store first."
 msgstr "Connectez d’abord la boutique."
 
-#: includes/admin.php:1185
-#: includes/admin.php:1240
+#: includes/admin.php:1352
+#: includes/admin.php:1407
 msgid "Chat preview"
 msgstr "Aperçu du chat"
 
-#: includes/admin.php:1230
+#: includes/admin.php:1397
 msgid "Live preview"
 msgstr "Aperçu en direct"
 
-#: includes/admin.php:1231
+#: includes/admin.php:1398
 msgid "Updates as you type."
 msgstr "Se met à jour pendant la saisie."
 
-#: includes/admin.php:1233
+#: includes/admin.php:1400
 msgid "What the preview shows"
 msgstr "Ce que montre l’aperçu"
 
-#: includes/admin.php:1234
+#: includes/admin.php:1401
 msgid "Closed"
 msgstr "Fermé"
 
-#: includes/admin.php:1235
+#: includes/admin.php:1402
 msgid "Open"
 msgstr "Ouvert"
 
-#: includes/admin.php:1242
+#: includes/admin.php:1409
 msgid "This is your real assistant: what you ask here counts as a conversation."
 msgstr "C’est votre véritable assistant : ce que vous lui demandez ici compte comme une conversation."
 
-#: includes/admin.php:1274
+#: includes/admin.php:1442
 msgid "Overview"
 msgstr "Vue d’ensemble"
 
-#: includes/admin.php:1275
+#: includes/admin.php:1443
 msgid "Reports"
 msgstr "Rapports"
 
-#: includes/admin.php:1277
-msgid "Widget"
-msgstr "Widget"
-
-#: includes/admin.php:1279
-msgid "Knowledge"
-msgstr "Connaissances"
-
-#: includes/admin.php:1284
-#: includes/admin.php:1292
-#: parla.php:781
-#: parla.php:782
+#: includes/admin.php:1460
+#: includes/admin.php:1469
+#: parla.php:809
+#: parla.php:810
 msgid "Parla"
 msgstr "Parla"
 
 #. translators: %s: the plugin's version number
-#: includes/admin.php:1294
+#: includes/admin.php:1471
 #, php-format
 msgid "version %s"
 msgstr "version %s"
 
-#: includes/admin.php:1300
+#: includes/admin.php:1477
 msgid "Live on your shop"
 msgstr "En ligne sur votre boutique"
 
-#: includes/admin.php:1300
+#: includes/admin.php:1477
 msgid "Connected, hidden"
 msgstr "Connectée, masquée"
 
-#: includes/admin.php:1301
+#: includes/admin.php:1478
 msgid "Not connected"
 msgstr "Non connectée"
 
-#: includes/admin.php:1303
+#: includes/admin.php:1480
 msgid "View shop"
 msgstr "Voir la boutique"
 
-#: includes/admin.php:1306
+#: includes/admin.php:1483
 msgid "Parla sections"
 msgstr "Sections de Parla"
 
-#: includes/admin.php:1332
+#: includes/admin.php:1520
 msgid "You have unsaved changes"
 msgstr "Vous avez des modifications non enregistrées"
 
-#: includes/admin.php:1334
+#: includes/admin.php:1522
 msgid "Last error:"
 msgstr "Dernière erreur :"
 
-#: includes/admin.php:1336
+#: includes/admin.php:1524
 msgid "Changes go live on your shop when you save."
 msgstr "Les modifications sont en ligne sur votre boutique dès l’enregistrement."
 
-#: includes/admin.php:1339
+#: includes/admin.php:1527
 msgid "Save settings"
 msgstr "Enregistrer les réglages"
 
-#: includes/admin.php:1378
+#: includes/admin.php:1566
 msgid "Hello! The merino crew comes in navy and grey, and both are in stock in medium."
 msgstr "Bonjour ! Le pull col rond en mérinos existe en marine et en gris, et les deux sont en stock en M."
 
-#: includes/admin.php:1382
+#: includes/admin.php:1570
 msgid "French"
 msgstr "Français"
 
-#: includes/admin.php:1382
+#: includes/admin.php:1570
 msgid "English"
 msgstr "Anglais"
 
-#: includes/admin.php:1382
+#: includes/admin.php:1570
 msgid "Spanish"
 msgstr "Espagnol"
 
-#: includes/admin.php:1383
+#: includes/admin.php:1571
 msgid "German"
 msgstr "Allemand"
 
-#: includes/admin.php:1383
+#: includes/admin.php:1571
 msgid "Italian"
 msgstr "Italien"
 
-#: includes/admin.php:1383
+#: includes/admin.php:1571
 msgid "Dutch"
 msgstr "Néerlandais"
 
-#: includes/admin.php:1384
+#: includes/admin.php:1572
 msgid "Portuguese"
 msgstr "Portugais"
 
-#: includes/admin.php:1384
+#: includes/admin.php:1572
 msgid "Arabic"
 msgstr "Arabe"
 
-#: includes/admin.php:1387
+#: includes/admin.php:1575
 msgid "Play sample"
 msgstr "Écouter un extrait"
 
-#: includes/admin.php:1388
+#: includes/admin.php:1576
 msgid "more"
 msgstr "plus"
 
-#: includes/admin.php:1389
+#: includes/admin.php:1577
 msgid "less"
 msgstr "moins"
 
-#: includes/waiting.php:217
-msgid "What they are waiting for"
-msgstr "Ce qu’ils attendent"
-
-#: includes/waiting.php:218
-msgid "Who"
-msgstr "Qui"
-
 #. translators: %s: how long ago, e.g. "3 days"
-#: includes/waiting.php:234
+#: includes/waiting.php:252
 #, php-format
 msgid "since %s"
 msgstr "depuis %s"
 
-#: includes/waiting.php:249
+#: includes/waiting.php:275
 msgid "Forget"
 msgstr "Oublier"
 
-#: includes/waiting.php:259
+#: includes/admin.php:801
 msgid "These addresses are on your site, not on Parla. Each one is used for one message and deleted when it goes out."
 msgstr "Ces adresses sont sur votre site, pas chez Parla. Chacune sert pour un seul message et est supprimée à son envoi."
 
@@ -1403,68 +1389,68 @@ msgstr "Je voudrais faire un retour"
 msgid "Shop"
 msgstr "Boutique"
 
-#: parla.php:389
+#: parla.php:417
 msgid "Connect from the WooCommerce → Parla screen while signed in as a shop manager."
 msgstr "Lancez la connexion depuis l’écran WooCommerce → Parla, avec un compte gestionnaire de la boutique."
 
-#: parla.php:410
+#: parla.php:438
 msgid "Could not create a WooCommerce API key."
 msgstr "Impossible de créer une clé d’API WooCommerce."
 
 #. translators: %1$s: API address, %2$s: the underlying connection error
-#: parla.php:539
+#: parla.php:567
 #, php-format
 msgid "Could not reach the Parla server at %1$s (%2$s). Running WordPress in Docker? This site reaches your machine as host.docker.internal, not localhost."
 msgstr "Impossible de joindre le serveur Parla à l’adresse %1$s (%2$s). WordPress tourne dans Docker ? Ce site joint votre machine via host.docker.internal, pas localhost."
 
 #. translators: %s: the list of settings the server refused, separated by semicolons
-#: parla.php:566
+#: parla.php:594
 #, php-format
 msgid "Check these settings: %s."
 msgstr "Vérifiez ces réglages : %s."
 
 #. translators: %s: the error message the Parla server returned
-#: parla.php:569
+#: parla.php:597
 #, php-format
 msgid "The server said: %s."
 msgstr "Le serveur a répondu : %s."
 
 #. translators: 1: error returned by the Parla API, 2: the settings it rejected
-#: parla.php:574
+#: parla.php:602
 #, php-format
 msgid "The Parla API refused the connection (%1$s).%2$s"
 msgstr "L’API Parla a refusé la connexion (%1$s).%2$s"
 
-#: parla.php:576
+#: parla.php:604
 msgid "this shop key is not valid, or was revoked"
 msgstr "cette clé de boutique n’est pas valide ou a été révoquée"
 
-#: parla.php:577
+#: parla.php:605
 msgid "this key is already used by another shop"
 msgstr "cette clé est déjà utilisée par une autre boutique"
 
-#: parla.php:578
+#: parla.php:606
 msgid "your Parla account is paused"
 msgstr "votre compte Parla est en pause"
 
 #. translators: %s: this shop's address as the Parla server sees it
-#: parla.php:581
+#: parla.php:609
 #, php-format
 msgid "the server could not read your shop at %s with the new API key"
 msgstr "le serveur n’a pas pu lire votre boutique à l’adresse %s avec la nouvelle clé d’API"
 
-#: parla.php:584
+#: parla.php:612
 msgid "it did not accept one of the settings"
 msgstr "il n’a pas accepté l’un des réglages"
 
 #. translators: %s: product name
-#: parla.php:649
+#: parla.php:677
 #, php-format
 msgid "%s is back in stock"
 msgstr "%s est de nouveau en stock"
 
 #. translators: 1: product name, 2: product link, 3: shop name
-#: parla.php:652
+#: parla.php:680
 #, php-format
 msgid ""
 "Good news — %1$s is available again.\n"
@@ -1480,13 +1466,13 @@ msgstr ""
 "Vous nous aviez demandé de vous prévenir, dans le chat de %3$s. Nous n’envoyons ce message qu’une fois."
 
 #. translators: %s: what the shopper asked for
-#: parla.php:706
+#: parla.php:734
 #, php-format
 msgid "We now have %s"
 msgstr "Nous avons désormais : %s"
 
 #. translators: 1: what they asked for, 2: product name, 3: product link, 4: shop name
-#: parla.php:709
+#: parla.php:737
 #, php-format
 msgid ""
 "You asked us about %1$s in the chat, and we did not have it at the time.\n"
@@ -1505,74 +1491,194 @@ msgstr ""
 "\n"
 "C’est l’unique message que nous avions promis d’envoyer, et nous avons retiré votre adresse de cette liste. %4$s"
 
-#: parla.php:749
+#: parla.php:777
 msgid "A shopper asked for a human in the chat."
 msgstr "Un client a demandé à parler à une personne dans le chat."
 
-#: parla.php:750
+#: parla.php:778
 msgid "Reason:"
 msgstr "Motif :"
 
-#: parla.php:751
+#: parla.php:779
 msgid "Shopper:"
 msgstr "Client :"
 
-#: parla.php:751
+#: parla.php:779
 msgid "not given"
 msgstr "non indiqué"
 
-#: parla.php:752
+#: parla.php:780
 msgid "Order:"
 msgstr "Commande :"
 
-#: parla.php:753
+#: parla.php:781
 msgid "Conversation:"
 msgstr "Conversation :"
 
 #. translators: %s: the first words of the shopper's question
-#: parla.php:757
+#: parla.php:785
 #, php-format
 msgid "[Chat] %s"
 msgstr "[Chat] %s"
 
-#: parla.php:795
+#: parla.php:823
 msgid "Security check failed. Please try again."
 msgstr "La vérification de sécurité a échoué. Veuillez réessayer."
 
-#: parla.php:798
+#: parla.php:826
 msgid "You are not allowed to change these settings."
 msgstr "Vous n’avez pas l’autorisation de modifier ces réglages."
 
-#: parla.php:864
+#: parla.php:892
 msgid "Store disconnected. The chat no longer appears on your site."
 msgstr "Boutique déconnectée. Le chat n’apparaît plus sur votre site."
 
 #. translators: %s: error message
-#: parla.php:880
+#: parla.php:908
 #, php-format
 msgid "Settings saved here, but the assistant could not be updated: %s"
 msgstr "Réglages enregistrés ici, mais l’assistant n’a pas pu être mis à jour : %s"
 
-#: parla.php:889
+#: parla.php:917
 msgid "Paste your shop key first."
 msgstr "Collez d’abord votre clé de boutique."
 
-#: parla.php:895
+#: parla.php:923
 msgid "Store connected. The chat is now live on your storefront."
 msgstr "Boutique connectée. Le chat est maintenant en ligne sur votre boutique."
 
-#: parla.php:907
+#: parla.php:935
 msgid "Settings saved."
 msgstr "Réglages enregistrés."
 
-#: parla.php:953
+#: parla.php:981
 msgid "the shop key on this page does not match the server"
 msgstr "la clé de boutique de cette page ne correspond pas à celle du serveur"
 
-#: parla.php:1040
+#: includes/admin.php:1444
+#: parla.php:1073
 msgid "Settings"
 msgstr "Réglages"
 
-#: parla.php:1047
+#: parla.php:1080
 msgid "Parla needs WooCommerce to be installed and active."
 msgstr "Parla a besoin que WooCommerce soit installé et activé."
+
+#: includes/admin.php:1053
+msgid "Before they open the chat"
+msgstr "Avant d’ouvrir le chat"
+
+#: includes/admin.php:1053
+msgid "The greeting bubble appears once per visit, next to the chat button."
+msgstr "La bulle d’accueil s’affiche une fois par visite, à côté du bouton du chat."
+
+#: includes/admin.php:1057
+msgid "When the chat opens"
+msgstr "À l’ouverture du chat"
+
+#: includes/admin.php:1451
+msgid "Look"
+msgstr "Apparence"
+
+#: includes/admin.php:1451
+msgid "Colours, theme, language"
+msgstr "Couleurs, thème, langue"
+
+#: includes/admin.php:1452
+msgid "Assistant"
+msgstr "Assistant"
+
+#: includes/admin.php:1452
+msgid "Name, status, manner"
+msgstr "Nom, statut, ton"
+
+#: includes/admin.php:1453
+msgid "Greeting, openers, products"
+msgstr "Accueil, questions, produits"
+
+#: includes/admin.php:1454
+msgid "Calls and voices"
+msgstr "Appels et voix"
+
+#: includes/admin.php:1455
+msgid "Knowledge & team"
+msgstr "Connaissances et équipe"
+
+#: includes/admin.php:1455
+msgid "Policies, orders, handoffs"
+msgstr "Conditions, commandes, relais"
+
+#: includes/admin.php:1498
+msgid "Settings pages"
+msgstr "Pages de réglages"
+
+#. translators: 1: number of people, 2: number of products
+#: includes/waiting.php:226
+#, php-format
+msgid "%1$s person waiting for %2$s products"
+msgid_plural "%1$s people waiting for %2$s products"
+msgstr[0] "%1$s personne attend %2$s produits"
+msgstr[1] "%1$s personnes attendent %2$s produits"
+
+#. translators: 1: number of people, 2: number of different things asked for
+#: includes/waiting.php:228
+#, php-format
+msgid "%1$s person waiting for %2$s things"
+msgid_plural "%1$s people waiting for %2$s things"
+msgstr[0] "%1$s personne attend %2$s demandes"
+msgstr[1] "%1$s personnes attendent %2$s demandes"
+
+#: includes/waiting.php:265
+msgid "Find an address"
+msgstr "Chercher une adresse"
+
+#. translators: %s: how many addresses are on this list
+#: includes/waiting.php:283
+#, php-format
+msgid "Show all %s addresses"
+msgstr "Afficher les %s adresses"
+
+#. translators: %s: how many more products are hidden
+#: includes/waiting.php:297
+#, php-format
+msgid "Show %s more product"
+msgid_plural "Show %s more products"
+msgstr[0] "Afficher %s produit de plus"
+msgstr[1] "Afficher %s produits de plus"
+
+#: includes/admin.php:373
+msgid "By week"
+msgstr "Par semaine"
+
+#: includes/admin.php:377
+#: includes/admin.php:391
+msgid "This week"
+msgstr "Cette semaine"
+
+#. translators: %s: the Monday a week starts on, e.g. "6 Oct"
+#: includes/admin.php:379
+#, php-format
+msgid "Week of %s"
+msgstr "Semaine du %s"
+
+#: includes/admin.php:417
+msgid "Messages per day"
+msgstr "Messages par jour"
+
+#. translators: 1: messages in the last 30 days, 2: the busiest day, 3: messages that day
+#: includes/admin.php:422
+#, php-format
+msgid "Last 30 days: %1$s in total. Busiest day %2$s, with %3$s."
+msgstr "30 derniers jours : %1$s au total. Jour le plus chargé : %2$s, avec %3$s."
+
+#. translators: 1: a day, 2: messages that day
+#: includes/admin.php:440
+#, php-format
+msgid "%1$s: %2$s message"
+msgid_plural "%1$s: %2$s messages"
+msgstr[0] "%1$s : %2$s message"
+msgstr[1] "%1$s : %2$s messages"
+
+#: includes/admin.php:451
+msgid "Today"
+msgstr "Aujourd’hui"

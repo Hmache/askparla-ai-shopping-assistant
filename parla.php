@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       AskParla AI Shopping Assistant for WooCommerce
  * Description:       AI shopping and order-support chat for your store: product search, order tracking, address changes and returns.
- * Version:           0.26.2
+ * Version:           0.27.0
  * Requires at least: 6.5
  * Requires PHP:      8.0
  * Requires Plugins:  woocommerce
@@ -22,7 +22,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('PARLA_VERSION', '0.26.2');
+define('PARLA_VERSION', '0.27.0');
 define('PARLA_OPTION', 'parla_settings');
 
 /**
@@ -337,8 +337,28 @@ function parla_sales_report(): array
 {
     $cache_key = 'parla_sales_' . gmdate('Ymd');
     $cached = get_transient($cache_key);
-    if (is_array($cached)) {
+    // A report cached by 0.26 has no weeks: count again rather than draw an empty chart.
+    if (is_array($cached) && isset($cached['weeks'])) {
         return $cached;
+    }
+    /*
+     * The assisted sales by calendar week, Monday first, in the shop's own timezone: the weeks that
+     * start inside the 30 days, then the current one so far. The days before the first Monday are
+     * left out of the chart, not the totals, so no bar is a partial week that looks like a bad one.
+     */
+    $now = new DateTimeImmutable('now', wp_timezone());
+    $current = $now->modify('monday this week')->setTime(0, 0);
+    $start = $now->modify('-30 days')->setTime(0, 0);
+    $first = $start->modify('monday this week');
+    if ($first < $start) {
+        $first = $first->modify('+7 days');
+    }
+    if ($first > $current) {
+        $first = $current;
+    }
+    $weeks = [];
+    for ($w = $first; $w <= $current; $w = $w->modify('+7 days')) {
+        $weeks[$w->format('Y-m-d')] = 0.0;
     }
     $report = [
         'days' => 30,
@@ -346,6 +366,7 @@ function parla_sales_report(): array
         'assisted_orders' => 0, 'assisted_revenue' => 0.0,
         'added_items' => 0, 'added_revenue' => 0.0,
         'capped' => false,
+        'weeks' => $weeks,
     ];
     $limit = 3000;
     $orders = wc_get_orders([
@@ -364,6 +385,13 @@ function parla_sales_report(): array
         }
         $report['assisted_orders']++;
         $report['assisted_revenue'] += $net;
+        $created = $order->get_date_created();
+        if ($created) {
+            $monday = (new DateTimeImmutable('@' . $created->getTimestamp()))->setTimezone(wp_timezone())->modify('monday this week')->format('Y-m-d');
+            if (isset($report['weeks'][$monday])) {
+                $report['weeks'][$monday] += $net;
+            }
+        }
         foreach ($order->get_items() as $item) {
             if ($item instanceof WC_Order_Item_Product && $item->get_meta('_parla_added') === '1') {
                 $report['added_items'] += (int) $item->get_quantity();

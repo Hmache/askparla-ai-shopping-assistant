@@ -10,23 +10,40 @@
     var root = document.querySelector('.aa-admin');
     if (!root) { return; }
     var tabs = root.querySelectorAll('.aa-tab');
+    var subtabs = root.querySelectorAll('.aa-subtab');
+    var subnav = document.getElementById('aa-subnav');
     var panels = root.querySelectorAll('.aa-panel');
     var preview = document.getElementById('aa-preview');
     var savebar = document.getElementById('aa-savebar');
     var form = document.getElementById('aa-form');
-    var WITH_PREVIEW = ['appearance', 'voice'];
+    // The settings pages, in the side menu's order, and the ones that change what the chat looks like.
+    var SETTINGS = ['look', 'assistant', 'first', 'voice', 'knowledge', 'connection'];
+    var WITH_PREVIEW = ['look', 'assistant', 'first', 'voice'];
+    // Links and bookmarks from before the settings were regrouped still land somewhere sensible.
+    var OLD = { appearance: 'look', widget: 'look' };
+    var lastSettings = 'look';
+    try { lastSettings = sessionStorage.getItem('aa-settings') || 'look'; } catch (e) {}
 
     function show(slug) {
-        tabs.forEach(function (t) { t.setAttribute('aria-selected', String(t.dataset.tab === slug)); t.tabIndex = t.dataset.tab === slug ? 0 : -1; });
+        slug = OLD[slug] || slug;
+        // The Settings tab reopens whichever settings page was used last.
+        if (slug === 'settings') { slug = SETTINGS.indexOf(lastSettings) !== -1 ? lastSettings : 'look'; }
+        var inSettings = SETTINGS.indexOf(slug) !== -1;
+        var top = inSettings ? 'settings' : slug;
+        tabs.forEach(function (t) { t.setAttribute('aria-selected', String(t.dataset.tab === top)); t.tabIndex = t.dataset.tab === top ? 0 : -1; });
+        subtabs.forEach(function (t) { if (t.dataset.tab === slug) { t.setAttribute('aria-current', 'page'); } else { t.removeAttribute('aria-current'); } });
+        if (subnav) { subnav.hidden = !inSettings; }
+        root.classList.toggle('in-settings', inSettings);
         panels.forEach(function (p) { p.hidden = p.id !== 'aa-tab-' + slug; });
         if (preview) { preview.hidden = WITH_PREVIEW.indexOf(slug) === -1; }
         root.classList.toggle('has-preview', !!preview && WITH_PREVIEW.indexOf(slug) !== -1);
-        // The overview has nothing to save.
         // Nothing to save on the two summary tabs; elsewhere the bar reveals itself once a field changes.
-        if (savebar) { savebar.hidden = slug === 'overview' || slug === 'reports'; }
-        try { sessionStorage.setItem('aa-tab', slug); } catch (e) {}
+        if (savebar) { savebar.hidden = !inSettings; }
+        if (inSettings) { lastSettings = slug; }
+        try { sessionStorage.setItem('aa-tab', slug); if (inSettings) { sessionStorage.setItem('aa-settings', slug); } } catch (e) {}
         if (location.hash !== '#' + slug) { history.replaceState(null, '', '#' + slug); }
     }
+    subtabs.forEach(function (t) { t.addEventListener('click', function () { show(t.dataset.tab); }); });
     tabs.forEach(function (t, i) {
         t.addEventListener('click', function () { show(t.dataset.tab); });
         t.addEventListener('keydown', function (e) {
@@ -39,7 +56,8 @@
     root.querySelectorAll('[data-aa-go]').forEach(function (b) { b.addEventListener('click', function () { show(b.dataset.aaGo); }); });
     var wanted = location.hash.replace('#', '');
     try { wanted = wanted || sessionStorage.getItem('aa-tab'); } catch (e) {}
-    var valid = [].some.call(tabs, function (t) { return t.dataset.tab === wanted; });
+    wanted = OLD[wanted] || wanted;
+    var valid = [].some.call(panels, function (p) { return p.id === 'aa-tab-' + wanted; }) || wanted === 'settings';
     show(valid ? wanted : PARLA.firstTab);
 
     // Sections that only apply to one choice (premium or standard voice).
@@ -114,6 +132,56 @@
         });
     });
 
+    // A waiting list shows five addresses; "Show all" opens the rest in a scrolling box with a search.
+    root.querySelectorAll('[data-aa-addr-all]').forEach(function (b) {
+        var body = b.closest('.aa-wg-body');
+        var rest = body.querySelectorAll('.aa-addr-more');
+        var find = body.querySelector('.aa-wg-find');
+        var input = body.querySelector('[data-aa-addr-find]');
+        var all = false;
+        var more = b.textContent;
+        b.addEventListener('click', function () {
+            all = !all;
+            rest.forEach(function (li) { li.hidden = !all; });
+            body.classList.toggle('is-full', all);
+            if (find) { find.hidden = !all; }
+            if (!all && input) { input.value = ''; body.querySelectorAll('.aa-waiting-people li').forEach(function (li, i) { li.hidden = i >= 5; }); }
+            b.textContent = all ? b.dataset.less : more;
+            if (all && input) { input.focus(); }
+        });
+    });
+    root.querySelectorAll('[data-aa-addr-find]').forEach(function (input) {
+        var items = input.closest('.aa-wg-body').querySelectorAll('.aa-waiting-people li');
+        input.addEventListener('input', function () {
+            var q = input.value.trim().toLowerCase();
+            items.forEach(function (li) { li.hidden = q !== '' && li.textContent.toLowerCase().indexOf(q) === -1; });
+        });
+        // Enter in this box would submit the settings form.
+        input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); } });
+    });
+
+    // Charts: the bar under the pointer says its own figure, just above it.
+    root.querySelectorAll('[data-aa-bars]').forEach(function (bars) {
+        var tip = document.createElement('div');
+        tip.className = 'aa-tip';
+        tip.setAttribute('aria-hidden', 'true');
+        tip.hidden = true;
+        // Beside the list rather than in it: a list holds only its items.
+        var box = bars.closest('.aa-chart') || bars.parentElement;
+        box.appendChild(tip);
+        bars.addEventListener('mouseover', function (e) {
+            var li = e.target.closest('li[data-tip]');
+            if (!li || !bars.contains(li)) { return; }
+            var bar = (li.querySelector('.aa-bar') || li).getBoundingClientRect();
+            var at = box.getBoundingClientRect();
+            tip.textContent = li.dataset.tip;
+            tip.style.left = (bar.left + bar.width / 2 - at.left) + 'px';
+            tip.style.top = (bar.top - at.top) + 'px';
+            tip.hidden = false;
+        });
+        bars.addEventListener('mouseleave', function () { tip.hidden = true; });
+    });
+
     // The notes box says how much room is left, because 300 characters is less than it sounds.
     root.querySelectorAll('.aa-count').forEach(function (p) {
         var box = document.getElementById(p.dataset.for);
@@ -147,6 +215,8 @@
         syncConditional();
         // Switching the preview between closed and open is not a setting.
         if (e.target && e.target.name === 'aa_preview_view') { return; }
+        // Neither is searching a waiting list.
+        if (e.target && e.target.hasAttribute && e.target.hasAttribute('data-aa-addr-find')) { return; }
         if (savebar) { savebar.classList.add('is-dirty'); }
         if (state) { state.textContent = state.dataset.dirty; }
     });
@@ -248,6 +318,7 @@
         if (dark && dark.addEventListener) { dark.addEventListener('change', soon); }
         // Coming back to a tab with the preview: make sure it shows the latest draft.
         tabs.forEach(function (t) { t.addEventListener('click', soon); });
+        subtabs.forEach(function (t) { t.addEventListener('click', soon); });
     }
 })();
 

@@ -198,66 +198,108 @@ add_action('rest_api_init', function (): void {
 
 // ---------------------------------------------------------------- the Reports tab
 
-/** One list of people waiting, with the addresses, because they are yours to see and to erase. */
+/**
+ * One list of people waiting, with the addresses, because they are yours to see and to erase.
+ *
+ * Folded, because it grows: a popular size that sells out can collect a hundred addresses in a
+ * week, and printing every one turned the Reports tab into a page of email addresses. Each product
+ * is one row with its count; opening it shows five addresses, and "Show all" puts the rest in a box
+ * that scrolls on its own with a search field, so the page never grows past it. Only the ten
+ * busiest products are listed until asked for the rest.
+ */
 function parla_ui_waiting(string $kind, string $title, string $blurb, string $empty): void
 {
     $lists = parla_waiting_lists($kind);
+    $shown = 10;
+    $first = 5;
+    $people = array_sum(array_map(static fn(array $l): int => count($l['people']), $lists));
+    $max = $lists ? max(1, count($lists[0]['people'])) : 1;
     ?>
-    <section class="aa-card">
+    <section class="aa-card aa-waitcard">
         <div class="aa-card-head">
             <h3><?php echo esc_html($title); ?></h3>
+            <?php if ($lists) : ?>
+                <p class="aa-help aa-total">
+                    <?php
+                    echo esc_html($kind === 'restock'
+                        /* translators: 1: number of people, 2: number of products */
+                        ? sprintf(_n('%1$s person waiting for %2$s products', '%1$s people waiting for %2$s products', $people, 'askparla-ai-shopping-assistant'), number_format_i18n($people), number_format_i18n(count($lists)))
+                        /* translators: 1: number of people, 2: number of different things asked for */
+                        : sprintf(_n('%1$s person waiting for %2$s things', '%1$s people waiting for %2$s things', $people, 'askparla-ai-shopping-assistant'), number_format_i18n($people), number_format_i18n(count($lists))));
+                    ?>
+                </p>
+            <?php endif; ?>
             <p class="aa-muted"><?php echo esc_html($blurb); ?></p>
         </div>
         <?php if (!$lists) : ?>
             <p class="aa-empty"><?php echo esc_html($empty); ?></p>
         <?php else : ?>
-            <table class="aa-table aa-waiting">
-                <thead>
-                    <tr>
-                        <th><?php esc_html_e('What they are waiting for', 'askparla-ai-shopping-assistant'); ?></th>
-                        <th><?php esc_html_e('Who', 'askparla-ai-shopping-assistant'); ?></th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php foreach ($lists as $list) : ?>
-                    <tr>
-                        <td>
-                            <strong><?php echo esc_html($list['title'] !== '' ? $list['title'] : $list['ref']); ?></strong>
-                            <?php if ($list['detail'] !== '') : ?>
-                                <span class="aa-muted"><?php echo esc_html($list['detail']); ?></span>
-                            <?php endif; ?>
-                            <small class="aa-muted">
-                                <?php
-                                echo esc_html(
-                                    sprintf(
-                                        /* translators: %s: how long ago, e.g. "3 days" */
-                                        __('since %s', 'askparla-ai-shopping-assistant'),
-                                        human_time_diff(strtotime($list['since'] . ' UTC'), time())
-                                    )
-                                );
-                                ?>
-                            </small>
-                        </td>
-                        <td>
-                            <ul class="aa-waiting-people">
-                                <?php foreach ($list['people'] as $person) : ?>
-                                    <li>
-                                        <span><?php echo esc_html($person['email']); ?></span>
-                                        <a
-                                            class="aa-waiting-drop"
-                                            href="<?php echo esc_url(wp_nonce_url(admin_url('admin.php?page=parla&tab=reports&parla_forget=' . $person['id']), 'parla_forget_' . $person['id'])); ?>"
-                                        ><?php esc_html_e('Forget', 'askparla-ai-shopping-assistant'); ?></a>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </td>
-                    </tr>
+            <ul class="aa-wgroups">
+                <?php foreach ($lists as $i => $list) :
+                    $n = count($list['people']);
+                    ?>
+                    <li class="aa-wgroup<?php echo $i >= $shown ? ' aa-more' : ''; ?>"<?php echo $i >= $shown ? ' hidden' : ''; ?>>
+                        <?php // One open at a time per list, so two long lists never stack up. ?>
+                        <details name="aa-wait-<?php echo esc_attr($kind); ?>">
+                            <summary>
+                                <span class="aa-wg-name">
+                                    <strong><?php echo esc_html($list['title'] !== '' ? $list['title'] : $list['ref']); ?></strong>
+                                    <?php if ($list['detail'] !== '') : ?><span class="aa-muted"><?php echo esc_html($list['detail']); ?></span><?php endif; ?>
+                                    <small class="aa-muted">
+                                        <?php
+                                        echo esc_html(sprintf(
+                                            /* translators: %s: how long ago, e.g. "3 days" */
+                                            __('since %s', 'askparla-ai-shopping-assistant'),
+                                            human_time_diff(strtotime($list['since'] . ' UTC'), time())
+                                        ));
+                                        ?>
+                                    </small>
+                                </span>
+                                <span class="aa-wg-bar" aria-hidden="true"><span style="width:<?php echo esc_attr((string) round($n / $max * 100)); ?>%"></span></span>
+                                <?php /* translators: %d: how many shoppers are waiting for this product */ ?>
+                                <span class="aa-wg-count"><?php echo esc_html(sprintf(_n('%d person', '%d people', $n, 'askparla-ai-shopping-assistant'), $n)); ?></span>
+                            </summary>
+                            <div class="aa-wg-body">
+                                <?php if ($n > $first) : ?>
+                                    <div class="aa-wg-find" hidden>
+                                        <input type="search" class="aa-in" data-aa-addr-find placeholder="<?php esc_attr_e('Find an address', 'askparla-ai-shopping-assistant'); ?>" aria-label="<?php esc_attr_e('Find an address', 'askparla-ai-shopping-assistant'); ?>">
+                                    </div>
+                                <?php endif; ?>
+                                <ul class="aa-waiting-people">
+                                    <?php foreach ($list['people'] as $j => $person) : ?>
+                                        <li<?php echo $j >= $first ? ' class="aa-addr-more" hidden' : ''; ?>>
+                                            <span><?php echo esc_html($person['email']); ?></span>
+                                            <a
+                                                class="aa-waiting-drop"
+                                                href="<?php echo esc_url(wp_nonce_url(admin_url('admin.php?page=parla&tab=reports&parla_forget=' . $person['id']), 'parla_forget_' . $person['id'])); ?>"
+                                            ><?php esc_html_e('Forget', 'askparla-ai-shopping-assistant'); ?></a>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                                <?php if ($n > $first) : ?>
+                                    <button type="button" class="aa-link" data-aa-addr-all data-less="<?php esc_attr_e('Show fewer', 'askparla-ai-shopping-assistant'); ?>">
+                                        <?php
+                                        /* translators: %s: how many addresses are on this list */
+                                        echo esc_html(sprintf(__('Show all %s addresses', 'askparla-ai-shopping-assistant'), number_format_i18n($n)));
+                                        ?>
+                                    </button>
+                                <?php endif; ?>
+                            </div>
+                        </details>
+                    </li>
                 <?php endforeach; ?>
-                </tbody>
-            </table>
-            <p class="aa-muted aa-waiting-note">
-                <?php esc_html_e('These addresses are on your site, not on Parla. Each one is used for one message and deleted when it goes out.', 'askparla-ai-shopping-assistant'); ?>
-            </p>
+            </ul>
+            <?php if (count($lists) > $shown) : ?>
+                <button type="button" class="aa-link aa-wg-more" data-aa-more data-less="<?php esc_attr_e('Show fewer', 'askparla-ai-shopping-assistant'); ?>">
+                    <?php
+                    echo esc_html($kind === 'restock'
+                        /* translators: %s: how many more products are hidden */
+                        ? sprintf(_n('Show %s more product', 'Show %s more products', count($lists) - $shown, 'askparla-ai-shopping-assistant'), number_format_i18n(count($lists) - $shown))
+                        /* translators: %s: how many more rows are hidden */
+                        : sprintf(__('Show %s more', 'askparla-ai-shopping-assistant'), number_format_i18n(count($lists) - $shown)));
+                    ?>
+                </button>
+            <?php endif; ?>
         <?php endif; ?>
     </section>
     <?php
