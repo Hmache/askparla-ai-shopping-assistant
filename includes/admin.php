@@ -207,6 +207,107 @@ function parla_ui_kpi(string $label, string $value, string $hint = '', ?float $p
     <?php
 }
 
+/**
+ * One unanswered question with a "Write the answer" box under it.
+ *
+ * The Reports tab sits inside the settings form, and a form cannot hold another, so the fields
+ * belong to the small form printed after it (parla_ui_answer_form) through their `form` attribute.
+ */
+function parla_ui_answer_row(int $i, string $question, int $count, bool $hidden): void
+{
+    ?>
+    <li class="aa-ask<?php echo $hidden ? ' aa-more' : ''; ?>"<?php echo $hidden ? ' hidden' : ''; ?>>
+        <span><?php echo esc_html($question); ?></span>
+        <span class="aa-count"><?php echo esc_html(sprintf('%d×', $count)); ?></span>
+        <details class="aa-answer">
+            <summary class="aa-link"><?php esc_html_e('Write the answer', 'askparla-ai-shopping-assistant'); ?></summary>
+            <input type="hidden" form="aa-answer-form" name="parla_questions[<?php echo (int) $i; ?>]" value="<?php echo esc_attr($question); ?>">
+            <textarea class="aa-in" rows="3" maxlength="1000" form="aa-answer-form" data-aa-answer name="parla_answers[<?php echo (int) $i; ?>]" placeholder="<?php esc_attr_e('The answer, as you would give it to a customer', 'askparla-ai-shopping-assistant'); ?>"></textarea>
+            <button type="submit" class="aa-btn aa-btn-primary aa-btn-sm" form="aa-answer-form" name="parla_answer_row" value="<?php echo (int) $i; ?>"><?php esc_html_e('Save answer', 'askparla-ai-shopping-assistant'); ?></button>
+        </details>
+    </li>
+    <?php
+}
+
+/** The answers the merchant has written, each with a way to take it back. */
+function parla_ui_written_answers(array $answers): void
+{
+    if (!$answers) {
+        return;
+    }
+    ?>
+    <section class="aa-card aa-answers">
+        <div class="aa-card-head">
+            <h3><?php esc_html_e('Answers you wrote', 'askparla-ai-shopping-assistant'); ?></h3>
+            <p class="aa-muted"><?php esc_html_e('The assistant uses these in every conversation, as if they were on your pages.', 'askparla-ai-shopping-assistant'); ?></p>
+        </div>
+        <ol class="aa-list">
+            <?php foreach ($answers as $row) : ?>
+                <li>
+                    <span><strong><?php echo esc_html((string) ($row['q'] ?? '')); ?></strong><br><?php echo esc_html((string) ($row['a'] ?? '')); ?></span>
+                    <button type="submit" class="aa-btn aa-btn-ghost aa-btn-sm" form="aa-answer-form" name="parla_answer_remove" value="<?php echo esc_attr((string) ($row['q'] ?? '')); ?>"><?php esc_html_e('Remove', 'askparla-ai-shopping-assistant'); ?></button>
+                </li>
+            <?php endforeach; ?>
+        </ol>
+    </section>
+    <?php
+}
+
+/** The form the answer fields above submit to, printed after the settings form. */
+function parla_ui_answer_form(): void
+{
+    ?>
+    <form id="aa-answer-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" hidden>
+        <input type="hidden" name="action" value="parla_answer">
+        <?php wp_nonce_field('parla_answer'); ?>
+    </form>
+    <?php
+}
+
+/**
+ * Saving (or removing) one answer. It is kept on Parla, not here: the assistant reads it from there
+ * in the next conversation, and the question leaves the Reports list.
+ */
+function parla_answer_save(): void
+{
+    if (!current_user_can('manage_woocommerce')) {
+        wp_die(esc_html__('Sorry, you are not allowed to see this page.', 'askparla-ai-shopping-assistant'), 403);
+    }
+    check_admin_referer('parla_answer');
+    $s = parla_settings();
+    $body = [];
+    if (isset($_POST['parla_answer_remove'])) {
+        $body = ['question' => sanitize_text_field(wp_unslash($_POST['parla_answer_remove'])), 'remove' => true];
+    } elseif (isset($_POST['parla_answer_row'])) {
+        $i = (int) $_POST['parla_answer_row'];
+        $questions = isset($_POST['parla_questions']) ? (array) wp_unslash($_POST['parla_questions']) : []; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- each value is sanitized below.
+        $answers = isset($_POST['parla_answers']) ? (array) wp_unslash($_POST['parla_answers']) : []; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- each value is sanitized below.
+        $body = [
+            'question' => sanitize_text_field((string) ($questions[$i] ?? '')),
+            'answer' => sanitize_textarea_field((string) ($answers[$i] ?? '')),
+        ];
+        if (trim($body['answer']) === '') {
+            wp_safe_redirect(admin_url('admin.php?page=parla&tab=reports&parla_answered=empty'));
+            exit;
+        }
+    }
+    $ok = false;
+    if ($body && $body['question'] !== '' && parla_is_connected() && $s['connect_secret'] !== '') {
+        $res = wp_remote_post(parla_api_base($s) . '/v1/stores/' . rawurlencode($s['store_id']) . '/answers', [
+            'timeout' => 8,
+            'headers' => ['x-connect-secret' => $s['connect_secret'], 'Content-Type' => 'application/json'],
+            'body' => wp_json_encode($body),
+        ]);
+        $ok = !is_wp_error($res) && wp_remote_retrieve_response_code($res) === 200;
+        // The report is cached for five minutes; the merchant should see the change now.
+        delete_transient('parla_insights_' . md5($s['store_id']));
+    }
+    $flag = !$ok ? 'failed' : (isset($body['remove']) ? 'removed' : 'saved');
+    wp_safe_redirect(admin_url('admin.php?page=parla&tab=reports&parla_answered=' . $flag));
+    exit;
+}
+add_action('admin_post_parla_answer', 'parla_answer_save');
+
 /** A short "what shoppers asked" list, or a friendly empty line. */
 /**
  * A ranked list of what shoppers asked for.
@@ -216,7 +317,7 @@ function parla_ui_kpi(string $label, string $value, string $hint = '', ?float $p
  * other four thousand nine hundred and something exist. The count goes in the heading, and the rows
  * past the eighth open on a click rather than being silently dropped.
  */
-function parla_ui_topics(array $rows, string $empty, array $total = []): void
+function parla_ui_topics(array $rows, string $empty, array $total = [], bool $answerable = false): void
 {
     if (!$rows) {
         printf('<p class="aa-empty">%s</p>', esc_html($empty));
@@ -237,6 +338,10 @@ function parla_ui_topics(array $rows, string $empty, array $total = []): void
     }
     echo '<ol class="aa-list">';
     foreach ($rows as $i => $row) {
+        if ($answerable) {
+            parla_ui_answer_row($i, (string) ($row['query'] ?? ''), (int) ($row['count'] ?? 0), $i >= $shown);
+            continue;
+        }
         printf(
             '<li%s><span>%s</span><span class="aa-count">%s</span></li>',
             $i >= $shown ? ' class="aa-more" hidden' : '',
@@ -810,14 +915,29 @@ function parla_ui_tab_reports(array $s): void
         <section class="aa-card">
             <div class="aa-card-head">
                 <h3><?php esc_html_e('Asked, but your pages do not say', 'askparla-ai-shopping-assistant'); ?></h3>
-                <p class="aa-muted"><?php esc_html_e('Questions your published pages had no answer for. Each is a paragraph worth writing.', 'askparla-ai-shopping-assistant'); ?></p>
+                <p class="aa-muted"><?php esc_html_e('Questions your published pages had no answer for. Write the answer here once and the assistant uses it from the next conversation.', 'askparla-ai-shopping-assistant'); ?></p>
             </div>
-            <?php parla_ui_topics($d['unanswered'] ?? [], __('Nothing yet. Your pages covered every question.', 'askparla-ai-shopping-assistant'), (array) ($d['unanswered_total'] ?? [])); ?>
+            <?php parla_ui_topics($d['unanswered'] ?? [], __('Nothing yet. Your pages covered every question.', 'askparla-ai-shopping-assistant'), (array) ($d['unanswered_total'] ?? []), true); ?>
         </section>
     </div>
+    <?php parla_ui_written_answers((array) ($d['answers'] ?? [])); ?>
 
     <?php
     endif;
+    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- a flag that only decides whether a "done" notice is printed; nothing is read from it.
+    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- a flag that only picks which notice is printed.
+    if (isset($_GET['parla_answered'])) {
+        $said = sanitize_key(wp_unslash($_GET['parla_answered']));
+        $notes = [
+            'saved' => ['success', __('Answer saved. The assistant uses it from the next conversation.', 'askparla-ai-shopping-assistant')],
+            'removed' => ['success', __('Answer removed.', 'askparla-ai-shopping-assistant')],
+            'empty' => ['warning', __('Write the answer first.', 'askparla-ai-shopping-assistant')],
+            'failed' => ['error', __('Parla could not save that just now. Try again in a minute.', 'askparla-ai-shopping-assistant')],
+        ];
+        if (isset($notes[$said])) {
+            printf('<div class="notice notice-%s is-dismissible"><p>%s</p></div>', esc_attr($notes[$said][0]), esc_html($notes[$said][1]));
+        }
+    }
     // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- a flag that only decides whether a "done" notice is printed; nothing is read from it.
     if (isset($_GET['parla_forgot'])) {
         printf('<div class="notice notice-success is-dismissible"><p>%s</p></div>', esc_html__('Removed from the list.', 'askparla-ai-shopping-assistant'));
@@ -1567,6 +1687,7 @@ function parla_render_admin(): void
                 <button type="submit" class="aa-btn aa-btn-primary"><?php esc_html_e('Save settings', 'askparla-ai-shopping-assistant'); ?></button>
             </div>
         </form>
+        <?php parla_ui_answer_form(); ?>
     </div>
     <?php
 }

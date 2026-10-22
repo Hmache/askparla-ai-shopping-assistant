@@ -4,7 +4,7 @@ Tags: woocommerce, chatbot, ai, voice, product search
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 0.28.1
+Stable tag: 0.29.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,6 +15,10 @@ An AI sales agent for WooCommerce that shoppers can call or chat with. Sells fro
 Most online shops have a "Contact us" page. Very few have someone who answers. Parla is an AI sales agent that lives on your WooCommerce shop: a shopper taps Call and asks out loud, or types, and gets an answer from your own catalogue, puts the right item in the cart, and tracks their order.
 
 **Try it before installing anything:** [a demo shop with Parla on it](https://askparla.com/demo?utm_source=wporg). **Free to start, no card:** [create your account at askparla.com](https://askparla.com/account/signup?utm_source=wporg) and the shop key is shown straight away. You get 14 days of a full plan, then the Free plan, 50 conversations a month, for as long as you like.
+
+One minute on what your customers get, from a demo shop:
+
+[youtube https://www.youtube.com/watch?v=ephcNZgEJEM]
 
 Parla adds a chat to your store that opens on a choice: talk, or type. It sells first and handles the rest of the order lifecycle after.
 
@@ -103,6 +107,9 @@ To count the sales it helps with, the chat sets two first-party cookies on your 
 7. Settings -> Look: your colours, light or dark, and the button language, with a live preview of the chat.
 
 == Changelog ==
+
+= 0.29.0 =
+* Reports: "Write the answer" next to each question your pages did not answer. Type it once and the assistant uses it from the next conversation, and the question leaves the list. "Answers you wrote" lists them, each with Remove
 
 = 0.28.1 =
 * The welcome card and the Connection page say what happens after the 14 days: the account moves to the Free plan, 50 conversations a month

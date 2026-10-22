@@ -217,6 +217,8 @@
         if (e.target && e.target.name === 'aa_preview_view') { return; }
         // Neither is searching a waiting list.
         if (e.target && e.target.hasAttribute && e.target.hasAttribute('data-aa-addr-find')) { return; }
+        // Nor is an answer typed on Reports: it has its own Save.
+        if (e.target && e.target.hasAttribute && e.target.hasAttribute('data-aa-answer')) { return; }
         if (savebar) { savebar.classList.add('is-dirty'); }
         if (state) { state.textContent = state.dataset.dirty; }
     });

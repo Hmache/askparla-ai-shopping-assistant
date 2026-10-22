@@ -570,7 +570,7 @@ msgid "Asked, but your pages do not say"
 msgstr ""
 
 #: includes/admin.php:813
-msgid "Questions your published pages had no answer for. Each is a paragraph worth writing."
+msgid "Questions your published pages had no answer for. Write the answer here once and the assistant uses it from the next conversation."
 msgstr ""
 
 #: includes/admin.php:815
@@ -1683,4 +1683,44 @@ msgstr ""
 
 #: parla.php:1080
 msgid "Parla needs WooCommerce to be installed and active."
+msgstr ""
+
+#: includes/admin.php
+msgid "Write the answer"
+msgstr ""
+
+#: includes/admin.php
+msgid "The answer, as you would give it to a customer"
+msgstr ""
+
+#: includes/admin.php
+msgid "Save answer"
+msgstr ""
+
+#: includes/admin.php
+msgid "Answers you wrote"
+msgstr ""
+
+#: includes/admin.php
+msgid "The assistant uses these in every conversation, as if they were on your pages."
+msgstr ""
+
+#: includes/admin.php
+msgid "Remove"
+msgstr ""
+
+#: includes/admin.php
+msgid "Answer saved. The assistant uses it from the next conversation."
+msgstr ""
+
+#: includes/admin.php
+msgid "Answer removed."
+msgstr ""
+
+#: includes/admin.php
+msgid "Write the answer first."
+msgstr ""
+
+#: includes/admin.php
+msgid "Parla could not save that just now. Try again in a minute."
 msgstr ""

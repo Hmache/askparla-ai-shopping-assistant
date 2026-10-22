@@ -519,8 +519,8 @@ msgid "Asked, but your pages do not say"
 msgstr "Demandé, mais vos pages n’en disent rien"
 
 #: includes/admin.php:813
-msgid "Questions your published pages had no answer for. Each is a paragraph worth writing."
-msgstr "Les questions auxquelles vos pages publiées ne répondaient pas. Chacune mérite un paragraphe."
+msgid "Questions your published pages had no answer for. Write the answer here once and the assistant uses it from the next conversation."
+msgstr "Les questions auxquelles vos pages publiées ne répondaient pas. Écrivez la réponse ici une fois : l’assistant s’en sert dès la conversation suivante."
 
 #: includes/admin.php:815
 msgid "Nothing yet. Your pages covered every question."
@@ -1695,3 +1695,43 @@ msgstr "Gratuit, sans carte bancaire : 14 jours d’une formule complète, puis 
 #, php-format
 msgid "waiting %s"
 msgstr "en attente depuis %s"
+
+#: includes/admin.php
+msgid "Write the answer"
+msgstr "Écrire la réponse"
+
+#: includes/admin.php
+msgid "The answer, as you would give it to a customer"
+msgstr "La réponse, telle que vous la donneriez à un client"
+
+#: includes/admin.php
+msgid "Save answer"
+msgstr "Enregistrer la réponse"
+
+#: includes/admin.php
+msgid "Answers you wrote"
+msgstr "Vos réponses"
+
+#: includes/admin.php
+msgid "The assistant uses these in every conversation, as if they were on your pages."
+msgstr "L’assistant s’en sert dans chaque conversation, comme si elles figuraient sur vos pages."
+
+#: includes/admin.php
+msgid "Remove"
+msgstr "Supprimer"
+
+#: includes/admin.php
+msgid "Answer saved. The assistant uses it from the next conversation."
+msgstr "Réponse enregistrée. L’assistant s’en sert dès la conversation suivante."
+
+#: includes/admin.php
+msgid "Answer removed."
+msgstr "Réponse supprimée."
+
+#: includes/admin.php
+msgid "Write the answer first."
+msgstr "Écrivez d’abord la réponse."
+
+#: includes/admin.php
+msgid "Parla could not save that just now. Try again in a minute."
+msgstr "Parla n’a pas pu l’enregistrer pour le moment. Réessayez dans une minute."
