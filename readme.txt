@@ -1,10 +1,10 @@
 === AskParla AI Shopping Assistant for WooCommerce ===
 Contributors: askparla
-Tags: woocommerce, chatbot, ai, voice, product search
+Tags: woocommerce, ai chatbot, chatbot, ai, product search
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 0.29.0
+Stable tag: 0.29.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,7 +40,7 @@ Nothing is invented to make a sale: scarcity is only ever mentioned when your st
 Everything lives under WooCommerce -> Parla, in three places:
 
 * **Overview:** the sales the assistant helped with over the last 30 days, week by week, counted from your own WooCommerce orders. Below that, messages per day, what shoppers asked for, and a storefront check that tells you what the chat on your shop is actually running.
-* **Reports:** what shoppers searched for and did not find, questions your pages did not answer, answers marked unhelpful, and the people waiting for a restock. Long waiting lists are folded by product, with a search to find one address.
+* **Reports:** what shoppers searched for and did not find, questions your pages did not answer (with a box to write the answer once, which the assistant uses from the next conversation), answers marked unhelpful, and the people waiting for a restock. Long waiting lists are folded by product, with a search to find one address.
 * **Settings:** one page per job. Look, Assistant and First screen change what shoppers see, with a live preview beside them. Voice sets up calls. Knowledge & team holds your policies, sizes and opening hours. Connection holds the shop key.
 
 = Plans =
@@ -56,6 +56,18 @@ The Free plan includes 50 conversations a month, standard voice calls and "Power
 The storefront check at the bottom of the Overview shows what your storefront is actually running, which is the fastest way to see whether a setting reached the server.
 
 == Frequently Asked Questions ==
+
+= Is it free? =
+
+The plugin is free. The assistant runs on Parla's servers and needs an account: the Free plan includes 50 conversations a month, with no card and no time limit. Paid plans start at 19 EUR a month.
+
+= Which languages does it speak? =
+
+English, French, Spanish, German, Italian, Dutch, Portuguese and Arabic. It answers in the shopper's language, whatever language your products are written in.
+
+= What happens when it does not know the answer? =
+
+It says so, and hands the conversation to your team by email with a ticket number. It never invents a policy, a delivery date or a discount. The question then shows up in Reports, where you can write the answer once.
 
 = Does this send my customer data anywhere? =
 
@@ -107,6 +119,9 @@ To count the sales it helps with, the chat sets two first-party cookies on your 
 7. Settings -> Look: your colours, light or dark, and the button language, with a live preview of the chat.
 
 == Changelog ==
+
+= 0.29.1 =
+* Readme: answers to "Is it free?", "Which languages does it speak?" and "What happens when it does not know the answer?"
 
 = 0.29.0 =
 * Reports: "Write the answer" next to each question your pages did not answer. Type it once and the assistant uses it from the next conversation, and the question leaves the list. "Answers you wrote" lists them, each with Remove
